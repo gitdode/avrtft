@@ -613,7 +613,7 @@ const __flash uint8_t PHOTO_DATA[] = {
 };
 
 const __flash Bitmap bitmaps[] = {
-    {56, 64, TUX_DATA},
-    {64, 64, LINUS_DATA},
-    {248, 120, PHOTO_DATA}
+//    {56, 64, TUX_DATA},
+//    {64, 64, LINUS_DATA},
+//    {248, 120, PHOTO_DATA}
 };

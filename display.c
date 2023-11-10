@@ -61,14 +61,14 @@ void writeString(row_t row, col_t col, const __flash Font *font, const char *str
 }
 
 void unifontDemo(void) {
-    const __flash Font *unifont = &unifontFont;
-    
-    for (uint8_t i = 0; i < UNIFONT_DEMO_SIZE; i++) {
-        const __flash char *line = demoTextLines[i];
-        char buf[UNIFONT_DEMO_LINE_SIZE];
-        strncpy_P(buf, line, UNIFONT_DEMO_LINE_SIZE - 1);
-        writeString(i * 2, 0, unifont, buf);
-    }
+//    const __flash Font *unifont = &unifontFont;
+//    
+//    for (uint8_t i = 0; i < UNIFONT_DEMO_SIZE; i++) {
+//        const __flash char *line = demoTextLines[i];
+//        char buf[UNIFONT_DEMO_LINE_SIZE];
+//        strncpy_P(buf, line, UNIFONT_DEMO_LINE_SIZE - 1);
+//        writeString(i * 2, 0, unifont, buf);
+//    }
 }
 
 void display() {

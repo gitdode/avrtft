@@ -115,10 +115,10 @@ int main(void) {
     while (true) {
         
         // show a demo once at the start
-        if (!once) {
-            setFrame(0x00);
-            writeBitmap(1, 198, TUX);
-            unifontDemo();
+        if (!once && ints >= INTS_SEC) {
+            // setFrame(0x00);
+            // writeBitmap(1, 198, TUX);
+            // unifontDemo();
             // max resolution image
             // writeBitmap(0, 0, PHOTO);
             display();

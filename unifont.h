@@ -22,7 +22,7 @@ extern const __flash char* demoTextLines[UNIFONT_DEMO_SIZE];
 /**
  * Unifont font.
  */
-extern const __flash Font unifontFont;
+// extern const __flash Font unifontFont;
 
 #endif /* UNIFONT_H */
 

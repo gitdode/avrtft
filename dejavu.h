@@ -14,7 +14,7 @@
 /**
  * DejaVu font.
  */
-extern const __flash Font dejaVuFont;
+// extern const __flash Font dejaVuFont;
 
 #endif /* DEJAVU_H */
 
