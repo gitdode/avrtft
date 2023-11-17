@@ -47,7 +47,7 @@ void writeString(row_t row, col_t col, const __flash Font *font, const char *str
 /**
  * Displays a demo for the awesome Unifont.
  */
-void unifontDemo(void);
+void hackDemo(void);
 
 void display(void);
 

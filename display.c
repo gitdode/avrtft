@@ -11,19 +11,13 @@
 #include <stdbool.h>
 #include <avr/pgmspace.h>
 #include "display.h"
-#include "unifont.h"
-#include "dejavu.h"
+#include "hack.h"
+// #include "dejavu.h"
 #include "bitmaps.h"
 #include "spi.h"
 #include "tft.h"
 #include "usart.h"
 #include "utils.h"
-
-static void bufferBitmap(row_t row, col_t col,
-                         const __flash uint8_t *bitmap,
-                         width_t width, height_t height) {
-    
-}
 
 void setFrame(uint8_t byte) {
     
@@ -31,14 +25,14 @@ void setFrame(uint8_t byte) {
 
 width_t writeBitmap(row_t row, col_t col, uint16_t index) {
     const __flash Bitmap *bitmap = &bitmaps[index];
-    bufferBitmap (row, col, bitmap->bitmap, bitmap->width, bitmap->height);
+    writeDisplay(row, col, bitmap->bitmap, bitmap->width, bitmap->height, COLOR_RGB16);
     
     return bitmap->width;
 }
 
 width_t writeGlyph(row_t row, col_t col, const __flash Font *font, code_t code) {
     const __flash Glyph *glyph = getGlyphAddress(font, code);
-    bufferBitmap(row, col, glyph->bitmap, glyph->width, font->height);
+    writeDisplay(row, col, glyph->bitmap, glyph->width, font->height, COLOR_GREY4);
     
     return glyph->width;
 }
@@ -60,14 +54,17 @@ void writeString(row_t row, col_t col, const __flash Font *font, const char *str
     }
 }
 
-void unifontDemo(void) {
-//    const __flash Font *unifont = &unifontFont;
-//    
-//    for (uint8_t i = 0; i < UNIFONT_DEMO_SIZE; i++) {
+void hackDemo(void) {
+    const __flash Font *hack = &hackFont;
+    
+    // writeString(0 * hack->height, 0, hack, "ö");
+    writeDisplay(16, 0, hack->glyphs[3].bitmap, 8, 16, COLOR_GREY4);
+    
+//    for (uint8_t i = 0; i < HACK_DEMO_SIZE; i++) {
 //        const __flash char *line = demoTextLines[i];
-//        char buf[UNIFONT_DEMO_LINE_SIZE];
-//        strncpy_P(buf, line, UNIFONT_DEMO_LINE_SIZE - 1);
-//        writeString(i * 2, 0, unifont, buf);
+//        char buf[HACK_DEMO_LINE_SIZE];
+//        strlcpy_P(buf, line, HACK_DEMO_LINE_SIZE - 1);
+//        writeString(i * hack->height, 0, hack, buf);
 //    }
 }
 

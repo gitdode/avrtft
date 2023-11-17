@@ -14,11 +14,6 @@ Currently implemented:
 * Write text and bitmaps via USART
 * Logging via USART
 
-Thanks to:  
-
-* [https://github.com/adafruit/Adafruit-ST7735-Library](https://github.com/adafruit/Adafruit-ST7735-Library) 
-for helping me out with the display initialization!  
-
 ## Write something via USART
 
 Connect to the controller with for example GTKTerm (9600 Baud).  

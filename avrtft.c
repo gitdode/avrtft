@@ -117,11 +117,13 @@ int main(void) {
         // show a demo once at the start
         if (!once && ints >= INTS_SEC) {
             // setFrame(0x00);
-            // writeBitmap(1, 198, TUX);
-            // unifontDemo();
+            initDisplay();
+            // writeBitmap(0, 140, BLUSH);
+            hackDemo();
+            updateDisplay();
             // max resolution image
             // writeBitmap(0, 0, PHOTO);
-            display();
+            // display();
             once = true;
         }
 

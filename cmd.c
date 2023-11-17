@@ -12,7 +12,7 @@
 #include "tft.h"
 #include "display.h"
 #include "font.h"
-#include "unifont.h"
+#include "hack.h"
 #include "dejavu.h"
 #include "bitmaps.h"
 
@@ -72,12 +72,12 @@ static void update(void) {
 }
 
 /**
- * Writes the Unifont demo in fast update mode.
+ * Writes the Hack demo.
  */
 static void demo(void) {
     setFrame(0x00);
-    writeBitmap(1, 198, TUX);
-    unifontDemo();
+    // writeBitmap(1, 198, TUX);
+    hackDemo();
     display();
 }
 

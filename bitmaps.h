@@ -11,9 +11,7 @@
 #include <stdint.h>
 #include "types.h"
 
-#define TUX 0
-#define LINUS 1
-#define PHOTO 2
+#define BLUSH   0
 
 /**
  * A bitmap with its width and height, and data.
