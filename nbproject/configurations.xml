@@ -3,15 +3,11 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="/home/dode/dev/avrtft" name="0">
       <in>avrtft.c</in>
-      <in>bitmaps.c</in>
-      <in>cmd.c</in>
-      <in>dejavu.c</in>
       <in>display.c</in>
       <in>font.c</in>
+      <in>hack.c</in>
       <in>spi.c</in>
       <in>tft.c</in>
-      <in>unifont.c</in>
-      <in>usart.c</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -48,12 +44,6 @@
       </compileType>
       <item path="/home/dode/dev/avrtft/avrtft.c" ex="false" tool="0" flavor2="3">
       </item>
-      <item path="/home/dode/dev/avrtft/bitmaps.c" ex="false" tool="0" flavor2="3">
-      </item>
-      <item path="/home/dode/dev/avrtft/cmd.c" ex="false" tool="0" flavor2="3">
-      </item>
-      <item path="/home/dode/dev/avrtft/dejavu.c" ex="false" tool="0" flavor2="3">
-      </item>
       <item path="/home/dode/dev/avrtft/display.c" ex="false" tool="0" flavor2="3">
       </item>
       <item path="/home/dode/dev/avrtft/font.c" ex="false" tool="0" flavor2="3">
@@ -62,9 +52,7 @@
       </item>
       <item path="/home/dode/dev/avrtft/tft.c" ex="false" tool="0" flavor2="3">
       </item>
-      <item path="/home/dode/dev/avrtft/unifont.c" ex="false" tool="0" flavor2="3">
-      </item>
-      <item path="/home/dode/dev/avrtft/usart.c" ex="false" tool="0" flavor2="3">
+      <item path="hack.c" ex="false" tool="0" flavor2="3">
       </item>
     </conf>
   </confs>

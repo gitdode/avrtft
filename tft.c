@@ -121,10 +121,9 @@ void initDisplay(void) {
     printString("done initializing display\r\n");
 }
 
-void writeDisplay(uint16_t row, uint16_t col,
-                  const __flash uint8_t *bitmap,
+void setDisplay(uint16_t row, uint16_t col,
                   width_t width, height_t height,
-                  uint8_t color) {
+                  uint16_t color) {
 
     // CASET
     uint16_t ys = col;
@@ -153,15 +152,56 @@ void writeDisplay(uint16_t row, uint16_t col,
     displayCmd(RAMWR);
     displaySetData();
 
-    if (color == COLOR_RGB16) {
-        uint16_t bytes = width * height * 2;
+    bytes_t bytes = width * height;
+    for (uint16_t i = 0; i < bytes; i++) {
+        transmit(color >> 8);
+        transmit(color);
+    }
+
+    displayDes();    
+}
+
+void writeDisplay(uint16_t row, uint16_t col,
+                  const __flash uint8_t *bitmap,
+                  width_t width, height_t height,
+                  uint8_t space) {
+
+    // CASET
+    uint16_t ys = col;
+    uint16_t ye = col + width - 1;
+    displaySel();
+    displayCmd(CASET);
+    displayData(ys >> 8);
+    displayData(ys);
+    displayData(ye >> 8);
+    displayData(ye);
+    displayDes();
+
+    // RASET
+    uint16_t xs = row;
+    uint16_t xe = row + height - 1;
+    displaySel();
+    displayCmd(RASET);
+    displayData(xs >> 8);
+    displayData(xs);
+    displayData(xe >> 8);
+    displayData(xe);
+    displayDes();
+
+    // RAMWR
+    displaySel();
+    displayCmd(RAMWR);
+    displaySetData();
+
+    if (space == SPACE_RGB16) {
+        bytes_t bytes = width * height * 2;
         for (uint16_t i = 0; i < bytes; i++) {
             transmit(bitmap[i]);
         }
     }
 
-    if (color == COLOR_GREY4) {
-        uint16_t bytes = width * height / 2;
+    if (space == SPACE_GREY4) {
+        bytes_t bytes = width * height / 2;
         for (uint16_t i = 0; i < bytes; i++) {
             uint8_t rgb[4];
             fourBitGreyTo16BitRGB(bitmap[i], rgb);

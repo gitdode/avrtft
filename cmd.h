@@ -8,7 +8,7 @@
 #ifndef CMD_H
 #define CMD_H
 
-/** Clear frame buffer: 'c <0xff|0x00>'. */
+/** Clear frame buffer: 'c <0x0000 - 0xffff>'. */
 #define CMD_CLEAR       'c'
 /** Display one line of text: 't <row> <col> <font> <text>'. */
 #define CMD_TEXT        't'
@@ -16,10 +16,8 @@
 #define CMD_BITMAP      'b'
 /** Display Unifont demo: 'd'. */
 #define CMD_DEMO        'd'
-/** Update display (full or fast mode): 'u <0|1>'. */
-#define CMD_UPDATE      'u'
 
-#define FONT_UNIFONT    'u'
+#define FONT_HACK       'h'
 #define FONT_DEJAVU     'd'
 
 /**

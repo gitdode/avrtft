@@ -17,13 +17,13 @@
 #include "bitmaps.h"
 
 /**
- * Sets the frame buffer to black (0xff) or white (0x00).
+ * Sets the frame buffer to the given 16-Bit (5/6/5) RGB color.
  * @param data
  */
 static void clear(char *data) {
     strtok(data, " ");
     char *end;
-    uint8_t color = strtol(strtok(NULL, " "), &end, 16);
+    uint16_t color = strtol(strtok(NULL, " "), &end, 16);
     
     setFrame(color);
 }
@@ -33,21 +33,21 @@ static void clear(char *data) {
  * @param data
  */
 static void text(char *data) {
-//    strtok(data, " ");
-//    char *end;
-//    uint16_t row = strtol(strtok(NULL, " "), &end, 10);
-//    uint16_t col = strtol(strtok(NULL, " "), &end, 10);
-//    char *font = strtok(NULL, " ");
-//    char *text = strtok(NULL, "\0");
-//    
-//    const __flash Font *unifont = &unifontFont;
-//    const __flash Font *dejavu = &dejaVuFont;
-//    
-//    switch(*font) {
-//        case FONT_UNIFONT: writeString(row, col, unifont, text); break;
-//        case FONT_DEJAVU: writeString(row, col, dejavu, text); break;
-//        default: break;
-//    }
+    strtok(data, " ");
+    char *end;
+    row_t row = strtol(strtok(NULL, " "), &end, 10);
+    col_t col = strtol(strtok(NULL, " "), &end, 10);
+    char *font = strtok(NULL, " ");
+    char *text = strtok(NULL, "\0");
+    
+    const __flash Font *hack = &hackFont;
+    // const __flash Font *dejavu = &dejaVuFont;
+    
+    switch(*font) {
+        case FONT_HACK: writeString(row, col, hack, text); break;
+        // case FONT_DEJAVU: writeString(row, col, dejavu, text); break;
+        default: break;
+    }
 }
 
 /**
@@ -57,8 +57,8 @@ static void text(char *data) {
 static void bitmap(char *data) {
     strtok(data, " ");
     char *end;
-    uint16_t row = strtol(strtok(NULL, " "), &end, 10);
-    uint16_t col = strtol(strtok(NULL, " "), &end, 10);
+    row_t row = strtol(strtok(NULL, " "), &end, 10);
+    col_t col = strtol(strtok(NULL, " "), &end, 10);
     uint8_t index = strtol(strtok(NULL, " "), &end, 10);
     
     writeBitmap(row, col, index);
@@ -68,7 +68,6 @@ static void bitmap(char *data) {
  * Writes the Hack demo.
  */
 static void demo(void) {
-    setFrame(0x00);
     hackDemo();
     writeBitmap(0, 88, BLUSH);
 }

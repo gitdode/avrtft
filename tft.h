@@ -25,8 +25,9 @@
 #define DISPLAY_WIDTH   160
 #define DISPLAY_HEIGHT  128
 
-#define COLOR_GREY4  0
-#define COLOR_RGB16  1
+// TODO use enum? typedef?
+#define SPACE_GREY4  0
+#define SPACE_RGB16  1
 
 /**
  * Sets display to send a command.
@@ -40,11 +41,13 @@ void displaySetData(void);
 
 /**
  * Sends the given command to the display.
+ * @param cmd
  */
 void displayCmd(uint8_t cmd);
 
 /**
  * Sends the given data to the display.
+ * @param data
  */
 void displayData(uint8_t data);
 
@@ -54,11 +57,30 @@ void displayData(uint8_t data);
 void initDisplay(void);
 
 /**
- * Writes image data to the display.
+ * Sets the given color in the given area of the display.
+ * 
+ * @param row row in pixels, origin top left
+ * @param col column in pixels, origin top left
+ * @param width width in pixels
+ * @param height height in pixels
+ * @param color 16-Bit (5/6/5) RGB color
+ */
+void setDisplay(uint16_t row, uint16_t col,
+                  width_t width, height_t height,
+                  uint16_t color);
+
+/**
+ * Writes image data to the given area of the display.
+ * @param row row in pixels, origin top left
+ * @param bitmap pointer to bitmap data in program memory
+ * @param col column in pixels, origin top left
+ * @param width width of the bitmap in pixels
+ * @param height height of the bitmap in pixels
+ * @param space color space of the bitmap
  */
 void writeDisplay(uint16_t row, uint16_t col,
                   const __flash uint8_t *bitmap,
                   width_t width, height_t height,
-                  uint8_t color);
+                  uint8_t space);
 
 #endif /* TFT_H */

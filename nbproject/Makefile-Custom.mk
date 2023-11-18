@@ -36,15 +36,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/48b9b4a1/avrtft.o \
-	${OBJECTDIR}/_ext/48b9b4a1/bitmaps.o \
-	${OBJECTDIR}/_ext/48b9b4a1/cmd.o \
-	${OBJECTDIR}/_ext/48b9b4a1/dejavu.o \
 	${OBJECTDIR}/_ext/48b9b4a1/display.o \
 	${OBJECTDIR}/_ext/48b9b4a1/font.o \
 	${OBJECTDIR}/_ext/48b9b4a1/spi.o \
 	${OBJECTDIR}/_ext/48b9b4a1/tft.o \
-	${OBJECTDIR}/_ext/48b9b4a1/unifont.o \
-	${OBJECTDIR}/_ext/48b9b4a1/usart.o
+	${OBJECTDIR}/hack.o
 
 
 # C Compiler Flags
@@ -75,18 +71,6 @@ ${OBJECTDIR}/_ext/48b9b4a1/avrtft.o: /home/dode/dev/avrtft/avrtft.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
 	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/avrtft.o /home/dode/dev/avrtft/avrtft.c
 
-${OBJECTDIR}/_ext/48b9b4a1/bitmaps.o: /home/dode/dev/avrtft/bitmaps.c
-	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/bitmaps.o /home/dode/dev/avrtft/bitmaps.c
-
-${OBJECTDIR}/_ext/48b9b4a1/cmd.o: /home/dode/dev/avrtft/cmd.c
-	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/cmd.o /home/dode/dev/avrtft/cmd.c
-
-${OBJECTDIR}/_ext/48b9b4a1/dejavu.o: /home/dode/dev/avrtft/dejavu.c
-	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/dejavu.o /home/dode/dev/avrtft/dejavu.c
-
 ${OBJECTDIR}/_ext/48b9b4a1/display.o: /home/dode/dev/avrtft/display.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
 	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/display.o /home/dode/dev/avrtft/display.c
@@ -103,13 +87,9 @@ ${OBJECTDIR}/_ext/48b9b4a1/tft.o: /home/dode/dev/avrtft/tft.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
 	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/tft.o /home/dode/dev/avrtft/tft.c
 
-${OBJECTDIR}/_ext/48b9b4a1/unifont.o: /home/dode/dev/avrtft/unifont.c
-	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/unifont.o /home/dode/dev/avrtft/unifont.c
-
-${OBJECTDIR}/_ext/48b9b4a1/usart.o: /home/dode/dev/avrtft/usart.c
-	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/usart.o /home/dode/dev/avrtft/usart.c
+${OBJECTDIR}/hack.o: hack.c
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/hack.o hack.c
 
 # Subprojects
 .build-subprojects:

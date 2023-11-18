@@ -69,7 +69,8 @@ static void initPins(void) {
  * Enables SPI master mode.
  */
 static void initSPI(void) {
-    SPCR |= (1 << SPR0);
+    // min speed for a cool visual effect :-)
+    // SPCR |= (1 << SPR1) | (1 << SPR0);
     SPCR |= (1 << MSTR);
     SPCR |= (1 << SPE);
 }

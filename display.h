@@ -12,7 +12,11 @@
 #include "bitmaps.h"
 #include "font.h"
 
-void setFrame(uint8_t byte);
+/**
+ * Sets the whole display to the given 16-Bit (5/6/5) RGB color.
+ * @param color
+ */
+void setFrame(uint16_t color);
 
 /**
  * Writes the bitmap with the given index to the given row and column 
