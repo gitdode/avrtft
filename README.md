@@ -20,7 +20,7 @@ Ideas:
 * Read pictures from SD Card
 * Display 4K@50Hz videos...
 
-![IMG_20231118_202055](https://github.com/gitdode/avrtft/assets/11530253/a442afc7-fe0f-4ddd-a8fd-4798eca7b53f)
+![IMG_20231118_223050](https://github.com/gitdode/avrtft/assets/11530253/338461b8-8cb2-428a-b46d-f24a6478fba8)
 
 ## Write something via USART
 
