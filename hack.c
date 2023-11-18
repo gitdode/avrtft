@@ -22,19 +22,20 @@
 #define WIDTH 8
 #define HEIGHT 16
 
-static const __flash char demo1[] = "Hello Hack!";
-static const __flash char demo2[] = "!\"#$%&'()*+,-./0123";
+static const __flash char demo1[] = "Hello Hack!     \"#$%";
+static const __flash char demo2[] = "&'()*+,-./0123456789";
 static const __flash char demo3[] = "ABCDEFGHIJKLMNOPQRST";
-static const __flash char demo4[] = ":;<=>?@[\\]^_`{|}~×÷";
-static const __flash char demo5[] = "abcdefghijklmnopqrst";
+static const __flash char demo4[] = "UVWXYZabcdefghijklmn";
+static const __flash char demo5[] = "opqrstuvwxyz        ";
 static const __flash char demo6[] = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓ";
 static const __flash char demo7[] = "àáâãäåæçèéêëìíîïðñòó";
+static const __flash char demo8[] = ":;<=>?@[\\]^_`{|}~×÷ ";
 
 /**
  * Demo text.
  */
 const __flash char* demoTextLines[HACK_DEMO_SIZE] = {
-    demo1, demo2, demo3, demo4, demo5, demo6, demo7
+    demo1, demo2, demo3, demo4, demo5, demo6, demo7, demo8
 };
 
 static const __flash uint8_t SPACE[] = {

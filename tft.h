@@ -61,9 +61,4 @@ void writeDisplay(uint16_t row, uint16_t col,
                   width_t width, height_t height,
                   uint8_t color);
 
-/**
- * Updates the display.
- */
-void updateDisplay(void);
-
 #endif /* TFT_H */

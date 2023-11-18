@@ -65,20 +65,12 @@ static void bitmap(char *data) {
 }
 
 /**
- * Updates the display.
- */
-static void update(void) {
-    display();
-}
-
-/**
  * Writes the Hack demo.
  */
 static void demo(void) {
     setFrame(0x00);
-    // writeBitmap(1, 198, TUX);
     hackDemo();
-    display();
+    writeBitmap(0, 88, BLUSH);
 }
 
 void handleCmd(char *data) {
@@ -89,7 +81,6 @@ void handleCmd(char *data) {
         case CMD_TEXT:   text(data); break;
         case CMD_BITMAP: bitmap(data); break;
         case CMD_DEMO:   demo(); break;
-        case CMD_UPDATE: update(); break;
         default: break;
     }
 }

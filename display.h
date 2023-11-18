@@ -49,6 +49,4 @@ void writeString(row_t row, col_t col, const __flash Font *font, const char *str
  */
 void hackDemo(void);
 
-void display(void);
-
 #endif /* DISPLAY_H */

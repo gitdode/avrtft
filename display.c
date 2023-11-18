@@ -57,18 +57,10 @@ void writeString(row_t row, col_t col, const __flash Font *font, const char *str
 void hackDemo(void) {
     const __flash Font *hack = &hackFont;
     
-    // writeString(0 * hack->height, 0, hack, "ö");
-    writeDisplay(16, 0, hack->glyphs[3].bitmap, 8, 16, COLOR_GREY4);
-    
-//    for (uint8_t i = 0; i < HACK_DEMO_SIZE; i++) {
-//        const __flash char *line = demoTextLines[i];
-//        char buf[HACK_DEMO_LINE_SIZE];
-//        strlcpy_P(buf, line, HACK_DEMO_LINE_SIZE - 1);
-//        writeString(i * hack->height, 0, hack, buf);
-//    }
-}
-
-void display() {
-    initDisplay();
-    updateDisplay();
+    for (uint8_t i = 0; i < HACK_DEMO_SIZE; i++) {
+        const __flash char *line = demoTextLines[i];
+        char buf[HACK_DEMO_LINE_SIZE];
+        strlcpy_P(buf, line, HACK_DEMO_LINE_SIZE - 1);
+        writeString(i * hack->height, 0, hack, buf);
+    }
 }

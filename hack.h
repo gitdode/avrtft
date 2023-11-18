@@ -19,7 +19,7 @@
 
 #include "font.h"
 
-#define HACK_DEMO_SIZE 7
+#define HACK_DEMO_SIZE 8
 #define HACK_DEMO_LINE_SIZE 64
 
 /**

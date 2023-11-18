@@ -108,6 +108,16 @@ void initDisplay(void) {
     displayData(0b01110110);
     displayDes();
     
+    // DISPON
+    displaySel();
+    displayCmd(DISPON);
+    displayDes();
+    
+    // SLPIN
+    // displaySel();
+    // displayCmd(SLPIN);
+    // displayDes();
+    
     printString("done initializing display\r\n");
 }
 
@@ -115,8 +125,6 @@ void writeDisplay(uint16_t row, uint16_t col,
                   const __flash uint8_t *bitmap,
                   width_t width, height_t height,
                   uint8_t color) {
-    
-    uint16_t bytes = width * height * 2;
 
     // CASET
     uint16_t ys = col;
@@ -146,12 +154,14 @@ void writeDisplay(uint16_t row, uint16_t col,
     displaySetData();
 
     if (color == COLOR_RGB16) {
+        uint16_t bytes = width * height * 2;
         for (uint16_t i = 0; i < bytes; i++) {
             transmit(bitmap[i]);
         }
     }
 
     if (color == COLOR_GREY4) {
+        uint16_t bytes = width * height / 2;
         for (uint16_t i = 0; i < bytes; i++) {
             uint8_t rgb[4];
             fourBitGreyTo16BitRGB(bitmap[i], rgb);
@@ -162,19 +172,4 @@ void writeDisplay(uint16_t row, uint16_t col,
     }
 
     displayDes();    
-}
-
-void updateDisplay(void) {
-
-    // DISPON
-    displaySel();
-    displayCmd(DISPON);
-    displayDes();
-    
-    // SLPIN
-    // displaySel();
-    // displayCmd(SLPIN);
-    // displayDes();
-    
-    printString("done updating display\r\n");
 }

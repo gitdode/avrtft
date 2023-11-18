@@ -111,19 +111,16 @@ int main(void) {
 
     // enable global interrupts
     sei();
+    
+    initDisplay();
 
     while (true) {
         
         // show a demo once at the start
         if (!once && ints >= INTS_SEC) {
             // setFrame(0x00);
-            initDisplay();
-            // writeBitmap(0, 140, BLUSH);
             hackDemo();
-            updateDisplay();
-            // max resolution image
-            // writeBitmap(0, 0, PHOTO);
-            // display();
+            writeBitmap(0, 88, BLUSH);
             once = true;
         }
 
