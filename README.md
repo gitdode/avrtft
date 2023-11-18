@@ -29,5 +29,5 @@ Write some text and a bitmap:
 
 `c 0xffff` // clear display  
 `t 0 0 h Just some text` // write text in Hack to row 0 column 0  
-`b 0 112` // write bitmap with index 0 ('blush' emoji) to row 0 column 224  
+`b 0 112 0` // write bitmap with index 0 ('blush' emoji) to row 0 column 224  
 `d` // display the demo  
