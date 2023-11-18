@@ -17,6 +17,13 @@
 
 #include "bitmaps.h"
 
+/*
+ * Converts the given two pixel in 4-Bit greyscale to 16-Bit (5/6/5) color
+ * stored in the given array of four bytes.
+ * 
+ * @param grey two pixel in 4-Bit greyscale
+ * @param rgb two pixel in 16-Bit (5/6/5) color
+ */
 static void fourBitGreyTo16BitRGB(uint8_t grey, uint8_t *rgb) {
     uint8_t grey4 = ((grey >> 4) & 1);
     uint8_t grey0 = ((grey >> 0) & 1);
