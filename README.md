@@ -17,7 +17,6 @@ Currently implemented:
 Ideas:
 
 * Write pictures via USART (probably too slow)
-
 * Read pictures from SD Card
 * Display 4K@50Hz videos...
 
