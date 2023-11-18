@@ -20,6 +20,8 @@ Ideas:
 * Read pictures from SD Card
 * Display 4K@50Hz videos...
 
+![IMG_20231118_202055](https://github.com/gitdode/avrtft/assets/11530253/a442afc7-fe0f-4ddd-a8fd-4798eca7b53f)
+
 ## Write something via USART
 
 Connect to the controller with for example GTKTerm (9600 Baud).  
