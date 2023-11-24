@@ -45,9 +45,6 @@ ISR(TIMER0_COMPA_vect) {
  * Sets up the pins.
  */
 static void initPins(void) {
-    // set LED pin as output pin
-    DDR_LED |= (1 << PIN_LED);
-
     // set MOSI and SCK as output pin
     DDR_SPI |= (1 << PIN_MOSI);
     DDR_SPI |= (1 << PIN_SCK);
@@ -87,21 +84,7 @@ static void initTimer(void) {
     OCR0A = 255;
 
     // enable timer0 compare match A interrupt
-    TIMSK0 |= (1 << OCIE0A);
-}
-
-/**
- * Turns the LED on.
- */
-static void ledOn(void) {
-    PORT_LED |= (1 << PIN_LED);
-}
-
-/**
- * Turns the LED off.
- */
-static void ledOff(void) {
-    PORT_LED &= ~(1 << PIN_LED);
+    // TIMSK0 |= (1 << OCIE0A);
 }
 
 int main(void) {
@@ -120,23 +103,23 @@ int main(void) {
     while (true) {
         
         // show a demo once at the start
-        if (!once && ints >= INTS_SEC) {
+        if (!once) {
             // setFrame(0x00);
             hackDemo();
             writeBitmap(0, 88, BLUSH);
             once = true;
         }
         
-        if (bit_is_set(UCSR0A, RXC0)) {
+        if (isStreaming() && bit_is_set(UCSR0A, RXC0)) {
             char data = UDR0;
             stream(data);
         }
 
-//        if (isUSARTReceived()) {
-//            char data[USART_LENGTH];
-//            getUSARTData(data, USART_LENGTH);
-//            handleCmd(data);
-//        }
+        if (isUSARTReceived()) {
+            char data[USART_LENGTH];
+            getUSARTData(data, USART_LENGTH);
+            handleCmd(data);
+        }
     }
 
     return 0;

@@ -17,10 +17,6 @@
 #define BAUD 9600
 #endif
 
-extern char usartData[USART_LENGTH];
-
-void pollUSART(void);
-
 /**
  * Sets the baudrate and enables the transmitter and receiver.
  */
@@ -31,17 +27,26 @@ void initUSART(void);
  */
 bool isUSARTReceived(void);
 
-bool isStreaming(void);
+/**
+ * Disable/enable accepting commands by disabling/enabling interrupts
+ * when data was received.
+ * 
+ * @param enabled disable/enable commands.
+ */
+void setStreaming(bool enabled);
 
-void setUSARTReceived(void);
+/**
+ * Returns true if accepting commands is disabled, false otherwise.
+ * 
+ * @return true if disabled, false otherwise
+ */
+bool isStreaming(void);
 
 /**
  * Appends the data received via USART to the given string with the given
  * length.
  */
 void getUSARTData(char *data, size_t length);
-
-void setStreaming(bool enabled);
 
 /**
  * Prints the given string via USART.

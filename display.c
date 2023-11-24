@@ -23,6 +23,14 @@ void setFrame(uint16_t color) {
     fillArea(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, color);
 }
 
+void writeError(char *lines[], uint8_t length) {
+    setFrame(0xffff);
+    const __flash Font *hack = &hackFont;
+    for (uint8_t i = 0; i < length; i++) {
+        writeString(i * hack->height,  0, hack, lines[i]);
+    }    
+}
+
 width_t writeBitmap(row_t row, col_t col, uint16_t index) {
     const __flash Bitmap *bitmap = &bitmaps[index];
     setArea(row, col, bitmap->width, bitmap->height, false);

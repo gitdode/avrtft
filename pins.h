@@ -10,11 +10,6 @@
 
 #include <avr/io.h>
 
-/* LED pins */
-#define DDR_LED   DDRC
-#define PORT_LED  PORTC
-#define PIN_LED   PC5
-
 /* SPI */
 #define DDR_SPI   DDRB
 #define PORT_SPI  PORTB
