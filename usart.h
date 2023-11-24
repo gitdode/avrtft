@@ -11,11 +11,15 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define USART_LENGTH 73
+#define USART_LENGTH 128
 
 #ifndef BAUD
 #define BAUD 9600
 #endif
+
+extern char usartData[USART_LENGTH];
+
+void pollUSART(void);
 
 /**
  * Sets the baudrate and enables the transmitter and receiver.
@@ -27,11 +31,17 @@ void initUSART(void);
  */
 bool isUSARTReceived(void);
 
+bool isStreaming(void);
+
+void setUSARTReceived(void);
+
 /**
  * Appends the data received via USART to the given string with the given
  * length.
  */
 void getUSARTData(char *data, size_t length);
+
+void setStreaming(bool enabled);
 
 /**
  * Prints the given string via USART.

@@ -15,6 +15,7 @@
 #include "hack.h"
 #include "dejavu.h"
 #include "bitmaps.h"
+#include "bmp.h"
 
 /**
  * Sets the frame buffer to the given 16-Bit (5/6/5) RGB color.
@@ -64,6 +65,15 @@ static void bitmap(char *data) {
     writeBitmap(row, col, index);
 }
 
+static void bmp(char *data) {
+    strtok(data, " ");
+    char *end;
+    row_t row = strtol(strtok(NULL, " "), &end, 10);
+    col_t col = strtol(strtok(NULL, " "), &end, 10);
+    
+    prepare(row, col);
+}
+
 /**
  * Writes the Hack demo.
  */
@@ -79,6 +89,7 @@ void handleCmd(char *data) {
         case CMD_CLEAR:  clear(data); break;
         case CMD_TEXT:   text(data); break;
         case CMD_BITMAP: bitmap(data); break;
+        case CMD_BMP:    bmp(data); break;
         case CMD_DEMO:   demo(); break;
         default: break;
     }

@@ -65,22 +65,39 @@ void initDisplay(void);
  * @param height height in pixels
  * @param color 16-Bit (5/6/5) RGB color
  */
-void setDisplay(uint16_t row, uint16_t col,
-                  width_t width, height_t height,
-                  uint16_t color);
+void fillArea(row_t row, col_t col,
+              width_t width, height_t height,
+              uint16_t color);
 
 /**
- * Writes image data to the given area of the display.
+ * Sets the area to write image data to.
+ * 
  * @param row row in pixels, origin top left
- * @param bitmap pointer to bitmap data in program memory
  * @param col column in pixels, origin top left
+ * @param width width of the bitmap in pixels
+ * @param height height of the bitmap in pixels
+ * @param hflip if image should be flipped horizontally
+ */
+void setArea(row_t row, col_t col,
+             width_t width, height_t height,
+             bool hflip);
+
+/**
+ * Writes image data to the previously set area.
+ * 
+ * @param bitmap pointer to bitmap data in program memory
  * @param width width of the bitmap in pixels
  * @param height height of the bitmap in pixels
  * @param space color space of the bitmap
  */
-void writeDisplay(uint16_t row, uint16_t col,
-                  const __flash uint8_t *bitmap,
-                  width_t width, height_t height,
-                  uint8_t space);
+void writeData(const __flash uint8_t *bitmap,
+               width_t width, height_t height,
+               uint8_t space);
+
+void writeStart(void);
+
+void writeByte(uint8_t byte);
+
+void writeEnd(void);
 
 #endif /* TFT_H */

@@ -12,10 +12,13 @@
 #include <util/setbaud.h>
 #include "usart.h"
 #include "utils.h"
+#include "bmp.h"
 
 static volatile bool usartReceived = false;
+static volatile bool streaming = false;
+static volatile uint8_t buffered = 0;
 
-static char usartData[USART_LENGTH];
+char usartData[USART_LENGTH];
 
 /**
  * Called when data was received via USART.
@@ -23,12 +26,24 @@ static char usartData[USART_LENGTH];
 ISR(USART_RX_vect) {
     if (bit_is_set(UCSR0A, RXC0) && !usartReceived) {
         char data = UDR0;
-        size_t length = strlen(usartData);
-        if (length < USART_LENGTH - 1 && data != '\n' && data != '\r') {
-            usartData[length] = data;
+        if (streaming) {
+            if (data == '\n' || data == '\r') {
+                usartReceived = true;
+                streaming = false;
+            } else {
+                usartData[buffered++] = data;
+                if (buffered == USART_LENGTH) {
+                    usartReceived = true;
+                }
+            }
         } else {
-            usartData[length] = '\0';
-            usartReceived = true;
+            size_t length = strlen(usartData);
+            if (length < USART_LENGTH - 1 && data != '\n' && data != '\r') {
+                usartData[length] = data;
+            } else {
+                usartData[length] = '\0';
+                usartReceived = true;
+            }
         }
     }
 }
@@ -41,11 +56,25 @@ void initUSART(void) {
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
     
     // enable USART RX complete interrupt 0
-    UCSR0B |= (1 << RXCIE0);
+    // UCSR0B |= (1 << RXCIE0);
 }
 
 bool isUSARTReceived(void) {
     return usartReceived;
+}
+
+void setStreaming(bool enabled) {
+    streaming = enabled;
+}
+
+bool isStreaming(void) {
+    return streaming;
+}
+
+void setUSARTReceived(void) {
+    buffered = 0;
+    memset(usartData, 0, USART_LENGTH);
+    usartReceived = false;
 }
 
 void getUSARTData(char *data, size_t size) {

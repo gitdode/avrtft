@@ -20,12 +20,13 @@
 #include "utils.h"
 
 void setFrame(uint16_t color) {
-    setDisplay(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, color);
+    fillArea(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, color);
 }
 
 width_t writeBitmap(row_t row, col_t col, uint16_t index) {
     const __flash Bitmap *bitmap = &bitmaps[index];
-    writeDisplay(row, col, bitmap->bitmap, bitmap->width, bitmap->height, SPACE_RGB16);
+    setArea(row, col, bitmap->width, bitmap->height, false);
+    writeData(bitmap->bitmap, bitmap->width, bitmap->height, SPACE_RGB16);
     
     return bitmap->width;
 }
@@ -33,7 +34,8 @@ width_t writeBitmap(row_t row, col_t col, uint16_t index) {
 width_t writeGlyph(row_t row, col_t col, const __flash Font *font, code_t code) {
     const __flash Glyph *glyph = getGlyphAddress(font, code);
     // TODO handle DejaVu font with 1-Bit B/W colors
-    writeDisplay(row, col, glyph->bitmap, glyph->width, font->height, SPACE_GREY4);
+    setArea(row, col, glyph->width, font->height, false);
+    writeData(glyph->bitmap, glyph->width, font->height, SPACE_GREY4);
     
     return glyph->width;
 }

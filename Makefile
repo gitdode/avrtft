@@ -3,13 +3,13 @@
 # Simplified version from: https://github.com/hexagon5un/AVR-Programming
 
 MCU = atmega328p
-F_CPU = 8000000
-BAUD = 9600
+F_CPU = 16000000
+BAUD = 38400
 PROGRAMMER_TYPE = avrispmkII
 PROGRAMMER_ARGS = 
 
 MAIN = avrtft.c
-SRC = bitmaps.c cmd.c dejavu.c display.c tft.c font.c spi.c hack.c usart.c
+SRC = bitmaps.c bmp.c cmd.c dejavu.c display.c tft.c font.c spi.c hack.c usart.c
 
 CC = avr-gcc
 OBJCOPY = avr-objcopy
@@ -33,7 +33,7 @@ SRC += $(TARGET).c
 OBJ = $(SRC:.c=.o) 
 OBJ = $(SRC:.S=.o)
 	
-$(TARGET).elf: bitmaps.h cmd.h dejavu.h display.h tft.h font.h pins.h \
+$(TARGET).elf: bitmaps.h bmp.h cmd.h dejavu.h display.h tft.h font.h pins.h \
 	spi.h types.h hack.h usart.h utils.h Makefile
 
 all: $(TARGET).hex

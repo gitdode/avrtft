@@ -5,7 +5,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, version 2.
  *
- * Experimental project to drive a TFT display with an ST7735 driver.
+ * Experimental project to drive a TFT display with an ST7735R driver.
  *
  * Created on: 06.11.2023
  *     Author: torsten.roemer@luniks.net
@@ -29,6 +29,7 @@
 #include "bitmaps.h"
 #include "display.h"
 #include "utils.h"
+#include "bmp.h"
 
 /* Timer0 interrupts per second */
 #define INTS_SEC  F_CPU / (256UL * 255)
@@ -113,6 +114,7 @@ int main(void) {
     // enable global interrupts
     sei();
     
+    _delay_ms(1000);
     initDisplay();
 
     while (true) {
@@ -124,20 +126,17 @@ int main(void) {
             writeBitmap(0, 88, BLUSH);
             once = true;
         }
-
-        if (ints >= INTS_SEC * 3) {
-            ints = 0;
-            ledOn();
-            // do something and update the display
-            _delay_ms(100);
-            ledOff();
+        
+        if (bit_is_set(UCSR0A, RXC0)) {
+            char data = UDR0;
+            stream(data);
         }
 
-        if (isUSARTReceived()) {
-            char data[USART_LENGTH];
-            getUSARTData(data, USART_LENGTH);
-            handleCmd(data);
-        }
+//        if (isUSARTReceived()) {
+//            char data[USART_LENGTH];
+//            getUSARTData(data, USART_LENGTH);
+//            handleCmd(data);
+//        }
     }
 
     return 0;
