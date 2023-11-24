@@ -82,39 +82,42 @@ void displayData(uint8_t data) {
 }
 
 void initDisplay(void) {
+    // Hardware reset
     hwReset();
 
+    // TODO necessary?
     _delay_ms(120);
 
-    // SWRESET
+    // Software reset
     displaySel();
     displayCmd(SWRESET);
     displayDes();
 
+    // TODO necessary?
     _delay_ms(120);
 
-    // SLPOUT
+    // Sleep out & booster on
     displaySel();
     displayCmd(SLPOUT);
     displayDes();
 
-    // NORON
+    // Partial off (Normal)
     displaySel();
     displayCmd(NORON);
     displayDes();
 
-    // COLMOD
+    // Interface pixel format
     displaySel();
     displayCmd(COLMOD);
     displayData(0b00111101);
     displayDes();
     
-    // DISPON
+    // Display on
     displaySel();
     displayCmd(DISPON);
     displayDes();
     
-    // SLPIN
+    // Sleep in & booster off
     // displaySel();
     // displayCmd(SLPIN);
     // displayDes();
@@ -126,29 +129,29 @@ void fillArea(row_t row, col_t col,
               width_t width, height_t height,
               uint16_t color) {
 
-    // CASET
-    uint16_t ys = col;
-    uint16_t ye = col + width - 1;
+    // X address start/end
+    uint16_t xs = col;
+    uint16_t xe = col + width - 1;
     displaySel();
     displayCmd(CASET);
-    displayData(ys >> 8);
-    displayData(ys);
-    displayData(ye >> 8);
-    displayData(ye);
-    displayDes();
-
-    // RASET
-    uint16_t xs = row;
-    uint16_t xe = row + height - 1;
-    displaySel();
-    displayCmd(RASET);
     displayData(xs >> 8);
     displayData(xs);
     displayData(xe >> 8);
     displayData(xe);
     displayDes();
 
-    // RAMWR
+    // Y address start/end
+    uint16_t ys = row;
+    uint16_t ye = row + height - 1;
+    displaySel();
+    displayCmd(RASET);
+    displayData(ys >> 8);
+    displayData(ys);
+    displayData(ye >> 8);
+    displayData(ye);
+    displayDes();
+
+    // Memory write
     displaySel();
     displayCmd(RAMWR);
     displaySetData();
@@ -166,7 +169,7 @@ void setArea(row_t row, col_t col,
              width_t width, height_t height, 
              bool hflip) {
     
-    // MADCTL
+    // Memory data access control
     uint8_t madctl = 0b01110110;
     if (hflip) {
         madctl = 0b00110110;
@@ -176,37 +179,37 @@ void setArea(row_t row, col_t col,
     displayData(madctl);
     displayDes();
 
-    // CASET
-    uint16_t ys = col;
-    uint16_t ye = col + width - 1;
+    // X address start/end
+    uint16_t xs = col;
+    uint16_t xe = col + width - 1;
     displaySel();
     displayCmd(CASET);
-    displayData(ys >> 8);
-    displayData(ys);
-    displayData(ye >> 8);
-    displayData(ye);
+    displayData(xs >> 8);
+    displayData(xs);
+    displayData(xe >> 8);
+    displayData(xe);
     displayDes();
 
-    // RASET
-    uint16_t xs = row;
-    uint16_t xe = row + height - 1;
+    // Y address start/end
+    uint16_t ys = row;
+    uint16_t ye = row + height - 1;
     if (hflip) {
         xs = DISPLAY_HEIGHT - row - height;
         xe = DISPLAY_HEIGHT - row - 1;
     }
     displaySel();
     displayCmd(RASET);
-    displayData(xs >> 8);
-    displayData(xs);
-    displayData(xe >> 8);
-    displayData(xe);
+    displayData(ys >> 8);
+    displayData(ys);
+    displayData(ye >> 8);
+    displayData(ye);
     displayDes();
 }
 
 void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
                uint8_t space) {
-    // RAMWR
+    // Memory write
     displaySel();
     displayCmd(RAMWR);
     displaySetData();
@@ -233,18 +236,18 @@ void writeData(const __flash uint8_t *bitmap,
 }
 
 void writeStart(void) {
-    // RAMWR
+    // Memory write
     displaySel();
     displayCmd(RAMWR);
     displaySetData();
 }
 
 void writeByte(uint8_t byte) {
-    // RAMWR
+    // Memory write
     transmit(byte);
 }
 
 void writeEnd(void) {
-    // RAMWR
+    // Memory write
     displayDes();
 }

@@ -15,6 +15,7 @@
 #include "bmp.h"
 
 static volatile bool usartReceived = false;
+static volatile bool streaming = false;
 
 char usartData[USART_LENGTH];
 
@@ -55,10 +56,11 @@ void setStreaming(bool enabled) {
     } else {
         UCSR0B |= (1 << RXCIE0);
     }
+    streaming = enabled;
 }
 
 bool isStreaming(void) {
-    return (UCSR0B & RXCIE0) == 0;
+    return streaming;
 }
 
 void getUSARTData(char *data, size_t size) {

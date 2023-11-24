@@ -94,10 +94,21 @@ void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
                uint8_t space);
 
+/**
+ * Sets to write data to display RAM.
+ */
 void writeStart(void);
 
+/**
+ * Writes the given byte to display RAM.
+ * 
+ * @param byte
+ */
 void writeByte(uint8_t byte);
 
+/**
+ * Completes writing data to display RAM.
+ */
 void writeEnd(void);
 
 #endif /* TFT_H */

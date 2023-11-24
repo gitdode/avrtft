@@ -1,6 +1,8 @@
 /* 
  * File:   bmp.h
  * Author: dode
+ * 
+ * Thanks to https://en.wikipedia.org/wiki/BMP_file_format
  *
  * Created on 22. November 2023, 23:10
  */
@@ -50,6 +52,7 @@ void prepare(row_t srow, col_t scol) {
 
 void stream(uint8_t byte) {
     if (error) {
+        // TODO recover from error condition
         // setStreaming(false);
         return;
     }
@@ -137,6 +140,7 @@ void stream(uint8_t byte) {
     }
     
     if (offset == pixelStart) {
+        // do horizontal flip because pixel data in a BMP is bottom to top
         setArea(row, col, bitmapWidth, bitmapHeight, true);
         writeStart();
     }
