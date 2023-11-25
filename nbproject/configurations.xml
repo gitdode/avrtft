@@ -46,6 +46,10 @@
       </compileType>
       <item path="/home/dode/dev/avrtft/avrtft.c" ex="false" tool="0" flavor2="3">
       </item>
+      <item path="/home/dode/dev/avrtft/bmp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="/home/dode/dev/avrtft/bmp.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="/home/dode/dev/avrtft/display.c" ex="false" tool="0" flavor2="3">
       </item>
       <item path="/home/dode/dev/avrtft/font.c" ex="false" tool="0" flavor2="3">
@@ -55,10 +59,6 @@
       <item path="/home/dode/dev/avrtft/spi.c" ex="false" tool="0" flavor2="3">
       </item>
       <item path="/home/dode/dev/avrtft/tft.c" ex="false" tool="0" flavor2="3">
-      </item>
-      <item path="bmp.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="bmp.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

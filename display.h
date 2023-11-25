@@ -61,7 +61,7 @@ width_t writeGlyph(row_t row, col_t col, const __flash Font *font, code_t code);
 void writeString(row_t row, col_t col, const __flash Font *font, const char *string);
 
 /**
- * Displays a demo for the awesome Unifont.
+ * Displays a demo for the nice Hack font.
  */
 void hackDemo(void);
 
