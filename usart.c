@@ -12,16 +12,18 @@
 #include <util/setbaud.h>
 #include "usart.h"
 #include "utils.h"
+#include "bmp.h"
 
 static volatile bool usartReceived = false;
+static volatile bool streaming = false;
 
-static char usartData[USART_LENGTH];
+char usartData[USART_LENGTH];
 
 /**
  * Called when data was received via USART.
  */
 ISR(USART_RX_vect) {
-    if (bit_is_set(UCSR0A, RXC0) && !usartReceived) {
+    if (!usartReceived && bit_is_set(UCSR0A, RXC0)) {
         char data = UDR0;
         size_t length = strlen(usartData);
         if (length < USART_LENGTH - 1 && data != '\n' && data != '\r') {
@@ -46,6 +48,19 @@ void initUSART(void) {
 
 bool isUSARTReceived(void) {
     return usartReceived;
+}
+
+void setStreaming(bool enabled) {
+    if (enabled) {
+        UCSR0B &= ~(1 << RXCIE0);
+    } else {
+        UCSR0B |= (1 << RXCIE0);
+    }
+    streaming = enabled;
+}
+
+bool isStreaming(void) {
+    return streaming;
 }
 
 void getUSARTData(char *data, size_t size) {

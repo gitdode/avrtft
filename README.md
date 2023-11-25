@@ -12,22 +12,25 @@ Currently implemented:
 * Draw strings in Hack and DejaVu
 * Draw bitmaps (emojis)
 * Write text and bitmaps via USART
+* Stream BMP images via USART
 * Logging via USART
 
 Ideas:
 
-* Write pictures via USART (probably too slow)
 * Read pictures from SD Card
 * Display 4K@50Hz videos...
+
+The AVR is clocked with a crystal for reliable communication via USART.
 
 ![IMG_20231118_225206](https://github.com/gitdode/avrtft/assets/11530253/747ad970-1306-48a2-8a7a-978977b5b7d4)
 
 ## Write something via USART
 
 Connect to the controller with for example GTKTerm (9600 Baud).  
-Write some text and a bitmap:
+Write some text and a bitmap, and upload a BMP image:
 
 `c 0xffff` // clear display  
+`d` // display the demo  
 `t 0 0 h Just some text` // write text in Hack to row 0 column 0  
 `b 0 112 0` // write bitmap with index 0 ('blush' emoji) to row 0 column 224  
-`d` // display the demo  
+`p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image  

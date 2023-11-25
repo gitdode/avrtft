@@ -82,45 +82,42 @@ void displayData(uint8_t data) {
 }
 
 void initDisplay(void) {
+    // Hardware reset
     hwReset();
 
+    // TODO necessary?
     _delay_ms(120);
 
-    // SWRESET
+    // Software reset
     displaySel();
     displayCmd(SWRESET);
     displayDes();
 
+    // TODO necessary?
     _delay_ms(120);
 
-    // SLPOUT
+    // Sleep out & booster on
     displaySel();
     displayCmd(SLPOUT);
     displayDes();
 
-    // NORON
+    // Partial off (Normal)
     displaySel();
     displayCmd(NORON);
     displayDes();
 
-    // COLMOD
+    // Interface pixel format
     displaySel();
     displayCmd(COLMOD);
     displayData(0b00111101);
     displayDes();
-
-    // MADCTL
-    displaySel();
-    displayCmd(MADCTL);
-    displayData(0b01110110);
-    displayDes();
     
-    // DISPON
+    // Display on
     displaySel();
     displayCmd(DISPON);
     displayDes();
     
-    // SLPIN
+    // Sleep in & booster off
     // displaySel();
     // displayCmd(SLPIN);
     // displayDes();
@@ -128,33 +125,33 @@ void initDisplay(void) {
     printString("done initializing display\r\n");
 }
 
-void setDisplay(uint16_t row, uint16_t col,
-                  width_t width, height_t height,
-                  uint16_t color) {
+void fillArea(row_t row, col_t col,
+              width_t width, height_t height,
+              uint16_t color) {
 
-    // CASET
-    uint16_t ys = col;
-    uint16_t ye = col + width - 1;
+    // X address start/end
+    uint16_t xs = col;
+    uint16_t xe = col + width - 1;
     displaySel();
     displayCmd(CASET);
-    displayData(ys >> 8);
-    displayData(ys);
-    displayData(ye >> 8);
-    displayData(ye);
-    displayDes();
-
-    // RASET
-    uint16_t xs = row;
-    uint16_t xe = row + height - 1;
-    displaySel();
-    displayCmd(RASET);
     displayData(xs >> 8);
     displayData(xs);
     displayData(xe >> 8);
     displayData(xe);
     displayDes();
 
-    // RAMWR
+    // Y address start/end
+    uint16_t ys = row;
+    uint16_t ye = row + height - 1;
+    displaySel();
+    displayCmd(RASET);
+    displayData(ys >> 8);
+    displayData(ys);
+    displayData(ye >> 8);
+    displayData(ye);
+    displayDes();
+
+    // Memory write
     displaySel();
     displayCmd(RAMWR);
     displaySetData();
@@ -168,34 +165,51 @@ void setDisplay(uint16_t row, uint16_t col,
     displayDes();    
 }
 
-void writeDisplay(uint16_t row, uint16_t col,
-                  const __flash uint8_t *bitmap,
-                  width_t width, height_t height,
-                  uint8_t space) {
-
-    // CASET
-    uint16_t ys = col;
-    uint16_t ye = col + width - 1;
+void setArea(row_t row, col_t col, 
+             width_t width, height_t height, 
+             bool hflip) {
+    
+    // Memory data access control
+    uint8_t madctl = 0b01110110;
+    if (hflip) {
+        madctl = 0b00110110;
+    }
     displaySel();
-    displayCmd(CASET);
-    displayData(ys >> 8);
-    displayData(ys);
-    displayData(ye >> 8);
-    displayData(ye);
+    displayCmd(MADCTL);
+    displayData(madctl);
     displayDes();
 
-    // RASET
-    uint16_t xs = row;
-    uint16_t xe = row + height - 1;
+    // X address start/end
+    uint16_t xs = col;
+    uint16_t xe = col + width - 1;
     displaySel();
-    displayCmd(RASET);
+    displayCmd(CASET);
     displayData(xs >> 8);
     displayData(xs);
     displayData(xe >> 8);
     displayData(xe);
     displayDes();
 
-    // RAMWR
+    // Y address start/end
+    uint16_t ys = row;
+    uint16_t ye = row + height - 1;
+    if (hflip) {
+        xs = DISPLAY_HEIGHT - row - height;
+        xe = DISPLAY_HEIGHT - row - 1;
+    }
+    displaySel();
+    displayCmd(RASET);
+    displayData(ys >> 8);
+    displayData(ys);
+    displayData(ye >> 8);
+    displayData(ye);
+    displayDes();
+}
+
+void writeData(const __flash uint8_t *bitmap,
+               width_t width, height_t height,
+               uint8_t space) {
+    // Memory write
     displaySel();
     displayCmd(RAMWR);
     displaySetData();
@@ -218,5 +232,22 @@ void writeDisplay(uint16_t row, uint16_t col,
         }        
     }
 
-    displayDes();    
+    displayDes();
+}
+
+void writeStart(void) {
+    // Memory write
+    displaySel();
+    displayCmd(RAMWR);
+    displaySetData();
+}
+
+void writeByte(uint8_t byte) {
+    // Memory write
+    transmit(byte);
+}
+
+void writeEnd(void) {
+    // Memory write
+    displayDes();
 }
