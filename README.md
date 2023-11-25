@@ -26,11 +26,11 @@ Ideas:
 
 ## Write something via USART
 
-Connect to the controller with for example GTKTerm (9600 Baud).  
+Connect to the controller with for example GTKTerm (38400 Baud).  
 Write some text and a bitmap, and upload a BMP image:
 
 `c 0xffff` // clear display  
 `d` // display the demo  
 `t 0 0 h Just some text` // write text in Hack to row 0 column 0  
-`b 0 112 0` // write bitmap with index 0 ('blush' emoji) to row 0 column 224  
+`b 0 112 0` // write bitmap with index 0 ('blush' emoji) to row 0 column 112  
 `p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image  
