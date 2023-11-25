@@ -12,17 +12,17 @@ Currently implemented:
 * Draw strings in Hack and DejaVu
 * Draw bitmaps (emojis)
 * Write text and bitmaps via USART
-* Stream BMP images via USART
+* Upload BMP images via USART (16-Bit (5/6/5) RGB)
 * Logging via USART
+
+The AVR is clocked with a crystal for reliable communication via USART.
 
 Ideas:
 
 * Read pictures from SD Card
 * Display 4K@50Hz videos...
 
-The AVR is clocked with a crystal for reliable communication via USART.
-
-![IMG_20231118_225206](https://github.com/gitdode/avrtft/assets/11530253/747ad970-1306-48a2-8a7a-978977b5b7d4)
+![IMG_20231125_011054](https://github.com/gitdode/avrtft/assets/11530253/cd3d94eb-fb16-4d78-9eaa-bebfec8f8ef7)
 
 ## Write something via USART
 
