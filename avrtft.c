@@ -106,7 +106,7 @@ int main(void) {
         if (!once) {
             // setFrame(0x00);
             hackDemo();
-            writeBitmap(0, 88, BLUSH);
+            writeBitmap(0, 88, SMILE);
             once = true;
         }
         

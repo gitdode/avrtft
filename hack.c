@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include "font.h"
 #include "hack.h"
+#include "tft.h"
 #include "utils.h"
 
 #define WIDTH 8
@@ -2082,4 +2083,4 @@ static const __flash Glyph glyphs[] = {
     {0xff, WIDTH, y_diaeresis}
 };
 
-const __flash Font hackFont = {glyphs, ARRAY_LENGTH(glyphs), HEIGHT};
+const __flash Font hackFont = {glyphs, ARRAY_LENGTH(glyphs), HEIGHT, SPACE_GREY4};

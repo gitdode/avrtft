@@ -33,6 +33,8 @@ typedef struct {
     const length_t length;
     /** Height of (the glyphs of) this font. */
     const height_t height;
+    /** Color space of the glyph bitmap. */
+    const space_t space;
 } Font;
 
 /**

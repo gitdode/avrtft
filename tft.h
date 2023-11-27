@@ -26,8 +26,9 @@
 #define DISPLAY_HEIGHT  128
 
 // TODO use enum? typedef?
-#define SPACE_GREY4  0
-#define SPACE_RGB16  1
+#define SPACE_GREY4  4
+#define SPACE_RGB8   8
+#define SPACE_RGB16  16
 
 /**
  * Sets display to send a command.
@@ -92,7 +93,7 @@ void setArea(row_t row, col_t col,
  */
 void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
-               uint8_t space);
+               space_t space);
 
 /**
  * Sets to write data to display RAM.
