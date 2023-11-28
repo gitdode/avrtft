@@ -71,7 +71,6 @@ static void bmp(char *data) {
  */
 static void demo(void) {
     hackDemo();
-    writeBitmap(0, 88, SMILE);
 }
 
 void handleCmd(char *data) {

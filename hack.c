@@ -23,7 +23,7 @@
 #define WIDTH 8
 #define HEIGHT 16
 
-static const __flash char demo1[] = "Hello Hack!     \"#$%";
+static const __flash char demo1[] = "Hello Hack!\ts   \"#$%";
 static const __flash char demo2[] = "&'()*+,-./0123456789";
 static const __flash char demo3[] = "ABCDEFGHIJKLMNOPQRST";
 static const __flash char demo4[] = "UVWXYZabcdefghijklmn";

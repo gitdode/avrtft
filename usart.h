@@ -24,23 +24,25 @@ void initUSART(void);
 
 /**
  * Returns true if a CR or LF terminated line of data was received via USART.
+ * 
+ * @return data was received
  */
 bool isUSARTReceived(void);
+
+/**
+ * Returns true if raw data is being uploaded.
+ * 
+ * @return raw data upload
+ */
+bool isStreamingData(void);
 
 /**
  * Disable/enable accepting commands by disabling/enabling interrupts
  * when data was received.
  * 
- * @param enabled disable/enable commands.
+ * @param enabled disable/enable commands
  */
-void setStreaming(bool enabled);
-
-/**
- * Returns true if accepting commands is disabled, false otherwise.
- * 
- * @return true if disabled, false otherwise
- */
-bool isStreaming(void);
+void setStreamingData(bool enabled);
 
 /**
  * Appends the data received via USART to the given string with the given

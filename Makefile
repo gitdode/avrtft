@@ -9,7 +9,7 @@ PROGRAMMER_TYPE = avrispmkII
 PROGRAMMER_ARGS = 
 
 MAIN = avrtft.c
-SRC = bitmaps.c bmp.c cmd.c display.c tft.c font.c spi.c hack.c usart.c
+SRC = bitmaps.c bmp.c cmd.c display.c emojis.c tft.c font.c spi.c hack.c usart.c
 
 CC = avr-gcc
 OBJCOPY = avr-objcopy
@@ -33,7 +33,7 @@ SRC += $(TARGET).c
 OBJ = $(SRC:.c=.o) 
 OBJ = $(SRC:.S=.o)
 	
-$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h tft.h font.h pins.h \
+$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h emojis.h tft.h font.h pins.h \
 	spi.h types.h hack.h usart.h utils.h Makefile
 
 all: $(TARGET).hex

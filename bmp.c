@@ -47,7 +47,7 @@ void prepare(row_t srow, col_t scol) {
     row = srow;
     col = scol;
     offset = 0;
-    setStreaming(true);
+    setStreamingData(true);
 }
 
 void stream(uint8_t byte) {
@@ -159,7 +159,7 @@ void stream(uint8_t byte) {
     
     if (offset == pixelEnd) {
         writeEnd();
-        setStreaming(false);
+        setStreamingData(false);
         // printString("write end\r\n");
     }
 }

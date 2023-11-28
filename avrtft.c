@@ -104,17 +104,17 @@ int main(void) {
         
         // show a demo once at the start
         if (!once) {
-            // setFrame(0x00);
+            // setFrame(0x0);
             hackDemo();
-            writeBitmap(0, 88, SMILE);
             once = true;
         }
-        
-        if (isStreaming() && bit_is_set(UCSR0A, RXC0)) {
+
+        if (isStreamingData()) {
             char data = UDR0;
             stream(data);
         }
 
+        // TODO block while busy?
         if (isUSARTReceived()) {
             char data[USART_LENGTH];
             getUSARTData(data, USART_LENGTH);
