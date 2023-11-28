@@ -23,9 +23,6 @@
 /** Display Hack demo: 'd'. */
 #define CMD_DEMO        'd'
 
-#define FONT_HACK       'h'
-#define FONT_DEJAVU     'd'
-
 /**
  * Handles the given command.
  * @param data

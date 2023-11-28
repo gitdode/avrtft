@@ -13,7 +13,6 @@
 #include "display.h"
 #include "font.h"
 #include "hack.h"
-#include "dejavu.h"
 #include "bitmaps.h"
 #include "bmp.h"
 
@@ -30,7 +29,7 @@ static void clear(char *data) {
 }
 
 /**
- * Writes one line of text in the given font to the given row and column.
+ * Writes one line of text to the given row and column.
  * @param data
  */
 static void text(char *data) {
@@ -38,17 +37,10 @@ static void text(char *data) {
     char *end;
     row_t row = strtol(strtok(NULL, " "), &end, 10);
     col_t col = strtol(strtok(NULL, " "), &end, 10);
-    char *font = strtok(NULL, " ");
     char *text = strtok(NULL, "\0");
     
     const __flash Font *hack = &hackFont;
-    // const __flash Font *dejavu = &dejaVuFont;
-    
-    switch(*font) {
-        case FONT_HACK: writeString(row, col, hack, text); break;
-        // case FONT_DEJAVU: writeString(row, col, dejavu, text); break;
-        default: break;
-    }
+    writeString(row, col, hack, text);
 }
 
 /**
@@ -79,7 +71,7 @@ static void bmp(char *data) {
  */
 static void demo(void) {
     hackDemo();
-    writeBitmap(0, 88, BLUSH);
+    writeBitmap(0, 88, SMILE);
 }
 
 void handleCmd(char *data) {

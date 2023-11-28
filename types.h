@@ -8,9 +8,10 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-/* Width and height of bitmaps and glyphs */
+/* Width, height and color space of bitmaps and glyphs */
 typedef uint8_t     width_t;
 typedef uint8_t     height_t;
+typedef uint8_t     space_t;
 
 /* Width * height * bytes per pixel */
 typedef uint16_t    bytes_t;

@@ -24,34 +24,29 @@
  * @param grey two pixel in 4-Bit greyscale
  * @param rgb two pixel in 16-Bit RGB (5/6/5) color
  */
-static void fourBitGreyTo16BitRGB(uint8_t grey, uint8_t *rgb) {
+static void grey4ToRGB16(uint8_t grey, uint8_t *rgb) {
     uint8_t grey4 = ((grey >> 4) & 1);
     uint8_t grey0 = ((grey >> 0) & 1);
     
-    uint8_t rgb1m = grey;
-    rgb1m &= ~0b00001111;
-    rgb1m |= grey4 << 3;
-    rgb1m |= (grey >> 5);
+    rgb[0] = grey;
+    rgb[0] &= ~0b00001111;
+    rgb[0] |= grey4 << 3;
+    rgb[0] |= (grey >> 5);
 
-    uint8_t rgb1l = (grey << 3);
-    rgb1l &= ~0b01111111;
-    rgb1l |= (grey4 << 6) | (grey4 << 5);
-    rgb1l |= (grey >> 3);
-    rgb1l &= ~0b00000001;
-    rgb1l |= (grey4 << 0);
+    rgb[1] = (grey << 3);
+    rgb[1] &= ~0b01111111;
+    rgb[1] |= (grey4 << 6) | (grey4 << 5);
+    rgb[1] |= (grey >> 3);
+    rgb[1] &= ~0b00000001;
+    rgb[1] |= (grey4 << 0);
 
-    uint8_t rgb2m = (grey << 4);
-    rgb2m |= (grey >> 1);
-    rgb2m |= (grey0 << 3);
+    rgb[2] = (grey << 4);
+    rgb[2] |= (grey >> 1);
+    rgb[2] |= (grey0 << 3);
 
-    uint8_t rgb2l = (grey << 7);
-    rgb2l |= (grey << 1);
-    rgb2l |= (grey0 << 6) | (grey0 << 5) | (grey0 << 0);
-    
-    rgb[0] = rgb1m;
-    rgb[1] = rgb1l;
-    rgb[2] = rgb2m;
-    rgb[3] = rgb2l;
+    rgb[3] = (grey << 7);
+    rgb[3] |= (grey << 1);
+    rgb[3] |= (grey0 << 6) | (grey0 << 5) | (grey0 << 0);    
 }
 
 /**
@@ -208,27 +203,26 @@ void setArea(row_t row, col_t col,
 
 void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
-               uint8_t space) {
+               space_t space) {
     // Memory write
     displaySel();
     displayCmd(RAMWR);
     displaySetData();
-
-    if (space == SPACE_RGB16) {
-        bytes_t bytes = width * height * 2;
-        for (uint16_t i = 0; i < bytes; i++) {
-            transmit(bitmap[i]);
-        }
-    }
-
+    
     if (space == SPACE_GREY4) {
         bytes_t bytes = width * height / 2;
         for (uint16_t i = 0; i < bytes; i++) {
             uint8_t rgb[4];
-            fourBitGreyTo16BitRGB(bitmap[i], rgb);
+            grey4ToRGB16(bitmap[i], rgb);
             for (uint8_t j = 0; j < 4; j++) {
                 transmit(rgb[j]);
-            }                
+            }
+        }
+    } else {
+        // SPACE_RGB16
+        bytes_t bytes = width * height * 2;
+        for (uint16_t i = 0; i < bytes; i++) {
+            transmit(bitmap[i]);
         }        
     }
 
