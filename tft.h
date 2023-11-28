@@ -26,6 +26,7 @@
 #define DISPLAY_HEIGHT  128
 
 // TODO use enum? typedef?
+#define SPACE_MONO1  1
 #define SPACE_GREY4  4
 #define SPACE_RGB8   8
 #define SPACE_RGB16  16

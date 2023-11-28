@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "font.h"
 #include "dejavu.h"
+#include "tft.h"
 #include "utils.h"
 
 #define HEIGHT 56
@@ -763,16 +764,16 @@ static const __flash uint8_t DEGREE_SIGN[] = {
 };
 
 const __flash Glyph glyphs[] = {
-    {0x0020, 24, SPACE},
-    {0x0021, 16, EXCLAMATION_MARK},
-    {0x0023, 32, NUMBER_SIGN},
-    {0x0025, 32, PERCENT_SIGN},
-    {0x002a, 24, ASTERISK},
-    {0x002b, 24, PLUS_SIGN},
-    {0x002c, 16, COMMA},
-    {0x002d, 24, HYPHEN_MINUS},
-    {0x002e, 16, FULL_STOP},
-    {0x002f, 32, SOLIDUS},
+//    {0x0020, 24, SPACE},
+//    {0x0021, 16, EXCLAMATION_MARK},
+//    {0x0023, 32, NUMBER_SIGN},
+//    {0x0025, 32, PERCENT_SIGN},
+//    {0x002a, 24, ASTERISK},
+//    {0x002b, 24, PLUS_SIGN},
+//    {0x002c, 16, COMMA},
+//    {0x002d, 24, HYPHEN_MINUS},
+//    {0x002e, 16, FULL_STOP},
+//    {0x002f, 32, SOLIDUS},
     {0x0030, 32, DIGIT_0},
     {0x0031, 32, DIGIT_1},
     {0x0032, 32, DIGIT_2},
@@ -783,14 +784,14 @@ const __flash Glyph glyphs[] = {
     {0x0037, 32, DIGIT_7},
     {0x0038, 32, DIGIT_8},
     {0x0039, 32, DIGIT_9},
-    {0x003a, 16, COLON},
-    {0x003b, 16, SEMICOLON},
-    {0x003c, 32, LESS_THAN_SIGN},
-    {0x003d, 32, EQUALS_SIGN},
-    {0x003e, 32, GREATER_THAN_SIGN},
-    {0x003f, 24, QUESTION_MARK},
-    {0x0040, 32, COMMERCIAL_AT},
-    {0x00b0, 16, DEGREE_SIGN}
+//    {0x003a, 16, COLON},
+//    {0x003b, 16, SEMICOLON},
+//    {0x003c, 32, LESS_THAN_SIGN},
+//    {0x003d, 32, EQUALS_SIGN},
+//    {0x003e, 32, GREATER_THAN_SIGN},
+//    {0x003f, 24, QUESTION_MARK},
+//    {0x0040, 32, COMMERCIAL_AT},
+//    {0x00b0, 16, DEGREE_SIGN}
 };
 
-const __flash Font dejaVuFont = {glyphs, ARRAY_LENGTH(glyphs), HEIGHT};
+const __flash Font dejaVuFont = {glyphs, ARRAY_LENGTH(glyphs), HEIGHT, SPACE_MONO1};

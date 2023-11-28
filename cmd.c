@@ -42,11 +42,11 @@ static void text(char *data) {
     char *text = strtok(NULL, "\0");
     
     const __flash Font *hack = &hackFont;
-    // const __flash Font *dejavu = &dejaVuFont;
+    const __flash Font *dejavu = &dejaVuFont;
     
     switch(*font) {
         case FONT_HACK: writeString(row, col, hack, text); break;
-        // case FONT_DEJAVU: writeString(row, col, dejavu, text); break;
+        case FONT_DEJAVU: writeString(row, col, dejavu, text); break;
         default: break;
     }
 }
