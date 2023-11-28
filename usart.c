@@ -50,17 +50,17 @@ bool isUSARTReceived(void) {
     return usartReceived;
 }
 
-void setStreaming(bool enabled) {
+bool isStreamingData(void) {
+    return streaming && bit_is_set(UCSR0A, RXC0);
+}
+
+void setStreamingData(bool enabled) {
     if (enabled) {
         UCSR0B &= ~(1 << RXCIE0);
     } else {
         UCSR0B |= (1 << RXCIE0);
     }
     streaming = enabled;
-}
-
-bool isStreaming(void) {
-    return streaming;
 }
 
 void getUSARTData(char *data, size_t size) {
