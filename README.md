@@ -12,7 +12,7 @@ Currently implemented:
 * Write text in Hack including emojis 🙂
 * Draw bitmaps
 * Write text and bitmaps via USART
-* Upload BMP images via USART (16-Bit (5/6/5) RGB)
+* Upload BMP images via USART (16-Bit 5/6/5 RGB)
 * Logging via USART
 
 The AVR is clocked with a crystal for reliable communication via USART.
@@ -37,4 +37,6 @@ Write some text and a bitmap, and upload a BMP image:
 
 ## Enter emojis
 
-Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s`.
+Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s` for a smiling emoji.
+
+![IMG_20231129_004922](https://github.com/gitdode/avrtft/assets/11530253/3a6cbcdd-d004-48d9-a227-ba21f91dac0b)
