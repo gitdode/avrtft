@@ -32,7 +32,7 @@ echo -e 't 32 64 \tA' > /dev/ttyUSB0
 sleep 0.1
 echo -e 't 32 80 \tu' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 32 96 \tm' > /dev/ttyUSB0
+echo -e 't 32 96 \to' > /dev/ttyUSB0
 sleep 0.1
 echo -e 't 32 112 \tH' > /dev/ttyUSB0
 sleep 0.1

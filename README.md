@@ -8,8 +8,9 @@ Currently implemented:
 
 * Mostly complete UTF-8 set (code points U+0000 to U+00FF) of Hack font
   with antialiasing (4-Bit greyscale)
-* Draw strings in Hack
-* Draw bitmaps (emojis)
+* Some emojis (16-Bit RGB)
+* Write text in Hack including emojis 🙂
+* Draw bitmaps
 * Write text and bitmaps via USART
 * Upload BMP images via USART (16-Bit (5/6/5) RGB)
 * Logging via USART
@@ -31,5 +32,9 @@ Write some text and a bitmap, and upload a BMP image:
 `c 0xffff` // clear display  
 `d` // display the demo  
 `t 0 0 Just some text` // write text in Hack to row 0 column 0  
-`b 0 112 0` // write bitmap with index 0 ('blush' emoji) to row 0 column 112  
+`b 0 0 1` // write bitmap with index 0 (tiny Linus cat) to row 0 column 0  
 `p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image  
+
+## Enter emojis
+
+Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s`.
