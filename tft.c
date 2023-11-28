@@ -17,19 +17,6 @@
 
 #include "bitmaps.h"
 
-/**
- * Converts the given 8 pixel in 1-Bit monochrome to 16-Bit RGB (5/6/5) color
- * stored in the given array of 16 bytes.
- * 
- * @param grey 8 pixel in 1-Bit monochrome
- * @param rgb 8 pixel in 16-Bit RGB (5/6/5) color
- */
-static void mono1ToRGB16(uint8_t mono, uint8_t *rgb) {
-    for (uint8_t i = 0; i < 16; i++) {
-        rgb[i] = (mono & (1 << ((15 - i) >> 1))) ? 0 : 0xff;
-    }
-}
-
 /*
  * Converts the given two pixel in 4-Bit greyscale to 16-Bit RGB (5/6/5) color
  * stored in the given array of four bytes.
@@ -60,42 +47,6 @@ static void grey4ToRGB16(uint8_t grey, uint8_t *rgb) {
     rgb[3] = (grey << 7);
     rgb[3] |= (grey << 1);
     rgb[3] |= (grey0 << 6) | (grey0 << 5) | (grey0 << 0);    
-}
-
-/*
- * Converts the given pixel in 8-Bit RGB (3/3/2) to 16-Bit RGB (5/6/5) color
- * stored in the given array of two bytes.
- * 
- * @param rgb8 one pixel in 8-Bit RGB
- * @param rgb one pixel in 16-Bit RGB (5/6/5) color
- */
-static void rgb8ToRGB16(uint8_t rgb8, uint8_t *rgb) {
-    uint8_t rgb8_7 = ((rgb8 >> 7) & 1);
-    uint8_t rgb8_6 = ((rgb8 >> 6) & 1);
-    uint8_t rgb8_5 = ((rgb8 >> 5) & 1);
-    uint8_t rgb8_4 = ((rgb8 >> 4) & 1);
-    uint8_t rgb8_3 = ((rgb8 >> 3) & 1);
-    uint8_t rgb8_2 = ((rgb8 >> 2) & 1);
-    uint8_t rgb8_1 = ((rgb8 >> 1) & 1);
-    uint8_t rgb8_0 = ((rgb8 >> 0) & 1);
-
-    rgb[0] |= (rgb8_7 << 7);
-    rgb[0] |= (rgb8_6 << 6);
-    rgb[0] |= (rgb8_5 << 5);
-    rgb[0] |= (rgb8_5 << 4);
-    rgb[0] |= (rgb8_5 << 3);
-    rgb[0] |= (rgb8_4 << 2);
-    rgb[0] |= (rgb8_3 << 1);
-    rgb[0] |= (rgb8_2 << 0);
-
-    rgb[1] |= (rgb8_2 << 7);
-    rgb[1] |= (rgb8_2 << 6);
-    rgb[1] |= (rgb8_2 << 5);
-    rgb[1] |= (rgb8_1 << 4);
-    rgb[1] |= (rgb8_0 << 3);
-    rgb[1] |= (rgb8_0 << 2);
-    rgb[1] |= (rgb8_0 << 1);
-    rgb[1] |= (rgb8_0 << 0);
 }
 
 /**
@@ -258,52 +209,6 @@ void writeData(const __flash uint8_t *bitmap,
     displayCmd(RAMWR);
     displaySetData();
     
-    switch (space) {
-        case SPACE_MONO1: {
-            bytes_t bytes = width * height / 8;
-            for (uint16_t i = 0; i < bytes; i++) {
-                uint8_t rgb[16];
-                mono1ToRGB16(bitmap[i], rgb);
-                for (uint8_t j = 0; j < 16; j++) {
-                    transmit(rgb[j]);
-                }
-            }            
-        }; break;
-        case SPACE_GREY4: {
-            bytes_t bytes = width * height / 2;
-            for (uint16_t i = 0; i < bytes; i++) {
-                uint8_t rgb[4];
-                grey4ToRGB16(bitmap[i], rgb);
-                for (uint8_t j = 0; j < 4; j++) {
-                    transmit(rgb[j]);
-                }
-            }            
-        }; break;
-        case SPACE_RGB8: {
-            bytes_t bytes = width * height;
-            for (uint16_t i = 0; i < bytes; i++) {
-                uint8_t rgb[2];
-                rgb8ToRGB16(bitmap[i], rgb);
-                for (uint8_t j = 0; j < 2; j++) {
-                    transmit(rgb[j]);
-                }
-            }
-        }; break;
-        default: {
-            bytes_t bytes = width * height * 2;
-            for (uint16_t i = 0; i < bytes; i++) {
-                transmit(bitmap[i]);
-            }
-        }
-    }
-
-    if (space == SPACE_RGB16) {
-        bytes_t bytes = width * height * 2;
-        for (uint16_t i = 0; i < bytes; i++) {
-            transmit(bitmap[i]);
-        }
-    }
-
     if (space == SPACE_GREY4) {
         bytes_t bytes = width * height / 2;
         for (uint16_t i = 0; i < bytes; i++) {
@@ -311,7 +216,13 @@ void writeData(const __flash uint8_t *bitmap,
             grey4ToRGB16(bitmap[i], rgb);
             for (uint8_t j = 0; j < 4; j++) {
                 transmit(rgb[j]);
-            }                
+            }
+        }
+    } else {
+        // SPACE_RGB16
+        bytes_t bytes = width * height * 2;
+        for (uint16_t i = 0; i < bytes; i++) {
+            transmit(bitmap[i]);
         }        
     }
 

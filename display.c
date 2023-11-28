@@ -12,7 +12,6 @@
 #include <avr/pgmspace.h>
 #include "display.h"
 #include "hack.h"
-#include "dejavu.h"
 #include "bitmaps.h"
 #include "spi.h"
 #include "tft.h"
@@ -41,7 +40,6 @@ width_t writeBitmap(row_t row, col_t col, uint16_t index) {
 
 width_t writeGlyph(row_t row, col_t col, const __flash Font *font, code_t code) {
     const __flash Glyph *glyph = getGlyphAddress(font, code);
-    // TODO handle DejaVu font with 1-Bit B/W colors
     setArea(row, col, glyph->width, font->height, false);
     writeData(glyph->bitmap, glyph->width, font->height, font->space);
     
