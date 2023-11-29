@@ -3,7 +3,7 @@
 # set up the terminal for communication with the controller
 stty -F /dev/ttyUSB0 speed 38400 cs8 -parenb -cstopb raw
 
-# clear the display all black and write some text in Hack font, and so on..
+# clear the display all black and write some text in Hack font, and so on...
 echo "c 0" > /dev/ttyUSB0
 sleep 1
 echo "t 20 12  Katzen... " > /dev/ttyUSB0
