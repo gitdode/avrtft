@@ -787,6 +787,8 @@ const __flash uint8_t CAR[] = {
 };
 
 const __flash Glyph glyphs[] = {
+    // smile if emoji is a stranger
+    {0x3f, 16, SMILE},
     {'A', 16, CAT_ANGRY},
     {'B', 16, BEERS},
     {'C', 16, CAR},
