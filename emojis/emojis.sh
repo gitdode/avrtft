@@ -4,7 +4,7 @@
 stty -F /dev/ttyUSB0 speed 38400 cs8 -parenb -cstopb raw
 
 # clear the display all black and write all the emojis...
-echo "c ffff\t" > /dev/ttyUSB0
+echo "c ffff" > /dev/ttyUSB0
 sleep 0.1
 echo -e "t 0 0 Hello Emojis!" > /dev/ttyUSB0
 sleep 0.1

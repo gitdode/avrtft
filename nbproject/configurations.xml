@@ -56,6 +56,8 @@
       </item>
       <item path="/home/dode/dev/avrtft/display.c" ex="false" tool="0" flavor2="3">
       </item>
+      <item path="/home/dode/dev/avrtft/emojis.c" ex="false" tool="0" flavor2="3">
+      </item>
       <item path="/home/dode/dev/avrtft/emojis/emojis.sh.bash"
             ex="false"
             tool="3"
@@ -68,8 +70,6 @@
       <item path="/home/dode/dev/avrtft/spi.c" ex="false" tool="0" flavor2="3">
       </item>
       <item path="/home/dode/dev/avrtft/tft.c" ex="false" tool="0" flavor2="3">
-      </item>
-      <item path="emojis.c" ex="false" tool="0" flavor2="3">
       </item>
     </conf>
   </confs>
