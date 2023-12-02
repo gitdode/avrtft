@@ -32,7 +32,7 @@ Write some text and a bitmap, and upload a BMP image:
 `c 0xffff` // clear display  
 `d` // display the demo  
 `t 0 0 Just some text` // write text in Hack to row 0 column 0  
-`b 0 0 1` // write bitmap with index 0 (tiny Linus cat) to row 0 column 0  
+`b 0 0 1` // write bitmap with index 1 (tiny Linus cat) to row 0 column 0  
 `p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image to row 0 column 0    
 `cat Bali160x128.bmp > /dev/ttyUSB0` // upload a "fullscreen" BMP image  
 
