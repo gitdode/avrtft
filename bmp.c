@@ -20,7 +20,7 @@ static bool error = false;
 static row_t row = 0;
 static col_t col = 0;
 
-static uint32_t buf[BUF_SIZE];
+static uint8_t buf[BUF_SIZE];
 static uint32_t offset = 0;
 static uint32_t pixelStart = -1;
 static uint32_t pixelEnd = -1;
@@ -73,38 +73,39 @@ void stream(uint8_t byte) {
     }
     
     if (offset == 0x0a + 3) {
-        pixelStart = buf[0] << 24;
-        pixelStart = buf[1] << 16;
-        pixelStart = buf[2] << 8;
-        pixelStart = buf[3] << 0;        
+        pixelStart = 0;
+        pixelStart |= ((uint32_t)buf[0]) << 24;
+        pixelStart |= ((uint32_t)buf[1]) << 16;
+        pixelStart |= buf[2] << 8;
+        pixelStart |= buf[3] << 0;
     }
     
     /*
     if (offset == 0x0e + 3) {
-        headerSize = buf[0] << 24;
-        headerSize = buf[1] << 16;
-        headerSize = buf[2] << 8;
-        headerSize = buf[3] << 0;
+        headerSize |= ((uint32_t)buf[0]) << 24;
+        headerSize |= ((uint32_t)buf[1]) << 16;
+        headerSize |= buf[2] << 8;
+        headerSize |= buf[3] << 0;
     }
     */
     
     if (offset == 0x12 + 3) {
-        bitmapWidth = buf[0] << 24;
-        bitmapWidth = buf[1] << 16;
-        bitmapWidth = buf[2] << 8;
-        bitmapWidth = buf[3] << 0;
+        bitmapWidth |= ((uint32_t)buf[0]) << 24;
+        bitmapWidth |= ((uint32_t)buf[1]) << 16;
+        bitmapWidth |= buf[2] << 8;
+        bitmapWidth |= buf[3] << 0;
     }
     
     if (offset == 0x16 + 3) {
-        bitmapHeight = buf[0] << 24;
-        bitmapHeight = buf[1] << 16;
-        bitmapHeight = buf[2] << 8;
-        bitmapHeight = buf[3] << 0;
+        bitmapHeight |= ((uint32_t)buf[0]) << 24;
+        bitmapHeight |= ((uint32_t)buf[1]) << 16;
+        bitmapHeight |= buf[2] << 8;
+        bitmapHeight |= buf[3] << 0;
     }
     
     if (offset == 0x1c + 1) {
-        bitsPerPixel = buf[0] << 8;
-        bitsPerPixel = buf[1] << 0;
+        bitsPerPixel |= buf[0] << 8;
+        bitsPerPixel |= buf[1] << 0;
         
         if (bitsPerPixel != 16) {
             // not a 16-Bit RGB BMP
