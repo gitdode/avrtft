@@ -142,7 +142,7 @@ void stream(uint8_t byte) {
     
     if (offset == pixelStart) {
         // do horizontal flip because pixel data in a BMP is bottom to top
-        setArea(row, col, bitmapWidth, bitmapHeight, true);
+        setArea(row, col, bitmapWidth, bitmapHeight, true, false);
         writeStart();
     }
     

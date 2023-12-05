@@ -8,6 +8,15 @@ BAUD = 38400
 PROGRAMMER_TYPE = avrispmkII
 PROGRAMMER_ARGS = 
 
+# Display dimensions
+DISPLAY_WIDTH = 320
+DISPLAY_HEIGHT = 240
+# 1 = BGR, 0 = RGB
+BGR = 0
+# Flip image
+HFLIP = 0
+VFLIP = 0
+
 MAIN = avrtft.c
 SRC = bitmaps.c bmp.c cmd.c display.c emojis.c tft.c font.c spi.c hack.c usart.c
 
@@ -17,7 +26,9 @@ OBJDUMP = avr-objdump
 AVRSIZE = avr-size
 AVRDUDE = avrdude
 
-CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU)UL -DBAUD=$(BAUD) 
+CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU)UL -DBAUD=$(BAUD)
+CFLAGS += -DDISPLAY_WIDTH=$(DISPLAY_WIDTH) -DDISPLAY_HEIGHT=$(DISPLAY_HEIGHT)
+CFLAGS += -DBGR=$(BGR) -DHFLIP=$(HFLIP) -DVFLIP=$(VFLIP)
 CFLAGS += -O2 -I.
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 CFLAGS += -Wall -Wstrict-prototypes

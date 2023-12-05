@@ -9,16 +9,16 @@
 #define TYPES_H
 
 /* Width, height and color space of bitmaps and glyphs */
-typedef uint8_t     width_t;
-typedef uint8_t     height_t;
+typedef uint16_t     width_t;
+typedef uint16_t     height_t;
 typedef uint8_t     space_t;
 
 /* Width * height * bytes per pixel */
-typedef uint16_t    bytes_t;
+typedef uint32_t    bytes_t;
 
 /* Number of rows and columns of the display */
-typedef uint8_t     row_t;
-typedef uint8_t     col_t;
+typedef uint16_t     row_t;
+typedef uint16_t     col_t;
 
 /* Char code (like UTF-8 code point) */
 typedef uint8_t     code_t;
