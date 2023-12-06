@@ -32,7 +32,7 @@ static uint32_t imageSize = 0;
 // static uint16_t rowSize = 0;
 
 /**
- * Pushes the given byte on the stack and the oldest off the stack.
+ * Pushes the given byte on the queue and the oldest off the queue.
  * 
  * @param byte
  */
