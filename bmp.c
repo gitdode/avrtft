@@ -32,6 +32,21 @@ static uint32_t imageSize = 0;
 // static uint16_t rowSize = 0;
 
 /**
+ * Resets the state.
+ */
+static void reset(void) {
+    offset = 0;
+    pixelStart = -1;
+    pixelEnd = -1;
+    // headerSize = 0;
+    bitmapWidth = 0;
+    bitmapHeight = 0;
+    bitsPerPixel = 0;
+    imageSize = 0;
+    // rowSize = 0;
+}
+
+/**
  * Pushes the given byte on the queue and the oldest off the queue.
  * 
  * @param byte
@@ -160,6 +175,7 @@ void stream(uint8_t byte) {
     
     if (offset == pixelEnd) {
         writeEnd();
+        reset();
         setStreamingData(false);
         // printString("write end\r\n");
     }

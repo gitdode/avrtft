@@ -30,6 +30,18 @@
     #define DISPLAY_HEIGHT  128
 #endif
 
+#ifndef BGR
+    #define BGR     1
+#endif
+
+#ifndef HFLIP
+    #define HFLIP   0
+#endif
+
+#ifndef VFLIP
+    #define VFLIP   0
+#endif
+
 // TODO use enum? typedef?
 #define SPACE_GREY4  4
 #define SPACE_RGB16  16

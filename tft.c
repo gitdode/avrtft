@@ -123,7 +123,7 @@ void initDisplay(void) {
 void fillArea(row_t row, col_t col,
               width_t width, height_t height,
               uint16_t color) {
-    
+
     // X address start/end
     uint16_t xs = col;
     uint16_t xe = col + width - 1;
@@ -165,15 +165,20 @@ void setArea(row_t row, col_t col,
              bool hflip, bool vflip) {
     
     // Memory data access control
-    uint8_t madctl = 0b11111110;
+    uint8_t madctl = 0b11110110;
+    madctl &= ~(VFLIP << 7);
+    madctl &= ~(HFLIP << 6);
+    madctl |= (BGR << 3);
+
     if (vflip) {
         // Row Address Order (MY)
-        madctl &= ~(1 << 7);
+        madctl = madctl ^ (1 << 7);
     }
     if (hflip) {
         // Column Address Order (MX)
-        madctl &= ~(1 << 6);
+        madctl = madctl ^ (1 << 6);
     }
+
     displaySel();
     displayCmd(MADCTL);
     displayData(madctl);
@@ -182,6 +187,10 @@ void setArea(row_t row, col_t col,
     // X address start/end
     uint16_t xs = col;
     uint16_t xe = col + width - 1;
+    if (vflip) {
+        xs = DISPLAY_WIDTH - col - width;
+        xe = DISPLAY_WIDTH - col - 1;
+    }
     displaySel();
     displayCmd(CASET);
     displayData(xs >> 8);
@@ -194,8 +203,8 @@ void setArea(row_t row, col_t col,
     uint16_t ys = row;
     uint16_t ye = row + height - 1;
     if (hflip) {
-        xs = DISPLAY_HEIGHT - row - height;
-        xe = DISPLAY_HEIGHT - row - 1;
+        ys = DISPLAY_HEIGHT - row - height;
+        ye = DISPLAY_HEIGHT - row - 1;
     }
     displaySel();
     displayCmd(RASET);
