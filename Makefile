@@ -8,11 +8,19 @@ BAUD = 38400
 PROGRAMMER_TYPE = avrispmkII
 PROGRAMMER_ARGS = 
 
+# These settings should be enough to get all currently supported
+# drivers to work (they are very similar):
+# - ST7735R
+# - ST7789
+# - ILI9341
+
 # Display dimensions
 DISPLAY_WIDTH = 160
 DISPLAY_HEIGHT = 128
 # 1 = BGR, 0 = RGB
 BGR = 0
+# Invert color
+INVERT = 0
 # Flip image
 HFLIP = 0
 VFLIP = 1
@@ -28,7 +36,7 @@ AVRDUDE = avrdude
 
 CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU)UL -DBAUD=$(BAUD)
 CFLAGS += -DDISPLAY_WIDTH=$(DISPLAY_WIDTH) -DDISPLAY_HEIGHT=$(DISPLAY_HEIGHT)
-CFLAGS += -DBGR=$(BGR) -DHFLIP=$(HFLIP) -DVFLIP=$(VFLIP)
+CFLAGS += -DINVERT=$(INVERT) -DBGR=$(BGR) -DHFLIP=$(HFLIP) -DVFLIP=$(VFLIP)
 CFLAGS += -O2 -I.
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 CFLAGS += -Wall -Wstrict-prototypes

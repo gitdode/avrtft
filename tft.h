@@ -15,6 +15,8 @@
 #define SLPIN   0x10
 #define SLPOUT  0x11
 #define NORON   0x13
+#define INVOFF  0x20
+#define INVON   0x21
 #define DISPON  0x29
 #define CASET   0x2a
 #define RASET   0x2b
@@ -31,7 +33,11 @@
 #endif
 
 #ifndef BGR
-    #define BGR     1
+    #define BGR     0
+#endif
+
+#ifndef INVERT
+    #define INVERT  0
 #endif
 
 #ifndef HFLIP

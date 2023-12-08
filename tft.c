@@ -101,6 +101,12 @@ void initDisplay(void) {
     displayCmd(NORON);
     displayDes();
 
+    // Display Inversion on/off
+    uint8_t inv = INVERT ? INVON : INVOFF;
+    displaySel();
+    displayCmd(inv);
+    displayDes();
+
     // Interface pixel format
     displaySel();
     displayCmd(COLMOD);
