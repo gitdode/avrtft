@@ -9,13 +9,13 @@ PROGRAMMER_TYPE = avrispmkII
 PROGRAMMER_ARGS = 
 
 # Display dimensions
-DISPLAY_WIDTH = 320
-DISPLAY_HEIGHT = 240
+DISPLAY_WIDTH = 160
+DISPLAY_HEIGHT = 128
 # 1 = BGR, 0 = RGB
-BGR = 1
+BGR = 0
 # Flip image
 HFLIP = 0
-VFLIP = 0
+VFLIP = 1
 
 MAIN = avrtft.c
 SRC = bitmaps.c bmp.c cmd.c display.c emojis.c tft.c font.c spi.c hack.c usart.c
