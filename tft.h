@@ -15,6 +15,8 @@
 #define SLPIN   0x10
 #define SLPOUT  0x11
 #define NORON   0x13
+#define INVOFF  0x20
+#define INVON   0x21
 #define DISPON  0x29
 #define CASET   0x2a
 #define RASET   0x2b
@@ -22,8 +24,29 @@
 #define MADCTL  0x36
 #define COLMOD  0x3a
 
-#define DISPLAY_WIDTH   160
-#define DISPLAY_HEIGHT  128
+#ifndef DISPLAY_WIDTH
+    #define DISPLAY_WIDTH   160
+#endif
+
+#ifndef DISPLAY_HEIGHT
+    #define DISPLAY_HEIGHT  128
+#endif
+
+#ifndef BGR
+    #define BGR     0
+#endif
+
+#ifndef INVERT
+    #define INVERT  0
+#endif
+
+#ifndef HFLIP
+    #define HFLIP   0
+#endif
+
+#ifndef VFLIP
+    #define VFLIP   0
+#endif
 
 // TODO use enum? typedef?
 #define SPACE_GREY4  4
@@ -77,10 +100,11 @@ void fillArea(row_t row, col_t col,
  * @param width width of the bitmap in pixels
  * @param height height of the bitmap in pixels
  * @param hflip if image should be flipped horizontally
+ * @param vflip if image should be flipped vertically
  */
 void setArea(row_t row, col_t col,
              width_t width, height_t height,
-             bool hflip);
+             bool hflip, bool vflip);
 
 /**
  * Writes image data to the previously set area.

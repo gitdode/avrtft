@@ -33,7 +33,7 @@ void writeError(char *lines[], uint8_t length) {
 
 width_t writeBitmap(row_t row, col_t col, uint16_t index) {
     const __flash Bitmap *bitmap = &bitmaps[index];
-    setArea(row, col, bitmap->width, bitmap->height, false);
+    setArea(row, col, bitmap->width, bitmap->height, false, false);
     writeData(bitmap->bitmap, bitmap->width, bitmap->height, bitmap->space);
     
     return bitmap->width;
@@ -41,7 +41,7 @@ width_t writeBitmap(row_t row, col_t col, uint16_t index) {
 
 width_t writeGlyph(row_t row, col_t col, const __flash Font *font, code_t code) {
     const __flash Glyph *glyph = getGlyphAddress(font, code);
-    setArea(row, col, glyph->width, font->height, false);
+    setArea(row, col, glyph->width, font->height, false, false);
     writeData(glyph->bitmap, glyph->width, font->height, font->space);
     
     return glyph->width;

@@ -101,6 +101,12 @@ void initDisplay(void) {
     displayCmd(NORON);
     displayDes();
 
+    // Display Inversion on/off
+    uint8_t inv = INVERT ? INVON : INVOFF;
+    displaySel();
+    displayCmd(inv);
+    displayDes();
+
     // Interface pixel format
     displaySel();
     displayCmd(COLMOD);
@@ -151,8 +157,8 @@ void fillArea(row_t row, col_t col,
     displayCmd(RAMWR);
     displaySetData();
 
-    bytes_t bytes = width * height;
-    for (uint16_t i = 0; i < bytes; i++) {
+    bytes_t pixels = (bytes_t)width * (bytes_t)height;
+    for (bytes_t i = 0; i < pixels; i++) {
         transmit(color >> 8);
         transmit(color);
     }
@@ -162,13 +168,23 @@ void fillArea(row_t row, col_t col,
 
 void setArea(row_t row, col_t col, 
              width_t width, height_t height, 
-             bool hflip) {
+             bool hflip, bool vflip) {
     
     // Memory data access control
-    uint8_t madctl = 0b01110110;
-    if (hflip) {
-        madctl = 0b00110110;
+    uint8_t madctl = 0b11110110;
+    madctl &= ~(VFLIP << 7);
+    madctl &= ~(HFLIP << 6);
+    madctl |= (BGR << 3);
+
+    if (vflip) {
+        // Row Address Order (MY)
+        madctl = madctl ^ (1 << 7);
     }
+    if (hflip) {
+        // Column Address Order (MX)
+        madctl = madctl ^ (1 << 6);
+    }
+
     displaySel();
     displayCmd(MADCTL);
     displayData(madctl);
@@ -177,6 +193,10 @@ void setArea(row_t row, col_t col,
     // X address start/end
     uint16_t xs = col;
     uint16_t xe = col + width - 1;
+    if (vflip) {
+        xs = DISPLAY_WIDTH - col - width;
+        xe = DISPLAY_WIDTH - col - 1;
+    }
     displaySel();
     displayCmd(CASET);
     displayData(xs >> 8);
@@ -189,8 +209,8 @@ void setArea(row_t row, col_t col,
     uint16_t ys = row;
     uint16_t ye = row + height - 1;
     if (hflip) {
-        xs = DISPLAY_HEIGHT - row - height;
-        xe = DISPLAY_HEIGHT - row - 1;
+        ys = DISPLAY_HEIGHT - row - height;
+        ye = DISPLAY_HEIGHT - row - 1;
     }
     displaySel();
     displayCmd(RASET);
@@ -210,8 +230,8 @@ void writeData(const __flash uint8_t *bitmap,
     displaySetData();
     
     if (space == SPACE_GREY4) {
-        bytes_t bytes = width * height / 2;
-        for (uint16_t i = 0; i < bytes; i++) {
+        bytes_t bytes = (bytes_t)width * (bytes_t)height / 2;
+        for (bytes_t i = 0; i < bytes; i++) {
             uint8_t rgb[4];
             grey4ToRGB16(bitmap[i], rgb);
             for (uint8_t j = 0; j < 4; j++) {
@@ -220,8 +240,8 @@ void writeData(const __flash uint8_t *bitmap,
         }
     } else {
         // SPACE_RGB16
-        bytes_t bytes = width * height * 2;
-        for (uint16_t i = 0; i < bytes; i++) {
+        bytes_t bytes = (bytes_t)width * (bytes_t)height * 2;
+        for (bytes_t i = 0; i < bytes; i++) {
             transmit(bitmap[i]);
         }        
     }
