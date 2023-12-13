@@ -15,18 +15,19 @@ PROGRAMMER_ARGS =
 # - ILI9341
 
 # Display dimensions
-DISPLAY_WIDTH = 160
-DISPLAY_HEIGHT = 128
+DISPLAY_WIDTH = 320
+DISPLAY_HEIGHT = 240
 # 1 = BGR, 0 = RGB
-BGR = 0
+BGR = 1
 # Invert color
 INVERT = 0
 # Flip image
 HFLIP = 0
-VFLIP = 1
+VFLIP = 0
 
 MAIN = avrtft.c
-SRC = bitmaps.c bmp.c cmd.c display.c emojis.c tft.c font.c spi.c hack.c usart.c
+SRC = bitmaps.c bmp.c cmd.c display.c emojis.c tft.c touch.c font.c spi.c \
+      hack.c usart.c
 
 CC = avr-gcc
 OBJCOPY = avr-objcopy
@@ -52,8 +53,8 @@ SRC += $(TARGET).c
 OBJ = $(SRC:.c=.o) 
 OBJ = $(SRC:.S=.o)
 	
-$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h emojis.h tft.h font.h pins.h \
-	spi.h types.h hack.h usart.h utils.h Makefile
+$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h emojis.h tft.h touch.h font.h \
+	       pins.h spi.h types.h hack.h usart.h utils.h Makefile
 
 all: $(TARGET).hex
 

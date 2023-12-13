@@ -52,6 +52,10 @@ static void initPins(void) {
     PORT_SPI |= (1 << PIN_SS);
     PORT_SPI |= (1 << PIN_MISO);
 
+    // set SDA and SCL as output pin
+    DDR_I2C |= (1 << PIN_SCL);
+    DDR_I2C |= (1 << PIN_SDA);
+
     // set display CS, D/C and RST pin as output pin
     DDR_DSPI |= (1 << PIN_DCS);
     DDR_DSPI |= (1 << PIN_DC);
@@ -61,16 +65,6 @@ static void initPins(void) {
     PORT_DSPI |= (1 << PIN_DCS);
     PORT_DSPI |= (1 << PIN_DC);
     PORT_DISP |= (1 << PIN_RST);
-}
-
-/**
- * Enables SPI master mode.
- */
-static void initSPI(void) {
-    // min speed for a cool visual effect :-)
-    // SPCR |= (1 << SPR1) | (1 << SPR0);
-    SPCR |= (1 << MSTR);
-    SPCR |= (1 << SPE);
 }
 
 /**
@@ -87,18 +81,38 @@ static void initTimer(void) {
     // TIMSK0 |= (1 << OCIE0A);
 }
 
+/**
+ * Enables SPI master mode.
+ */
+static void initSPI(void) {
+    // min speed for a cool visual effect :-)
+    // SPCR |= (1 << SPR1) | (1 << SPR0);
+    SPCR |= (1 << MSTR);
+    SPCR |= (1 << SPE);
+}
+
+/**
+ * Enables touch interrupt.
+ */
+static void initTouchInt(void) {
+    EIMSK |= (1 << INT0);
+    // EICRA |= (1 << ISC01); // interrupt on falling edge
+}
+
 int main(void) {
 
     initUSART();
     initPins();
-    initSPI();
     initTimer();
+    initSPI();
 
     // enable global interrupts
     sei();
-    
+
     _delay_ms(1000);
+    
     initDisplay();
+    initTouchInt();
 
     while (true) {
         

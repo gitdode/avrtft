@@ -18,6 +18,13 @@
 #define PIN_MISO  PB4
 #define PIN_SCK   PB5
 
+/* I2C/Touch */
+#define DDR_I2C   DDRC
+#define PORT_I2C  PORTC
+#define PIN_SCL   PC5
+#define PIN_SDA   PC4
+#define PIN_TINT  PD2 // touch controller interrupt
+
 /* Display SPI */
 #define DDR_DSPI  DDRB
 #define PORT_DSPI PORTB

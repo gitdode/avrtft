@@ -18,6 +18,7 @@ Currently implemented features:
 * Write text and bitmaps via USART
 * Upload BMP images via USART (16-Bit 5/6/5 RGB)
 * Logging via USART
+* Basic capacitive touch support (FT6206)
 
 The AVR is clocked with a crystal for reliable communication via USART.
 
