@@ -81,7 +81,7 @@ void initDisplay(void) {
     hwReset();
 
     // TODO necessary?
-    _delay_ms(120);
+    _delay_ms(10);
 
     // Software reset
     displaySel();
@@ -89,7 +89,7 @@ void initDisplay(void) {
     displayDes();
 
     // TODO necessary?
-    _delay_ms(120);
+    _delay_ms(10);
 
     // Sleep out & booster on
     displaySel();
@@ -102,9 +102,8 @@ void initDisplay(void) {
     displayDes();
 
     // Display Inversion on/off
-    uint8_t inv = INVERT ? INVON : INVOFF;
     displaySel();
-    displayCmd(inv);
+    displayCmd(INVOFF + INVERT); // INVOFF + 1 = INVON
     displayDes();
 
     // Interface pixel format
@@ -178,11 +177,11 @@ void setArea(row_t row, col_t col,
 
     if (vflip) {
         // Row Address Order (MY)
-        madctl = madctl ^ (1 << 7);
+        madctl ^= (1 << 7);
     }
     if (hflip) {
         // Column Address Order (MX)
-        madctl = madctl ^ (1 << 6);
+        madctl ^= (1 << 6);
     }
 
     displaySel();
