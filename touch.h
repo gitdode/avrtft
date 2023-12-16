@@ -8,7 +8,7 @@
 #ifndef TOUCH_H
 #define TOUCH_H
 
-
+#define FT62XX_ADDRESS 0x38
 
 #endif /* TOUCH_H */
 

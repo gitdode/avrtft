@@ -7,8 +7,5 @@
 
 #include <avr/interrupt.h>
 #include "touch.h"
+#include "i2c.h"
 #include "usart.h"
-
-ISR(INT0_vect) {
-    printString("touch!\r\n");
-}

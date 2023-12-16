@@ -20,6 +20,7 @@
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <util/delay.h>
+#include <util/twi.h>
 
 #include "pins.h"
 #include "usart.h"
@@ -31,6 +32,9 @@
 #include "utils.h"
 #include "bmp.h"
 
+#include "i2c.h"
+#include "touch.h"
+
 /* Timer0 interrupts per second */
 #define INTS_SEC  F_CPU / (256UL * 255)
 
@@ -39,6 +43,111 @@ static volatile uint16_t ints = 0;
 
 ISR(TIMER0_COMPA_vect) {
     ints++;
+}
+
+static volatile bool touch = false;
+static bool busy = false;
+
+ISR(INT0_vect) {
+    touch = true;
+}
+
+static void readTouch(void) {
+    printString("touch!\r\n");
+//    i2cStart();
+//    i2cSend(FT62XX_ADDRESS);
+//    i2cSend(0x03);
+//    // i2cStop();
+//    
+//    i2cStart();
+//    i2cSend(FT62XX_ADDRESS + 1);
+//    uint8_t xh = i2cReadAck();
+//    i2cStop();
+    
+//    i2cStart();
+//    // printUint(0);
+//    i2cSend(0x38);
+//    // printUint(1);
+//    i2cSend(0x00);
+//    // i2cStop();
+//    // printUint(2);
+//    
+//    i2cStart();
+//    // printUint(3);
+//    i2cSend(0x38 + 1);
+//    printUint(4);
+//    uint8_t xl = i2cReadAck();
+//    // printUint(5);
+//    i2cStop();
+//    printUint(6);
+    
+    // start
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTA);
+    loop_until_bit_is_set(TWCR, TWINT);
+    if ((TWSR & 0xF8) != TW_START) {
+        printString("error start\r\n");
+        // return;
+    }
+    // printUint(0);
+    
+    // send slave address + write
+    TWDR = 0x38;
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    loop_until_bit_is_set(TWCR, TWINT);
+    if ((TWSR & 0xF8) != TW_MT_SLA_ACK) {
+        printString("error write\r\n");
+        // printUint((TWSR & 0xF8));
+        // return;
+    }
+    // printUint(1);
+    
+    // send data address (DEV_MODE)
+    TWDR = 0x00;
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    loop_until_bit_is_set(TWCR, TWINT);
+    if ((TWSR & 0xF8) != TW_MT_DATA_ACK) {
+        printString("error data\r\n");
+        // return;
+    }
+    // printUint(2);
+    
+    // restart
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTA);
+    loop_until_bit_is_set(TWCR, TWINT);
+    if ((TWSR & 0xF8) != TW_REP_START) {
+        printString("error rep start\r\n");
+        // return;
+    }
+    // printUint(3);
+    
+    // send slave address + read
+    TWDR = 0x38 + 1;
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    loop_until_bit_is_set(TWCR, TWINT);
+    if ((TWSR & 0xF8) != TW_MR_SLA_ACK) {
+        printString("error read\r\n");
+        // return;
+    }
+    // printUint(4);
+    
+    // read with ack
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
+    loop_until_bit_is_set(TWCR, TWINT); // never returns, same w/o ack
+    uint8_t response = TWDR;
+    // printUint(5);
+    
+    // stop
+    TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
+    
+    printUint(response);
+    
+//    uint16_t x = 0;
+//    // x |= (xh & 0x0f) << 8;
+//    x |= xl;
+//    
+//    char buf[16];
+//    snprintf(buf, sizeof (buf), "%u\r\n", x);
+//    printString(buf);
 }
 
 /**
@@ -53,8 +162,8 @@ static void initPins(void) {
     PORT_SPI |= (1 << PIN_MISO);
 
     // set SDA and SCL as output pin
-    DDR_I2C |= (1 << PIN_SCL);
-    DDR_I2C |= (1 << PIN_SDA);
+    // DDR_I2C |= (1 << PIN_SCL);
+    // DDR_I2C |= (1 << PIN_SDA);
 
     // set display CS, D/C and RST pin as output pin
     DDR_DSPI |= (1 << PIN_DCS);
@@ -92,6 +201,19 @@ static void initSPI(void) {
 }
 
 /**
+ * Enables I2C.
+ */
+static void initI2C(void) {
+    // set SDA and SCL as output pin
+    // DDRC |= (1 << PC5);
+    // DDRC |= (1 << PC4);
+    
+    // 100 kHz @ 16 Mhz
+    TWBR = 72;
+    TWCR |= (1 << TWEN);
+}
+
+/**
  * Enables touch interrupt.
  */
 static void initTouchInt(void) {
@@ -103,8 +225,9 @@ int main(void) {
 
     initUSART();
     initPins();
-    initTimer();
+    // initTimer();
     initSPI();
+    initI2C();
 
     // enable global interrupts
     sei();
@@ -113,27 +236,34 @@ int main(void) {
     
     initDisplay();
     initTouchInt();
-
+    
     while (true) {
         
         // show a demo once at the start
-        if (!once) {
-            // setFrame(0x0);
-            hackDemo();
-            once = true;
+//        if (!once) {
+//            // setFrame(0x0);
+//            hackDemo();
+//            once = true;
+//        }
+        
+        if (touch && !busy) {
+            busy = true;
+            readTouch();
+            busy = false;
+            touch = false;
         }
 
-        if (isStreamingData()) {
-            char data = UDR0;
-            stream(data);
-        }
+//        if (isStreamingData()) {
+//            char data = UDR0;
+//            stream(data);
+//        }
 
         // TODO block while busy?
-        if (isUSARTReceived()) {
-            char data[USART_LENGTH];
-            getUSARTData(data, USART_LENGTH);
-            handleCmd(data);
-        }
+//        if (isUSARTReceived()) {
+//            char data[USART_LENGTH];
+//            getUSARTData(data, USART_LENGTH);
+//            handleCmd(data);
+//        }
     }
 
     return 0;
