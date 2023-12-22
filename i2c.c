@@ -29,7 +29,7 @@ uint8_t i2cReadAck(void) {
     return TWDR;
 }
 
-uint8_t i2cRead(void) {
+uint8_t i2cReadNack(void) {
     TWCR = (1 << TWINT) | (1 << TWEN);
     loop_until_bit_is_set(TWCR, TWINT);
 

@@ -58,6 +58,34 @@ static void hwReset(void) {
     PORT_DISP |= (1 << PIN_RST);
 }
 
+/**
+ * Sets horizontal and/or vertical flip.
+ * 
+ * @param hflip
+ * @param vflip
+ */
+static void setMadctl(bool hflip, bool vflip) {
+    // Memory data access control
+    uint8_t madctl = 0b11110110;
+    madctl &= ~(VFLIP << 7);
+    madctl &= ~(HFLIP << 6);
+    madctl |= (BGR << 3);
+
+    if (vflip) {
+        // Row Address Order (MY)
+        madctl ^= (1 << 7);
+    }
+    if (hflip) {
+        // Column Address Order (MX)
+        madctl ^= (1 << 6);
+    }
+
+    displaySel();
+    displayCmd(MADCTL);
+    displayData(madctl);
+    displayDes();
+}
+
 void displaySetCmd(void) {
     PORT_DSPI &= ~(1 << PIN_DC);
 }
@@ -129,6 +157,8 @@ void fillArea(row_t row, col_t col,
               width_t width, height_t height,
               uint16_t color) {
 
+    setMadctl(false, false);
+
     // X address start/end
     uint16_t xs = col;
     uint16_t xe = col + width - 1;
@@ -168,26 +198,8 @@ void fillArea(row_t row, col_t col,
 void setArea(row_t row, col_t col, 
              width_t width, height_t height, 
              bool hflip, bool vflip) {
-    
-    // Memory data access control
-    uint8_t madctl = 0b11110110;
-    madctl &= ~(VFLIP << 7);
-    madctl &= ~(HFLIP << 6);
-    madctl |= (BGR << 3);
 
-    if (vflip) {
-        // Row Address Order (MY)
-        madctl ^= (1 << 7);
-    }
-    if (hflip) {
-        // Column Address Order (MX)
-        madctl ^= (1 << 6);
-    }
-
-    displaySel();
-    displayCmd(MADCTL);
-    displayData(madctl);
-    displayDes();
+    setMadctl(hflip, vflip);
 
     // X address start/end
     uint16_t xs = col;

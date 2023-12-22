@@ -9,6 +9,7 @@
 #define I2C_H
 
 #include <avr/io.h>
+#include <util/twi.h> // TODO check status register
 #include "pins.h"
 
 void i2cStart(void);
@@ -19,7 +20,7 @@ void i2cSend(uint8_t data);
 
 uint8_t i2cReadAck(void);
 
-uint8_t i2cRead(void);
+uint8_t i2cReadNack(void);
 
 #endif /* I2C_H */
 
