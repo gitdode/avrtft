@@ -1,6 +1,6 @@
 /* 
  * File:   bmp.h
- * Author: dode
+ * Author: torsten.roemer@luniks.net
  * 
  * Thanks to https://en.wikipedia.org/wiki/BMP_file_format
  *

@@ -34,8 +34,6 @@
 
 static bool once = false;
 static volatile uint16_t ints = 0;
-
-static bool busy = false;
 static volatile bool touch = false;
 
 ISR(INT0_vect) {
@@ -119,18 +117,16 @@ int main(void) {
             once = true;
         }
 
-        if (touch && !busy) {
-            busy = true;
+        if (touch) {
             touch = false;
 
-            uint16_t pos[2];
-            memset(&pos, 0, sizeof (pos));
-
-            readTouch(pos);
-            // TODO hflip, vflip
-            writeBitmap(DISPLAY_HEIGHT - pos[0], pos[1], 1);
-
-            busy = false;
+            uint16_t point[3];
+            memset(&point, 0, sizeof (point));
+            readTouch(point);
+            if (point[0]) {
+                // TODO hflip, vflip
+                writeBitmap(DISPLAY_HEIGHT - point[1], point[2], 1);
+            }
         }
 
 //        if (isStreamingData()) {

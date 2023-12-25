@@ -61,6 +61,12 @@ void printString(const char *data);
 void printUint(uint8_t data);
 
 /**
+ * Prints the given unsigned integer in hex notation including CR + LF 
+ * via USART.
+ */
+void printHex(uint8_t data);
+
+/**
  * Prints the given unsigned integer in binary notation including CR + LF
  * via USART.
  */
