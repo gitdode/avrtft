@@ -19,12 +19,14 @@
 #define T_EVT_NO_EVENT      3
 
 /**
- * Reads the current touch data into the given point and returns the event.
+ * Reads the current touch position into the given point and returns 
+ * the touch event.
  * 
- * It seems more data is not available; i.e. the gesture always reads 0x00
- * and the weight 0x10.
+ * It seems more data than that (besides the touch count) is not available; 
+ * i.e. the gesture always reads 0x00 and the weight 0x10.
  * 
- * @param point
+ * @param point touch position
+ * @return touch event
  */
 uint8_t readTouch(Point *point);
 

@@ -53,28 +53,6 @@
 #define SPACE_RGB16  16
 
 /**
- * Sets display to send a command.
- */
-void displaySetCmd(void);
-
-/**
- * Sets display to send data.
- */
-void displaySetData(void);
-
-/**
- * Sends the given command to the display.
- * @param cmd
- */
-void displayCmd(uint8_t cmd);
-
-/**
- * Sends the given data to the display.
- * @param data
- */
-void displayData(uint8_t data);
-
-/**
  * Initializes the display.
  */
 void initDisplay(void);

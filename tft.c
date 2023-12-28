@@ -59,6 +59,40 @@ static void hwReset(void) {
 }
 
 /**
+ * Sets display to send a command.
+ */
+static void displaySetCmd(void) {
+    PORT_DSPI &= ~(1 << PIN_DC);
+}
+
+/**
+ * Sets display to send data.
+ */
+static void displaySetData(void) {
+    PORT_DSPI |= (1 << PIN_DC);
+}
+
+/**
+ * Sends the given command to the display.
+ * 
+ * @param cmd
+ */
+static void displayCmd(uint8_t cmd) {
+    displaySetCmd();
+    transmit(cmd);
+}
+
+/**
+ * Sends the given data to the display.
+ * 
+ * @param data
+ */
+static void displayData(uint8_t data) {
+    displaySetData();
+    transmit(data);
+}
+
+/**
  * Sets horizontal and/or vertical flip.
  * 
  * @param hflip
@@ -116,24 +150,6 @@ static void raset(uint16_t ys, uint16_t ye) {
     displayData(ye >> 8);
     displayData(ye);
     displayDes();
-}
-
-void displaySetCmd(void) {
-    PORT_DSPI &= ~(1 << PIN_DC);
-}
-
-void displaySetData(void) {
-    PORT_DSPI |= (1 << PIN_DC);
-}
-
-void displayCmd(uint8_t cmd) {
-    displaySetCmd();
-    transmit(cmd);
-}
-
-void displayData(uint8_t data) {
-    displaySetData();
-    transmit(data);
 }
 
 void initDisplay(void) {
