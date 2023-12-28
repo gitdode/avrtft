@@ -80,6 +80,23 @@ void displayData(uint8_t data);
 void initDisplay(void);
 
 /**
+ * Sets to write data to display RAM.
+ */
+void writeStart(void);
+
+/**
+ * Writes the given byte to display RAM.
+ * 
+ * @param byte
+ */
+void writeByte(uint8_t byte);
+
+/**
+ * Completes writing data to display RAM.
+ */
+void writeEnd(void);
+
+/**
  * Sets the given color in the given area of the display.
  * 
  * @param row row in pixels, origin top left
@@ -117,22 +134,5 @@ void setArea(row_t row, col_t col,
 void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
                space_t space);
-
-/**
- * Sets to write data to display RAM.
- */
-void writeStart(void);
-
-/**
- * Writes the given byte to display RAM.
- * 
- * @param byte
- */
-void writeByte(uint8_t byte);
-
-/**
- * Completes writing data to display RAM.
- */
-void writeEnd(void);
 
 #endif /* TFT_H */

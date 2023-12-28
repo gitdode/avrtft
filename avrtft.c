@@ -90,7 +90,9 @@ static void initI2C(void) {
  */
 static void initTouchInt(void) {
     EIMSK |= (1 << INT0);
-    // EICRA |= (1 << ISC01); // interrupt on falling edge
+    // EICRA |= (1 << ISC00); // interrupt on any logical change
+    EICRA |= (1 << ISC01); // interrupt on falling edge
+    // EICRA |= (1 << ISC01) | (1 << ISC00); // interrupt on rising edge
 }
 
 int main(void) {
@@ -108,6 +110,10 @@ int main(void) {
     initDisplay();
     initTouchInt();
 
+    // ignore initial touch interrupt
+    _delay_ms(1);
+    touch = false;
+
     while (true) {
 
         // show a demo once at the start
@@ -119,20 +125,26 @@ int main(void) {
 
         if (touch) {
             touch = false;
-
-            uint16_t point[3];
-            memset(&point, 0, sizeof (point));
-            readTouch(point);
-            if (point[0]) {
-                // TODO hflip, vflip
-                writeBitmap(DISPLAY_HEIGHT - point[1], point[2], 1);
+            Point point = {0};
+            // memset(&point, 0, sizeof (Point));
+            uint8_t event = readTouch(&point);
+            // TODO use event type for something useful
+            switch (event) {
+                case T_EVT_PRESS_DOWN: break;
+                case T_EVT_CONTACT: break;
+                case T_EVT_LIFT_UP: break;
+                default: break;
             }
+
+            // TODO hflip, vflip
+            // writeBitmap(DISPLAY_HEIGHT - point.x, point.y, 1);
+            fillArea(DISPLAY_HEIGHT - point.x, point.y, 3, 3, 0xf000);
         }
 
-//        if (isStreamingData()) {
-//            char data = UDR0;
-//            stream(data);
-//        }
+        if (isStreamingData()) {
+            char data = UDR0;
+            stream(data);
+        }
 
         // TODO block while busy?
         if (isUSARTReceived()) {

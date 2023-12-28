@@ -8,32 +8,36 @@
 #include <avr/interrupt.h>
 #include "touch.h"
 #include "i2c.h"
+#include "tft.h"
 #include "usart.h"
 
-void readTouch(uint16_t *point) {
+uint8_t readTouch(Point *point) {
     i2cStart();
     i2cSend(FT62XX_WRITE);
-    // start reading at TD_STATUS
-    i2cSend(0x02);
+    // start reading at P1_XH
+    i2cSend(0x03);
 
     i2cStart();
     i2cSend(FT62XX_READ);
 
     // TD_STATUS
-    uint8_t tdStatus = i2cReadAck();
-    point[0] |= (tdStatus & 0x0f);
+    // uint8_t tdStatus = i2cReadAck();
+    // tdStatus = (tdStatus & 0x0f);
 
     // P1_X
     uint8_t xh = i2cReadAck();
     uint8_t xl = i2cReadAck();
-    point[1] |= (xh & 0x0f) << 8;
-    point[1] |= xl;
+    uint8_t eventFlag = (xh & 0xc0) >> 6;
+    point->x = (xh & 0x0f) << 8;
+    point->x |= xl;
 
     // P1_Y
     uint8_t yh = i2cReadAck();
     uint8_t yl = i2cReadNack();
-    point[2] |= (yh & 0x0f) << 8;
-    point[2] |= yl;
+    point->y = (yh & 0x0f) << 8;
+    point->y |= yl;
 
     i2cStop();
+
+    return eventFlag;
 }
