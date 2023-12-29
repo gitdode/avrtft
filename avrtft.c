@@ -31,6 +31,7 @@
 #include "utils.h"
 #include "bmp.h"
 #include "touch.h"
+#include "draw.h"
 
 static bool once = false;
 static volatile uint16_t ints = 0;
@@ -128,17 +129,7 @@ int main(void) {
             Point point = {0};
             // memset(&point, 0, sizeof (Point));
             uint8_t event = readTouch(&point);
-            // TODO use event type for something useful
-            switch (event) {
-                case T_EVT_PRESS_DOWN: break;
-                case T_EVT_CONTACT: break;
-                case T_EVT_LIFT_UP: break;
-                default: break;
-            }
-
-            // TODO hflip, vflip
-            // writeBitmap(DISPLAY_HEIGHT - point.x, point.y, 1);
-            fillArea(DISPLAY_HEIGHT - point.x, point.y, 3, 3, 0xf000);
+            draw(event, &point, 0x001f, 3);
         }
 
         if (isStreamingData()) {

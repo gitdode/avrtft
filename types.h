@@ -30,8 +30,8 @@ typedef uint8_t     length_t;
  * A point with its x and y coordinates.
  */
 typedef struct {
-    row_t x;
-    col_t y;
+    int16_t x;
+    int16_t y;
 } Point;
 
 #endif /* TYPES_H */
