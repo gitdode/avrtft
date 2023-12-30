@@ -28,24 +28,21 @@ static void grey4ToRGB16(uint8_t grey, uint8_t *rgb) {
     uint8_t grey4 = ((grey >> 4) & 1);
     uint8_t grey0 = ((grey >> 0) & 1);
     
-    rgb[0] = grey;
-    rgb[0] &= ~0b00001111;
+    rgb[0] = (grey & 0xf0);
     rgb[0] |= grey4 << 3;
     rgb[0] |= (grey >> 5);
 
-    rgb[1] = (grey << 3);
-    rgb[1] &= ~0b01111111;
+    rgb[1] = ((grey & 0xf0) << 3);
     rgb[1] |= (grey4 << 6) | (grey4 << 5);
-    rgb[1] |= (grey >> 3);
-    rgb[1] &= ~0b00000001;
+    rgb[1] |= ((grey & 0xf0) >> 3);
     rgb[1] |= (grey4 << 0);
 
     rgb[2] = (grey << 4);
-    rgb[2] |= (grey >> 1);
     rgb[2] |= (grey0 << 3);
+    rgb[2] |= ((grey & 0x0f) >> 1);
 
     rgb[3] = (grey << 7);
-    rgb[3] |= (grey << 1);
+    rgb[3] |= ((grey & 0x0f) << 1);
     rgb[3] |= (grey0 << 6) | (grey0 << 5) | (grey0 << 0);    
 }
 
