@@ -97,9 +97,9 @@ static void displayData(uint8_t data) {
  */
 static void madctl(bool hflip, bool vflip) {
     // Memory data access control
-    uint8_t madctl = 0b11110110;
-    madctl &= ~(VFLIP << 7);
-    madctl &= ~(HFLIP << 6);
+    uint8_t madctl = 0b00110110;
+    madctl |= (VFLIP << 7);
+    madctl |= (HFLIP << 6);
     madctl |= (BGR << 3);
 
     if (vflip) {

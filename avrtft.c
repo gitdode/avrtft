@@ -31,7 +31,7 @@
 #include "utils.h"
 #include "bmp.h"
 #include "touch.h"
-#include "draw.h"
+#include "paint.h"
 
 static bool once = false;
 static volatile uint16_t ints = 0;
@@ -119,7 +119,7 @@ int main(void) {
 
         // show a demo once at the start
         if (!once) {
-            setFrame(0xffff);
+            initPaint();
             // hackDemo();
             once = true;
         }
@@ -129,7 +129,7 @@ int main(void) {
             Point point = {0};
             // memset(&point, 0, sizeof (Point));
             uint8_t event = readTouch(&point);
-            draw(event, &point, 0x001f, 3);
+            paintEvent(event, &point);
         }
 
         if (isStreamingData()) {

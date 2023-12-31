@@ -22,11 +22,11 @@ BGR = 1
 # Invert color
 INVERT = 0
 # Flip image
-HFLIP = 0
-VFLIP = 0
+HFLIP = 1
+VFLIP = 1
 
 MAIN = avrtft.c
-SRC = bitmaps.c bmp.c cmd.c display.c draw.c emojis.c i2c.c tft.c touch.c \
+SRC = bitmaps.c bmp.c cmd.c display.c emojis.c i2c.c paint.c tft.c touch.c \
       font.c spi.c hack.c usart.c
 
 CC = avr-gcc
@@ -53,7 +53,7 @@ SRC += $(TARGET).c
 OBJ = $(SRC:.c=.o) 
 OBJ = $(SRC:.S=.o)
 	
-$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h draw.h emojis.h i2c.h tft.h \
+$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h emojis.h i2c.h paint.h tft.h \
 	       touch.h font.h pins.h spi.h types.h hack.h usart.h utils.h \
 	       Makefile
 
