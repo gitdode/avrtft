@@ -17,14 +17,14 @@ Currently implemented features:
 * Draw bitmaps
 * Write text and bitmaps via USART
 * Upload BMP images via USART (16-Bit 5/6/5 RGB)
-* Logging via USART
-* Basic capacitive touch support (FT6206)
+* Process touch events (FT6206)
+* Very basic paint application
+* Logging via USART 
 
 The AVR is clocked with a crystal for reliable communication via USART.
 
 Ideas:
 
-* Support touch
 * Read pictures from SD Card
 * Display 4K@50Hz videos...
 

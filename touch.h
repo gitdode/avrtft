@@ -13,10 +13,10 @@
 #define FT62XX_WRITE (0x38 << 1) & 0xfe
 #define FT62XX_READ  (0x38 << 1) | 0x01
 
-#define T_EVT_PRESS_DOWN    0
-#define T_EVT_LIFT_UP       1
-#define T_EVT_CONTACT       2
-#define T_EVT_NO_EVENT      3
+#define EVENT_PRESS_DOWN    0
+#define EVENT_LIFT_UP       1
+#define EVENT_CONTACT       2
+#define EVENT_NO_EVENT      3
 
 /**
  * Reads the current touch position into the given point and returns 

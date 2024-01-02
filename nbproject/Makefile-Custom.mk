@@ -45,7 +45,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/48b9b4a1/spi.o \
 	${OBJECTDIR}/_ext/48b9b4a1/tft.o \
 	${OBJECTDIR}/_ext/48b9b4a1/touch.o \
-	${OBJECTDIR}/draw.o
+	${OBJECTDIR}/paint.o
 
 
 # C Compiler Flags
@@ -112,9 +112,9 @@ ${OBJECTDIR}/_ext/48b9b4a1/touch.o: /home/dode/dev/avrtft/touch.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
 	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/touch.o /home/dode/dev/avrtft/touch.c
 
-${OBJECTDIR}/draw.o: draw.c
+${OBJECTDIR}/paint.o: paint.c
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/draw.o draw.c
+	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/paint.o paint.c
 
 # Subprojects
 .build-subprojects:

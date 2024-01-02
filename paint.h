@@ -18,6 +18,12 @@
 
 #define CTRL_COUNT 9
 #define CTRL_WIDTH DISPLAY_HEIGHT / CTRL_COUNT
+#define BITMAP_PADDING 5
+
+#define TOOL_FREEHAND   0
+#define TOOL_LINE       1
+#define TOOL_ERASER     2
+#define TOOL_CLEAR      3
 
 /**
  * Initializes and displays the paint application.
