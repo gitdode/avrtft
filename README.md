@@ -53,8 +53,8 @@ Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s` fo
 
 ## Paint application
 
-A super basic paint application created to learn something about processing 
-touch events and draw something on the screen.
+A super basic paint application created to learn about processing touch events 
+and draw something on the screen.  
 
 The FT6206 based touch screen of the 
 [Adafruit 2.8" Color TFT LCD with Cap Touch 320x240 ILI9341](https://www.adafruit.com/product/2090)
