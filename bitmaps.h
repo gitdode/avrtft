@@ -11,10 +11,12 @@
 #include <stdint.h>
 #include "types.h"
 
-#define FREEHAND    0
+#define FREE        0
 #define LINE        1
-#define ERASER      2
-#define CLEAR       3
+#define RECT        2
+#define ERASER      3
+#define THICK       4
+#define CLEAR       5
 
 /**
  * A bitmap with its width and height, and data.

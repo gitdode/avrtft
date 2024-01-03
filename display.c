@@ -1,5 +1,5 @@
 /* 
- * File:   display.h
+ * File:   display.c
  * Author: torsten.roemer@luniks.net
  *
  * Created on 18. April 2023, 21:56
@@ -23,12 +23,15 @@ void setFrame(uint16_t color) {
     fillArea(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, color);
 }
 
-void writeError(char *lines[], uint8_t length) {
-    setFrame(0xffff);
-    const __flash Font *hack = &hackFont;
-    for (uint8_t i = 0; i < length; i++) {
-        writeString(i * hack->height,  0, hack, lines[i]);
-    }    
+void drawRectangle(row_t row, col_t col, width_t width, height_t height, 
+                   uint8_t thickness, uint16_t color) {
+    width -= thickness;
+    height -= thickness;
+    
+    fillArea(row, col, width, thickness, color);
+    fillArea(row, col + width, thickness, height, color);
+    fillArea(row + height, col, width + thickness, thickness, color);
+    fillArea(row, col, thickness, height, color);
 }
 
 width_t writeBitmap(row_t row, col_t col, uint16_t index) {
@@ -71,6 +74,14 @@ void writeString(row_t row, col_t col, const __flash Font *font, const char *str
             offset = 0;            
         }
     }
+}
+
+void writeError(char *lines[], uint8_t length) {
+    setFrame(0xffff);
+    const __flash Font *hack = &hackFont;
+    for (uint8_t i = 0; i < length; i++) {
+        writeString(i * hack->height,  0, hack, lines[i]);
+    }    
 }
 
 void hackDemo(void) {
