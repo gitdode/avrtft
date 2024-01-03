@@ -23,6 +23,9 @@
 /** Display Hack demo: 'd'. */
 #define CMD_DEMO        'd'
 
+/** Paint toy: 'a'. */
+#define CMD_PAINT       'a'
+
 /**
  * Handles the given command.
  * @param data

@@ -30,15 +30,15 @@
 #include "display.h"
 #include "utils.h"
 #include "bmp.h"
-
-/* Timer0 interrupts per second */
-#define INTS_SEC  F_CPU / (256UL * 255)
+#include "touch.h"
+#include "paint.h"
 
 static bool once = false;
 static volatile uint16_t ints = 0;
+static volatile bool touch = false;
 
-ISR(TIMER0_COMPA_vect) {
-    ints++;
+ISR(INT0_vect) {
+    touch = true;
 }
 
 /**
@@ -51,6 +51,10 @@ static void initPins(void) {
     // drive SS (ensure master) and MISO high
     PORT_SPI |= (1 << PIN_SS);
     PORT_SPI |= (1 << PIN_MISO);
+
+    // set SDA and SCL as output pin
+    // DDR_I2C |= (1 << PIN_SCL);
+    // DDR_I2C |= (1 << PIN_SDA);
 
     // set display CS, D/C and RST pin as output pin
     DDR_DSPI |= (1 << PIN_DCS);
@@ -74,17 +78,22 @@ static void initSPI(void) {
 }
 
 /**
- * Sets up the timer.
+ * Enables I2C.
  */
-static void initTimer(void) {
-    // timer0 clear timer on compare match mode, TOP OCR0A
-    TCCR0A |= (1 << WGM01);
-    // timer0 clock prescaler/256/255 ~ 123 Hz @ 8 MHz
-    TCCR0B |= (1 << CS02);
-    OCR0A = 255;
+static void initI2C(void) {
+    // 100 kHz @ 16 Mhz
+    TWBR = 72;
+    TWCR |= (1 << TWEN);
+}
 
-    // enable timer0 compare match A interrupt
-    // TIMSK0 |= (1 << OCIE0A);
+/**
+ * Enables touch interrupt.
+ */
+static void initTouchInt(void) {
+    EIMSK |= (1 << INT0);
+    // EICRA |= (1 << ISC00); // interrupt on any logical change
+    EICRA |= (1 << ISC01); // interrupt on falling edge
+    // EICRA |= (1 << ISC01) | (1 << ISC00); // interrupt on rising edge
 }
 
 int main(void) {
@@ -92,21 +101,35 @@ int main(void) {
     initUSART();
     initPins();
     initSPI();
-    initTimer();
+    initI2C();
 
     // enable global interrupts
     sei();
-    
+
     _delay_ms(1000);
+
     initDisplay();
+    initTouchInt();
+
+    // ignore initial touch interrupt
+    _delay_ms(1);
+    touch = false;
 
     while (true) {
-        
+
         // show a demo once at the start
         if (!once) {
-            // setFrame(0x0);
-            hackDemo();
+            initPaint();
+            // hackDemo();
             once = true;
+        }
+
+        if (touch) {
+            touch = false;
+            Point point = {0};
+            // memset(&point, 0, sizeof (Point));
+            uint8_t event = readTouch(&point);
+            paintEvent(event, &point);
         }
 
         if (isStreamingData()) {

@@ -1,6 +1,6 @@
 /* 
  * File:   bmp.h
- * Author: dode
+ * Author: torsten.roemer@luniks.net
  *
  * Created on 22. November 2023, 23:10
  */

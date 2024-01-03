@@ -87,6 +87,12 @@ void printUint(uint8_t data) {
     printString(buf);
 }
 
+void printHex(uint8_t data) {
+    char buf[7];
+    snprintf(buf, sizeof (buf), "0x%x\r\n", data);
+    printString(buf);
+}
+
 void printByte(uint8_t byte) {
     char string[] = {'0', 'b', '?', '?', '?', '?', '?', '?', '?', '?', '\r', '\n', '\0'};
     for (uint8_t i = 8; i-- > 0; ) {

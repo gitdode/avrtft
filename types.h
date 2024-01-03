@@ -26,5 +26,13 @@ typedef uint8_t     code_t;
 /* Number of glyphs of a font */
 typedef uint8_t     length_t;
 
+/**
+ * A point with its x and y coordinates.
+ */
+typedef struct {
+    int16_t x;
+    int16_t y;
+} Point;
+
 #endif /* TYPES_H */
 

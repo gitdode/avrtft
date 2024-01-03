@@ -15,6 +15,7 @@
 #include "hack.h"
 #include "bitmaps.h"
 #include "bmp.h"
+#include "paint.h"
 
 /**
  * Sets the frame buffer to the given 16-Bit (5/6/5) RGB color.
@@ -82,6 +83,7 @@ void handleCmd(char *data) {
         case CMD_BITMAP: bitmap(data); break;
         case CMD_BMP:    bmp(data); break;
         case CMD_DEMO:   demo(); break;
+        case CMD_PAINT:  initPaint(); break;
         default: break;
     }
 }

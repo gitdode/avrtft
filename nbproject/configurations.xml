@@ -12,8 +12,14 @@
       <in>emojis.c</in>
       <in>font.c</in>
       <in>hack.c</in>
+      <in>i2c.c</in>
+      <in>i2c.h</in>
+      <in>paint.c</in>
+      <in>paint.h</in>
       <in>spi.c</in>
       <in>tft.c</in>
+      <in>touch.c</in>
+      <in>touch.h</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -67,9 +73,21 @@
       </item>
       <item path="/home/dode/dev/avrtft/hack.c" ex="false" tool="0" flavor2="3">
       </item>
+      <item path="/home/dode/dev/avrtft/i2c.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="/home/dode/dev/avrtft/i2c.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="/home/dode/dev/avrtft/spi.c" ex="false" tool="0" flavor2="3">
       </item>
       <item path="/home/dode/dev/avrtft/tft.c" ex="false" tool="0" flavor2="3">
+      </item>
+      <item path="/home/dode/dev/avrtft/touch.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="/home/dode/dev/avrtft/touch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="paint.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="paint.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

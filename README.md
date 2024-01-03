@@ -17,13 +17,17 @@ Currently implemented features:
 * Draw bitmaps
 * Write text and bitmaps via USART
 * Upload BMP images via USART (16-Bit 5/6/5 RGB)
-* Logging via USART
+* Process touch events (FT6206)
+* Very basic paint application
+* Logging via USART 
 
-The AVR is clocked with a crystal for reliable communication via USART.
+The AVR is clocked with a crystal for reliable communication via USART. 
+
+RAM usage currently is 210 bytes. Program memory is fully used, mainly by 
+font and emoji bitmaps.  
 
 Ideas:
 
-* Support touch
 * Read pictures from SD Card
 * Display 4K@50Hz videos...
 
@@ -39,10 +43,26 @@ Write some text and a bitmap, and upload a BMP image:
 `t 0 0 Just some text` // write text in Hack to row 0 column 0  
 `b 0 0 1` // write bitmap with index 1 (tiny Linus cat) to row 0 column 0  
 `p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image to row 0 column 0    
-`cat Bali160x128.bmp > /dev/ttyUSB0` // upload a "fullscreen" BMP image  
+`cat Bali160x128.bmp > /dev/ttyUSB0` // upload a BMP image  
 
 ## Enter emojis
 
 Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s` for a smiling emoji.
 
 ![IMG_20231129_004922](https://github.com/gitdode/avrtft/assets/11530253/3a6cbcdd-d004-48d9-a227-ba21f91dac0b)
+
+## Paint application
+
+A super basic paint application created to learn about processing touch events 
+and draw something on the screen.  
+
+The FT6206 based touch screen of the 
+[Adafruit 2.8" Color TFT LCD with Cap Touch 320x240 ILI9341](https://www.adafruit.com/product/2090)
+works quite well but at least for me the coordinates of touches close to the 
+long edges of the screen are a bit off (too close to the edge) and there seems 
+to be no calibration capability - the data sheet mentions "auto calibration".
+
+But still it is fun and it should be possible to create an application 
+supporting touch with reliable usability. 
+
+![IMG_20240103_134738](https://github.com/gitdode/avrtft/assets/11530253/5e9947cc-e236-49e7-a06b-1dbfffa304b7)
