@@ -65,4 +65,4 @@ to be no calibration capability - the data sheet mentions "auto calibration".
 But still it is fun and it should be possible to create an application 
 supporting touch with reliable usability. 
 
-
+![IMG_20240103_134738](https://github.com/gitdode/avrtft/assets/11530253/5e9947cc-e236-49e7-a06b-1dbfffa304b7)
