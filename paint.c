@@ -61,6 +61,7 @@ void paintEvent(uint8_t event, Point *point) {
         if (event == EVENT_PRESS_DOWN) {
             // color selected
             uint8_t i = point->y / (CTRL_WIDTH + 1);
+            // repaint colors, highlight and select color
             paintColors();
             drawRectangle(CTRL_WIDTH * i, 0, 
                           CTRL_WIDTH, CTRL_WIDTH, 2, 0x0);
@@ -69,6 +70,7 @@ void paintEvent(uint8_t event, Point *point) {
     } else if (point->x > DISPLAY_WIDTH - CTRL_WIDTH - thoff) {
         if (event == EVENT_PRESS_DOWN) {
             uint8_t i = point->y / (CTRL_WIDTH + 1);
+            // tool selected
             if (i == TOOL_CLEAR) {
                 // clear canvas
                 fillArea(0, CTRL_WIDTH, DISPLAY_WIDTH - 2 * CTRL_WIDTH + 1, 
