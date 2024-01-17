@@ -77,6 +77,10 @@
       </item>
       <item path="/home/dode/dev/avrtft/i2c.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="/home/dode/dev/avrtft/paint.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="/home/dode/dev/avrtft/paint.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="/home/dode/dev/avrtft/spi.c" ex="false" tool="0" flavor2="3">
       </item>
       <item path="/home/dode/dev/avrtft/tft.c" ex="false" tool="0" flavor2="3">
@@ -84,10 +88,6 @@
       <item path="/home/dode/dev/avrtft/touch.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="/home/dode/dev/avrtft/touch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="paint.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="paint.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -79,7 +79,7 @@ void paintEvent(uint8_t event, Point *point) {
                 // increment line thickness
                 thick += 3;
                 if (thick > 12) thick = 3;
-                thoff = thick / 2 + 1;
+                thoff = (thick + 1) / 2;
             } else if (i < TOOL_COUNT) {
                 // repaint tools, highlight and select tool
                 paintTools();

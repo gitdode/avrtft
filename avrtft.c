@@ -33,8 +33,6 @@
 #include "touch.h"
 #include "paint.h"
 
-static bool once = false;
-static volatile uint16_t ints = 0;
 static volatile bool touch = false;
 
 ISR(INT0_vect) {
@@ -115,15 +113,11 @@ int main(void) {
     _delay_ms(1);
     touch = false;
 
+    // do something at the start
+    initPaint();
+    // hackDemo();
+
     while (true) {
-
-        // show a demo once at the start
-        if (!once) {
-            initPaint();
-            // hackDemo();
-            once = true;
-        }
-
         if (touch) {
             touch = false;
             Point point = {0};
