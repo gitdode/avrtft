@@ -27,7 +27,7 @@ uint8_t readTouch(Point *point) {
     // P1_X
     uint8_t xh = i2cReadAck();
     uint8_t xl = i2cReadAck();
-    uint8_t eventFlag = (xh & 0xc0) >> 6;
+    uint8_t eventFlag = xh >> 6;
     // swapping x and y according to display's row/column exchange default
     point->y = (xh & 0x0f) << 8;
     point->y |= xl;
