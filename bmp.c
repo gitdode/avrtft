@@ -58,6 +58,34 @@ static void push(uint8_t byte) {
     buf[0] = byte;
 }
 
+/**
+ * Joins the four most recent bytes in the queue, swapping endianess.
+ * 
+ * @return joined bytes
+ */
+static uint32_t join4(void) {
+    union {
+        uint32_t joined;
+        uint8_t bytes[4];
+    } uni = {.bytes = {buf[3], buf[2], buf[1], buf[0]}};
+    
+    return uni.joined;
+}
+
+/**
+ * Joins the two most recent bytes in the queue, swapping endianess.
+ * 
+ * @return joined bytes
+ */
+static uint16_t join2(void) {
+    union {
+        uint16_t joined;
+        uint8_t bytes[2];
+    } uni = {.bytes = {buf[1], buf[0]}};
+    
+    return uni.joined;
+}
+
 void prepare(row_t srow, col_t scol) {
     row = srow;
     col = scol;
@@ -88,39 +116,25 @@ void stream(uint8_t byte) {
     }
     
     if (offset == 0x0a + 3) {
-        pixelStart = 0;
-        pixelStart |= ((uint32_t)buf[0]) << 24;
-        pixelStart |= ((uint32_t)buf[1]) << 16;
-        pixelStart |= buf[2] << 8;
-        pixelStart |= buf[3] << 0;
+        pixelStart = join4();
     }
     
     /*
     if (offset == 0x0e + 3) {
-        headerSize |= ((uint32_t)buf[0]) << 24;
-        headerSize |= ((uint32_t)buf[1]) << 16;
-        headerSize |= buf[2] << 8;
-        headerSize |= buf[3] << 0;
+        headerSize = join4();
     }
     */
     
     if (offset == 0x12 + 3) {
-        bitmapWidth |= ((uint32_t)buf[0]) << 24;
-        bitmapWidth |= ((uint32_t)buf[1]) << 16;
-        bitmapWidth |= buf[2] << 8;
-        bitmapWidth |= buf[3] << 0;
+        bitmapWidth = join4();
     }
     
     if (offset == 0x16 + 3) {
-        bitmapHeight |= ((uint32_t)buf[0]) << 24;
-        bitmapHeight |= ((uint32_t)buf[1]) << 16;
-        bitmapHeight |= buf[2] << 8;
-        bitmapHeight |= buf[3] << 0;
+        bitmapHeight = join4();
     }
     
     if (offset == 0x1c + 1) {
-        bitsPerPixel |= buf[0] << 8;
-        bitsPerPixel |= buf[1] << 0;
+        bitsPerPixel = join2();
         
         if (bitsPerPixel != 16) {
             // not a 16-Bit RGB BMP
