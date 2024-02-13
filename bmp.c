@@ -47,43 +47,16 @@ static void reset(void) {
 }
 
 /**
- * Pushes the given byte on the queue and the oldest off the queue.
+ * Pushes the given byte on the queue and the oldest off the queue,
+ * LSB at the smallest index/address.
  * 
  * @param byte
  */
 static void push(uint8_t byte) {
-    for (uint8_t i = BUF_SIZE; i-- > 1;) {
-        buf[i] = buf[i - 1];
+    for (uint8_t i = 0; i < BUF_SIZE - 1; i++) {
+        buf[i] = buf[i + 1];
     }
-    buf[0] = byte;
-}
-
-/**
- * Joins the four most recent bytes in the queue, swapping endianess.
- * 
- * @return joined bytes
- */
-static uint32_t join4(void) {
-    union {
-        uint32_t joined;
-        uint8_t bytes[4];
-    } uni = {.bytes = {buf[3], buf[2], buf[1], buf[0]}};
-    
-    return uni.joined;
-}
-
-/**
- * Joins the two most recent bytes in the queue, swapping endianess.
- * 
- * @return joined bytes
- */
-static uint16_t join2(void) {
-    union {
-        uint16_t joined;
-        uint8_t bytes[2];
-    } uni = {.bytes = {buf[1], buf[0]}};
-    
-    return uni.joined;
+    buf[BUF_SIZE - 1] = byte;
 }
 
 void prepare(row_t srow, col_t scol) {
@@ -102,7 +75,7 @@ void stream(uint8_t byte) {
     push(byte);
     
     if (offset == 0x0 + 1) {
-        if (!(buf[1] == 0x42 && buf[0] == 0x4d)) {
+        if (!(buf[2] == 0x42 && buf[3] == 0x4d)) {
             // not a BMP
             // TODO __flash
             char *lines[] = {
@@ -116,25 +89,25 @@ void stream(uint8_t byte) {
     }
     
     if (offset == 0x0a + 3) {
-        pixelStart = join4();
+        memcpy(&pixelStart, &buf, sizeof (pixelStart));
     }
     
     /*
     if (offset == 0x0e + 3) {
-        headerSize = join4();
+        memcpy(&headerSize, &buf, 4);
     }
     */
     
     if (offset == 0x12 + 3) {
-        bitmapWidth = join4();
+        memcpy(&bitmapWidth, &buf, sizeof (bitmapWidth));
     }
     
     if (offset == 0x16 + 3) {
-        bitmapHeight = join4();
+        memcpy(&bitmapHeight, &buf, sizeof (bitmapHeight));
     }
     
     if (offset == 0x1c + 1) {
-        bitsPerPixel = join2();
+        memcpy(&bitsPerPixel, &buf[2], sizeof (bitsPerPixel));
         
         if (bitsPerPixel != 16) {
             // not a 16-Bit RGB BMP
@@ -177,11 +150,10 @@ void stream(uint8_t byte) {
     
     // TODO calculate number of pad bytes and discard them
     if (offset < pixelEnd && offset >= pixelStart) {
-        // swap endianess
-        // TODO get rid of division
+        // no expensive division done since modulo is a power of 2
         if ((offset - pixelStart) % 2) {
-            writeByte(buf[0]);
             writeByte(buf[1]);
+            writeByte(buf[0]);
         }
     }
     
