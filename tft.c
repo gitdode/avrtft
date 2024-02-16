@@ -42,7 +42,7 @@ static void grey4ToRGB16(uint8_t grey, uint8_t *rgb) {
     uint8_t grey0 = ((grey >> 0) & 1);
     
     rgb[0] = (grey & 0xf0);
-    rgb[0] |= grey4 << 3;
+    rgb[0] |= (grey4 << 3);
     rgb[0] |= (grey >> 5);
 
     rgb[1] = ((grey & 0xf0) << 3);
