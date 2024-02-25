@@ -25,6 +25,11 @@
 #define PIN_SDA   PC4
 #define PIN_TINT  PD2 // touch controller interrupt
 
+/* SD Card Reader SPI */
+#define DDR_SDC   DDRC
+#define PORT_SDC  PORTC
+#define PIN_SDCS  PC3
+
 /* Display SPI */
 #define DDR_DSPI  DDRB
 #define PORT_DSPI PORTB

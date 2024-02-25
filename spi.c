@@ -10,6 +10,14 @@
 #include "pins.h"
 #include "spi.h"
 
+void sdCardSel(void) {
+    PORT_SDC &= ~(1 << PIN_SDCS);
+}
+
+void sdCardDes(void) {
+    PORT_SDC |= (1 << PIN_SDCS);
+}
+
 void displaySel(void) {
     PORT_DSPI &= ~(1 << PIN_DCS);
 }

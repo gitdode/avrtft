@@ -9,6 +9,16 @@
 #define SPI_H
 
 /**
+ * Selects the SD card to talk to via SPI.
+ */
+void sdCardSel(void);
+
+/**
+ * Delects the SD card to talk to via SPI.
+ */
+void sdCardDes(void);
+
+/**
  * Selects the display to talk to via SPI.
  */
 void displaySel(void);

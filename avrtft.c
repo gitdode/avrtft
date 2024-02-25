@@ -32,6 +32,7 @@
 #include "bmp.h"
 #include "touch.h"
 #include "paint.h"
+#include "sdcard.h"
 
 static volatile bool touch = false;
 
@@ -53,6 +54,9 @@ static void initPins(void) {
     // set SDA and SCL as output pin
     // DDR_I2C |= (1 << PIN_SCL);
     // DDR_I2C |= (1 << PIN_SDA);
+
+    // set SD card reader CS as output pin
+    DDR_SDC |= (1 << PIN_SDCS);
 
     // set display CS, D/C and RST pin as output pin
     DDR_DSPI |= (1 << PIN_DCS);
@@ -99,6 +103,7 @@ int main(void) {
     initUSART();
     initPins();
     initSPI();
+    initSDCard();
     initI2C();
 
     // enable global interrupts
