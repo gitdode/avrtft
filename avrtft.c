@@ -34,6 +34,8 @@
 #include "paint.h"
 #include "sdcard.h"
 
+bool sdcard = false;
+
 static volatile bool touch = false;
 
 ISR(INT0_vect) {
@@ -103,7 +105,6 @@ int main(void) {
     initUSART();
     initPins();
     initSPI();
-    initSDCard();
     initI2C();
 
     // enable global interrupts
@@ -111,6 +112,7 @@ int main(void) {
 
     _delay_ms(1000);
 
+    sdcard = initSDCard();
     initDisplay();
     initTouchInt();
 
@@ -121,6 +123,9 @@ int main(void) {
     // do something at the start
     initPaint();
     // hackDemo();
+    if (sdcard) {
+        readSDCard();
+    }
 
     while (true) {
         if (touch) {

@@ -89,7 +89,7 @@ void printUint(uint8_t data) {
 
 void printHex(uint8_t data) {
     char buf[7];
-    snprintf(buf, sizeof (buf), "0x%x\r\n", data);
+    snprintf(buf, sizeof (buf), "0x%02x\r\n", data);
     printString(buf);
 }
 
