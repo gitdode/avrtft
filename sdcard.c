@@ -2,7 +2,7 @@
  * File:   sdcard.c
  * Author: torsten.roemer@luniks.net
  * 
- * Thanks to http://rjhcoding.com/avrc-sd-interface-1.php
+ * Thanks to http://rjhcoding.com/avrc-sd-interface-1.php ff.
  *
  * Created on 24. Februar 2024, 00:13
  */
@@ -58,8 +58,8 @@ static void readR3_7(uint8_t *response) {
     // read R1
     response[0] = readR1();
 
-    // stop reading if R1 has an error
-    if (response[0] > 0b00000001) {       
+    // stop reading if R1 indicates an error
+    if (response[0] > 0x01) {
         return;
     }
 
@@ -107,7 +107,7 @@ static void powerOn(void) {
 /**
  * Sends CMD0 to set idle SPI mode and returns the R1 response.
  * 
- * @return R1.
+ * @return R1
  */
 static uint8_t sendIdle(void) {
     select();
@@ -150,46 +150,99 @@ static void sendOCR(uint8_t *response) {
     deselect();
 }
 
+/**
+ * Sends CMD55 to tell that an app command is next and returns the R1 response.
+ * 
+ * @return R1
+ */
+static uint8_t sendApp(void) {
+    select();
+
+    command(CMD55, CMD55_ARG, CMD55_CRC);
+    uint8_t response = readR1();
+
+    deselect();
+
+    return response;
+}
+
+/**
+ * Sends ACMD41 to start initialization and returns the R1 response.
+ * 
+ * @return R1
+ */
+static uint8_t sendOpCond(void) {
+    select();
+
+    command(ACMD41, ACMD41_ARG, ACMD41_CRC);
+    uint8_t response = readR1();
+
+    deselect();
+
+    return response;
+}
+
 void initSDCard(void) {
+    uint8_t response[5];
+    
     // power on
     powerOn();
 
     // go to idle state
-    uint8_t idle = sendIdle();
-    if (idle > 0b00000001) {
+    response[0] = sendIdle();
+    if (response[0] > 0x01) {
         printString("sd card error\r\n");
-        printByte(idle);
+        printByte(response[0]);
         return;
     }
 
     // send interface condition
-    uint8_t ifcond[5];
-    sendIfCond(ifcond);
-    if (ifcond[0] & (1 << CMD_ILLEGAL)) {
+    sendIfCond(response);
+    if (response[0] & (1 << CMD_ILLEGAL)) {
         printString("sd card is V1.x or not sd card\r\n");
         return;
-    } else if (ifcond[0] > 0b00000001) {
+    } else if (response[0] > 0x01) {
         printString("sd card error\r\n");
         return;
-    } else if (ifcond[4] != 0xaa) {
+    } else if (response[4] != 0xaa) {
         printString("sd card echo pattern mismatch\r\n");
         return;
     }
     
+    uint8_t attempts = 0;
+    do {
+        if (attempts > 100) {
+            printString("sd card did not become ready\r\n");
+            return;
+        }
+        
+        // send app command
+        response[0] = sendApp();
+        if (response[0] < 0x02) {
+            // start initialization
+            response[0] = sendOpCond();
+        }
+        
+        _delay_ms(10);
+        attempts++;
+    } while (response[0] != 0x00);
+   
     // send operation conditions register 
-    uint8_t ocr[5];
-    sendOCR(ocr);
-    if (ocr[0] > 0b00000001) {
+    sendOCR(response);
+    if (response[0] > 0x01) {
         printString("sd card error\r\n");
+        return;
+    } else if (!(response[1] & 0x80)) {
+        printString("sd card not ready\r\n");
         return;
     }
 
     /*
-    printByte(ocr[0]);
-    printByte(ocr[1]);
-    printByte(ocr[2]);
-    printByte(ocr[3]);
-    printByte(ocr[4]);
+    printByte(response[0]);
+    printByte(response[1]);
+    printByte(response[2]);
+    printByte(response[3]);
+    printByte(response[4]);
     */
     
     printString("sd card looks good so far\r\n");

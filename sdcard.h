@@ -21,9 +21,17 @@
 #define CMD8_ARG    0x0000001aa
 #define CMD8_CRC    0x86
 
+#define CMD55       55
+#define CMD55_ARG   0x00000000
+#define CMD55_CRC   0x00
+
 #define CMD58       58
 #define CMD58_ARG   0x00000000
 #define CMD58_CRC   0x00
+
+#define ACMD41      41
+#define ACMD41_ARG  0x40000000
+#define ACMD41_CRC  0x00
 
 #define CMD_ILLEGAL 2
 
