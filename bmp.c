@@ -152,8 +152,8 @@ void stream(uint8_t byte) {
     if (offset < pixelEnd && offset >= pixelStart) {
         // no expensive division done since modulo is a power of 2
         if ((offset - pixelStart) % 2) {
-            writeByte(buf[1]);
-            writeByte(buf[0]);
+            writeByte(buf[3]);
+            writeByte(buf[2]);
         }
     }
     
