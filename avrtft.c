@@ -124,6 +124,9 @@ int main(void) {
     initPaint();
     // hackDemo();
     if (sdcard) {
+        // writeSDCard();
+        // without delay, reading immediately after writing hangs. why?
+        // _delay_ms(10);
         readSDCard();
     }
 

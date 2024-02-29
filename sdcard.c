@@ -8,7 +8,6 @@
  */
 
 #include "sdcard.h"
-#include "bmp.h"
 
 /**
  * Transmits the given command, argument and CRC value.
@@ -153,7 +152,7 @@ static uint8_t sendApp(void) {
 }
 
 /**
- * Sends CMD58 to check version and voltage and reads the R3 response
+ * Sends CMD58 to read the OCR register and reads the R3 response
  * into the given array of 5 bytes.
  * 
  * @param R3
@@ -184,27 +183,28 @@ static uint8_t sendOpCond(void) {
 }
 
 /**
- * Sends CMD17 to read a single block at the given address, 
- * reads the block into the given array and returns the R1 response.
+ * Sends CMD17 to read a single block at the given address, reads the block 
+ * into the given array and returns true on success, false otherwise.
  * 
  * @param address
  * @param block
- * @return R1
+ * @return success
  */
-static uint8_t readSingleBlock(uint32_t address, uint8_t *block) {
+static bool readSingleBlock(uint32_t address, uint8_t *block) {
     select();
     
     command(CMD17, address, CMD17_CRC);
     uint8_t response = readR1();
+    uint8_t token = 0xff;
+    bool success = false;
 
-    if (response == 0x00) {
+    if (response == SD_SUCCESS) {
         // read command was successful, wait for start block token
-        uint8_t token = 0xff;
         for (uint16_t attempt = 0; attempt < SD_MAX_READ && token == 0xff; attempt++) {
             token = transmit(0xff);
         }
 
-        if (token == 0xfe) {
+        if (token == SD_START_BLOCK) {
             // start block token received, 512 data bytes follow
             for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
                 block[i] = transmit(0xff);
@@ -213,12 +213,59 @@ static uint8_t readSingleBlock(uint32_t address, uint8_t *block) {
             // 16-bit CRC (ignore for now)
             transmit(0xff);
             transmit(0xff);
+            
+            success = true;
         }
     }
     
     deselect();
     
-    return response;
+    return success;
+}
+
+/**
+ * Sends CMD24 to write a single block at the given address, writes the block 
+ * from the given array and returns true on success, false otherwise.
+ * 
+ * @param address
+ * @param block
+ * @return success
+ */
+static bool writeSingleBlock(uint32_t address, uint8_t *block) {
+    select();
+    
+    command(CMD24, address, CMD24_CRC);
+    uint8_t response = readR1();
+    uint8_t token = 0xff;
+    bool success = false;
+
+    if (response == SD_SUCCESS) {
+        // write command was successful, send start block token
+        transmit(SD_START_BLOCK);
+
+        // write 512 data bytes
+        for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
+            transmit(block[i]);
+        }
+
+        // wait for data response
+        for (uint16_t attempt = 0; attempt < SD_MAX_WRITE && token == 0xff; attempt++) {
+            token = transmit(0xff);
+        }
+        
+        if ((token & 0x0f) == 0x05) {
+            // data was accepted, wait while busy programming data
+            for (uint16_t attempt = 0; attempt < SD_MAX_WRITE && token == 0x00; attempt++) {
+                token = transmit(0xff);
+            }
+            
+            success = true;
+        }
+    }
+    
+    deselect();
+    
+    return success;
 }
 
 bool initSDCard(void) {
@@ -230,24 +277,24 @@ bool initSDCard(void) {
     // go to idle state
     response[0] = sendIdle();
     if (response[0] > 0x01) {
-        printString("sd card error\r\n");
-        printByte(response[0]);
+        printString("sd card error 0\r\n");
         return false;
     }
 
     // send interface condition
     sendIfCond(response);
-    if (response[0] & (1 << CMD_ILLEGAL)) {
+    if (response[0] & (1 << SD_CMD_ILLEGAL)) {
         printString("sd card is V1.x or not sd card\r\n");
         return false;
     } else if (response[0] > 0x01) {
-        printString("sd card error\r\n");
+        printString("sd card error 8\r\n");
         return false;
     } else if (response[4] != 0xaa) {
         printString("sd card echo pattern mismatch\r\n");
         return false;
     }
     
+    // initialize to ready state
     uint8_t attempts = 0;
     do {
         if (attempts > 100) {
@@ -264,12 +311,12 @@ bool initSDCard(void) {
         
         _delay_ms(10);
         attempts++;
-    } while (response[0] != 0x00);
+    } while (response[0] != SD_SUCCESS);
    
     // send operation conditions register 
     sendOCR(response);
     if (response[0] > 0x01) {
-        printString("sd card error\r\n");
+        printString("sd card error 58\r\n");
         return false;
     } else if (!(response[1] & 0x80)) {
         printString("sd card not ready\r\n");
@@ -283,13 +330,24 @@ bool initSDCard(void) {
 
 void readSDCard(void) {
     uint8_t block[SD_BLOCK_SIZE];
-    uint8_t response = readSingleBlock(0, block);
-    if (response == 0x00) {
+    if (readSingleBlock(0, block)) {
         for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
             char buf[3];
             snprintf(buf, sizeof (buf), "%02x", block[i]);
             printString(buf);
         }
         printString("\r\n");
+    }
+}
+
+void writeSDCard(void) {
+    uint8_t block[SD_BLOCK_SIZE] = {0};
+    block[0] = 0xde;
+    block[1] = 0xad;
+    block[2] = 0xbe;
+    block[3] = 0xef;
+
+    if (writeSingleBlock(0, block)) {
+        printString("wrote block\r\n");
     }
 }

@@ -25,6 +25,9 @@
 #define CMD17       17
 #define CMD17_CRC   0x00
 
+#define CMD24       24
+#define CMD24_CRC   0x00
+
 #define CMD55       55
 #define CMD55_ARG   0x00000000
 #define CMD55_CRC   0x00
@@ -37,9 +40,14 @@
 #define ACMD41_ARG  0x40000000
 #define ACMD41_CRC  0x00
 
-#define CMD_ILLEGAL     2
 #define SD_MAX_READ     50000 // SPI clock ticks in 100 ms
+#define SD_MAX_WRITE    125000 // SPI clock ticks in 250 ms
 #define SD_BLOCK_SIZE   512
+
+#define SD_CMD_ILLEGAL  2
+
+#define SD_SUCCESS      0x00
+#define SD_START_BLOCK  0xfe
 
 /**
  * Initializes the SD Card and returns true on success, false otherwise.
@@ -49,5 +57,7 @@
 bool initSDCard(void);
 
 void readSDCard(void);
+
+void writeSDCard(void);
 
 #endif /* SDCARD_H */
