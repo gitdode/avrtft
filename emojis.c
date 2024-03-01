@@ -838,11 +838,11 @@ const __flash Glyph glyphs[] = {
     {'U', 16, THUMB_UP},
     {'a', 16, SAD},
     {'b', 16, BLUSH},
-    {'e', 16, SMILE_TEAR},
+    // {'e', 16, SMILE_TEAR}, sacrificed for flash memory
     {'g', 16, GRIN},
     {'h', 16, HUG},
     {'m', 16, MELT},
-    {'n', 16, GRIN_TEAR},
+    // {'n', 16, GRIN_TEAR}, sacrificed for flash memory
     {'o', 16, MOON},
     {'r', 16, HERBS},
     {'s', 16, SMILE},

@@ -32,6 +32,9 @@
 #include "bmp.h"
 #include "touch.h"
 #include "paint.h"
+#include "sdcard.h"
+
+bool sdcard = false;
 
 static volatile bool touch = false;
 
@@ -53,6 +56,9 @@ static void initPins(void) {
     // set SDA and SCL as output pin
     // DDR_I2C |= (1 << PIN_SCL);
     // DDR_I2C |= (1 << PIN_SDA);
+
+    // set SD card reader CS as output pin
+    DDR_SDC |= (1 << PIN_SDCS);
 
     // set display CS, D/C and RST pin as output pin
     DDR_DSPI |= (1 << PIN_DCS);
@@ -106,6 +112,7 @@ int main(void) {
 
     _delay_ms(1000);
 
+    sdcard = initSDCard();
     initDisplay();
     initTouchInt();
 
@@ -114,7 +121,11 @@ int main(void) {
     touch = false;
 
     // do something at the start
-    initPaint();
+    if (sdcard) {
+        readSD(0);
+    } else {
+        initPaint();
+    }
     // hackDemo();
 
     while (true) {

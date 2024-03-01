@@ -12,6 +12,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include "types.h"
+#include "sdcard.h"
+
+#define BMP_READY   0
+#define BMP_BUSY    1
+#define BMP_ERROR   2
 
 /**
  * Prepares to "stream" a BMP image via USART to the display,
@@ -29,8 +34,16 @@ void prepare(row_t row, col_t col);
  * are currently not supported.
  * 
  * @param byte raw BMP byte recieved via USART
+ * @return status current status parsing BMP
  */
-void stream(uint8_t byte);
+uint8_t stream(uint8_t byte);
+
+/**
+ * Reads a BMP image raw from the SD card starting at the given address.
+ * 
+ * @param address start address
+ */
+void readSD(uint32_t address);
 
 #endif /* BMP_H */
 
