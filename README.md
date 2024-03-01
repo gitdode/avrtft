@@ -1,6 +1,6 @@
 # AVRTFT
 
-Simple project to drive a TFT LCD with an AVR MCU (ATmega328P) and avr-libc.  
+Experimental project to drive a TFT LCD with an AVR MCU (ATmega328P) and avr-libc.  
 
 Currently supported displays/drivers:
 
@@ -17,19 +17,15 @@ Currently implemented features:
 * Draw bitmaps
 * Write text and bitmaps via USART
 * Upload BMP images via USART (16-Bit 5/6/5 RGB)
+* Basic SD card support: read and write blocks of 512 bytes
+* Read BMP images from SD card (raw)
 * Process touch events (FT6206)
 * Very basic paint application
-* Logging via USART 
-
-The AVR is clocked with a crystal for reliable communication via USART. 
-
-RAM usage currently is 210 bytes. Program memory is fully used, mainly by 
-font and emoji bitmaps.  
+* Logging via USART
 
 Ideas:
 
-* Read pictures from SD Card
-* Display 4K@50Hz videos...
+* Make features usable from a touch screen menu
 
 ![IMG_20231125_011054](https://github.com/gitdode/avrtft/assets/11530253/cd3d94eb-fb16-4d78-9eaa-bebfec8f8ef7)
 
@@ -44,6 +40,7 @@ Write some text and a bitmap, and upload a BMP image:
 `b 0 0 1` // write bitmap with index 1 (tiny Linus cat) to row 0 column 0  
 `p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image to row 0 column 0    
 `cat Bali160x128.bmp > /dev/ttyUSB0` // upload a BMP image  
+`s 0` // read BMP image from SD card starting at address 0
 `a` // start paint application
 
 ## Enter emojis

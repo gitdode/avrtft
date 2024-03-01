@@ -8,14 +8,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "cmd.h"
-#include "usart.h"
-#include "tft.h"
-#include "display.h"
-#include "font.h"
-#include "hack.h"
-#include "bitmaps.h"
-#include "bmp.h"
-#include "paint.h"
+
+extern bool sdcard;
 
 /**
  * Sets the frame buffer to the given 16-Bit (5/6/5) RGB color.
@@ -67,6 +61,18 @@ static void bmp(char *data) {
     prepare(row, col);
 }
 
+static void bmpSD(char *data) {
+    strtok(data, " ");
+    char *end;
+    uint32_t address = strtol(strtok(NULL, " "), &end, 10);
+    
+    if (sdcard) {
+        readSD(address);
+    } else {
+        printString("SD card not inserted?\r\n");
+    }
+}
+
 /**
  * Writes the Hack demo.
  */
@@ -82,6 +88,7 @@ void handleCmd(char *data) {
         case CMD_TEXT:   text(data); break;
         case CMD_BITMAP: bitmap(data); break;
         case CMD_BMP:    bmp(data); break;
+        case CMD_BMP_SD: bmpSD(data); break;
         case CMD_DEMO:   demo(); break;
         case CMD_PAINT:  initPaint(); break;
         default: break;

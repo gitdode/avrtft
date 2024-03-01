@@ -56,8 +56,24 @@
  */
 bool initSDCard(void);
 
-void readSDCard(void);
+/**
+ * Reads a single block of 512 bytes starting at the given address 
+ * into the given buffer and returns true on success, false otherwise.
+ * 
+ * @param address address in 512 byte units
+ * @param block 512 byte buffer
+ * @return success
+ */
+bool readSingleBlock(uint32_t address, uint8_t *block);
 
-void writeSDCard(void);
+/**
+ * Writes a single block of 512 bytes starting at the given address 
+ * from the given buffer and returns true on success, false otherwise.
+ * 
+ * @param address address in 512 byte units
+ * @param block 512 byte buffer
+ * @return success
+ */
+bool writeSingleBlock(uint32_t address, uint8_t *block);
 
 #endif /* SDCARD_H */

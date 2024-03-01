@@ -66,11 +66,11 @@ void prepare(row_t srow, col_t scol) {
     setStreamingData(true);
 }
 
-void stream(uint8_t byte) {
+uint8_t stream(uint8_t byte) {
     if (error) {
         // TODO recover from error condition
         // setStreaming(false);
-        return;
+        return BMP_ERROR;
     }
     push(byte);
     
@@ -84,7 +84,7 @@ void stream(uint8_t byte) {
             };
             writeError(lines, 2);
             error = true;
-            return;
+            return BMP_ERROR;
         }
     }
     
@@ -118,7 +118,7 @@ void stream(uint8_t byte) {
             };
             writeError(lines, 2);
             error = true;
-            return;
+            return BMP_ERROR;
         }
     }
     
@@ -138,7 +138,7 @@ void stream(uint8_t byte) {
             };
             writeError(lines, 3);
             error = true;
-            return;
+            return BMP_ERROR;
         }
     }
     
@@ -164,5 +164,25 @@ void stream(uint8_t byte) {
         reset();
         setStreamingData(false);
         // printString("write end\r\n");
+        
+        return BMP_READY;
     }
+    
+    return BMP_BUSY;
+}
+
+void readSD(uint32_t address) {
+    prepare(0, 0);
+    uint8_t block[SD_BLOCK_SIZE];
+    uint8_t status;
+    do {
+        displayDes();
+        bool success = readSingleBlock(address++, block);
+        displaySel();
+        if (success) {
+            for (uint16_t j = 0; j < SD_BLOCK_SIZE && status == BMP_BUSY; j++) {
+                status = stream(block[j]);
+            }
+        }
+    } while (status == BMP_BUSY);
 }

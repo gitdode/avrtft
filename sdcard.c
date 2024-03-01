@@ -8,6 +8,7 @@
  */
 
 #include "sdcard.h"
+#include "bmp.h"
 
 /**
  * Transmits the given command, argument and CRC value.
@@ -182,15 +183,7 @@ static uint8_t sendOpCond(void) {
     return response;
 }
 
-/**
- * Sends CMD17 to read a single block at the given address, reads the block 
- * into the given array and returns true on success, false otherwise.
- * 
- * @param address
- * @param block
- * @return success
- */
-static bool readSingleBlock(uint32_t address, uint8_t *block) {
+bool readSingleBlock(uint32_t address, uint8_t *block) {
     select();
     
     command(CMD17, address, CMD17_CRC);
@@ -223,15 +216,7 @@ static bool readSingleBlock(uint32_t address, uint8_t *block) {
     return success;
 }
 
-/**
- * Sends CMD24 to write a single block at the given address, writes the block 
- * from the given array and returns true on success, false otherwise.
- * 
- * @param address
- * @param block
- * @return success
- */
-static bool writeSingleBlock(uint32_t address, uint8_t *block) {
+bool writeSingleBlock(uint32_t address, uint8_t *block) {
     select();
     
     command(CMD24, address, CMD24_CRC);
@@ -326,28 +311,4 @@ bool initSDCard(void) {
     printString("sd card ready\r\n");
     
     return true;
-}
-
-void readSDCard(void) {
-    uint8_t block[SD_BLOCK_SIZE];
-    if (readSingleBlock(0, block)) {
-        for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
-            char buf[3];
-            snprintf(buf, sizeof (buf), "%02x", block[i]);
-            printString(buf);
-        }
-        printString("\r\n");
-    }
-}
-
-void writeSDCard(void) {
-    uint8_t block[SD_BLOCK_SIZE] = {0};
-    block[0] = 0xde;
-    block[1] = 0xad;
-    block[2] = 0xbe;
-    block[3] = 0xef;
-
-    if (writeSingleBlock(0, block)) {
-        printString("wrote block\r\n");
-    }
 }

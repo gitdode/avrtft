@@ -14,31 +14,31 @@ echo -e 't 16 16 \tb' > /dev/ttyUSB0
 sleep 0.1
 echo -e 't 16 32 \tg' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 16 48 \tn' > /dev/ttyUSB0
+# echo -e 't 16 48 \tn' > /dev/ttyUSB0
+# sleep 0.1
+echo -e 't 16 48 \tm' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 16 64 \tm' > /dev/ttyUSB0
+echo -e 't 16 64 \th' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 16 80 \th' > /dev/ttyUSB0
+echo -e 't 16 80 \tt' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 16 96 \tt' > /dev/ttyUSB0
+# echo -e 't 16 112 \te' > /dev/ttyUSB0
+# sleep 0.1
+echo -e 't 16 96 \ta' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 16 112 \te' > /dev/ttyUSB0
+echo -e 't 32 0 \tU' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 32 0 \ta' > /dev/ttyUSB0
+echo -e 't 32 16 \tD' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 32 16 \tU' > /dev/ttyUSB0
+echo -e 't 32 32 \tS' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 32 32 \tD' > /dev/ttyUSB0
+echo -e 't 32 48 \tA' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 32 48 \tS' > /dev/ttyUSB0
+echo -e 't 32 64 \tu' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 32 64 \tA' > /dev/ttyUSB0
+echo -e 't 32 80 \to' > /dev/ttyUSB0
 sleep 0.1
-echo -e 't 32 80 \tu' > /dev/ttyUSB0
-sleep 0.1
-echo -e 't 32 96 \to' > /dev/ttyUSB0
-sleep 0.1
-echo -e 't 32 112 \tO' > /dev/ttyUSB0
+echo -e 't 32 96 \tO' > /dev/ttyUSB0
 sleep 0.1
 echo -e 't 48 0 \tH' > /dev/ttyUSB0
 sleep 0.1

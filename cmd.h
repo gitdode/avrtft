@@ -8,6 +8,16 @@
 #ifndef CMD_H
 #define CMD_H
 
+#include "usart.h"
+#include "tft.h"
+#include "display.h"
+#include "font.h"
+#include "hack.h"
+#include "bitmaps.h"
+#include "bmp.h"
+#include "sdcard.h"
+#include "paint.h"
+
 /** Clear frame buffer: 'c <0x0000 - 0xffff>'. */
 #define CMD_CLEAR       'c'
 
@@ -19,6 +29,9 @@
 
 /** Prepare "streaming" a .bmp: 'p <row> <col>'. */
 #define CMD_BMP         'p'
+
+/** Read a .bmp: from SD card: 's <address>'. */
+#define CMD_BMP_SD      's'
 
 /** Display Hack demo: 'd'. */
 #define CMD_DEMO        'd'

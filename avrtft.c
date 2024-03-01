@@ -121,14 +121,12 @@ int main(void) {
     touch = false;
 
     // do something at the start
-    initPaint();
-    // hackDemo();
     if (sdcard) {
-        // writeSDCard();
-        // without delay, reading immediately after writing hangs. why?
-        // _delay_ms(10);
-        readSDCard();
+        readSD(0);
+    } else {
+        initPaint();
     }
+    // hackDemo();
 
     while (true) {
         if (touch) {

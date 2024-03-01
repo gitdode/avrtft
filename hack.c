@@ -1041,7 +1041,6 @@ static const __flash uint8_t z[] = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
 };
 
-/*
 static const __flash uint8_t LEFT_CURLY_BRACKET[] = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
     0xff, 0xf6, 0x05, 0xff, 0xff, 0xf2, 0xcf, 0xff,
@@ -1910,7 +1909,6 @@ static const __flash uint8_t y_diaeresis[] = {
     0xff, 0xf2, 0xcf, 0xff, 0xff, 0xb3, 0xef, 0xff,
     0xf2, 0x0c, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
 };
-*/
 
 static const __flash Glyph glyphs[] = {
     {0x20, WIDTH, SPACE},
@@ -2003,8 +2001,7 @@ static const __flash Glyph glyphs[] = {
     {0x77, WIDTH, w},
     {0x78, WIDTH, x},
     {0x79, WIDTH, y},
-    {0x7a, WIDTH, z}
-    /*
+    {0x7a, WIDTH, z},
     {0x7b, WIDTH, LEFT_CURLY_BRACKET},
     {0x7c, WIDTH, VERTICAL_LINE},
     {0x7d, WIDTH, RIGHT_CURLY_BRACKET},
@@ -2084,7 +2081,6 @@ static const __flash Glyph glyphs[] = {
     {0xfd, WIDTH, y_acute},
     {0xfe, WIDTH, thorn},
     {0xff, WIDTH, y_diaeresis}
-    */
 };
 
 const __flash Font hackFont = {glyphs, ARRAY_LENGTH(glyphs), HEIGHT, SPACE_GREY4};
