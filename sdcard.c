@@ -8,7 +8,6 @@
  */
 
 #include "sdcard.h"
-#include "bmp.h"
 
 /**
  * Transmits the given command, argument and CRC value.

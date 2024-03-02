@@ -180,8 +180,8 @@ void readSD(uint32_t address) {
         bool success = readSingleBlock(address++, block);
         displaySel();
         if (success) {
-            for (uint16_t j = 0; j < SD_BLOCK_SIZE && status == BMP_BUSY; j++) {
-                status = stream(block[j]);
+            for (uint16_t i = 0; i < SD_BLOCK_SIZE && status == BMP_BUSY; i++) {
+                status = stream(block[i]);
             }
         }
     } while (status == BMP_BUSY);
