@@ -123,7 +123,7 @@ int main(void) {
 
     // do something at the start
     if (sdcard) {
-        readSD(0);
+        readBMPFromSD(0);
     } else {
         initPaint();
     }
@@ -140,7 +140,7 @@ int main(void) {
 
         if (isStreamingData()) {
             char data = UDR0;
-            stream(data);
+            streamBMP(data);
         }
 
         // TODO block while busy?

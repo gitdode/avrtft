@@ -25,7 +25,7 @@
  * @param row
  * @param col
  */
-void prepare(row_t row, col_t col);
+void prepareBMP(row_t row, col_t col);
 
 /**
  * Does basic parsing of the BMP image (16-Bit 5/6/5 RGB) sent via USART and 
@@ -36,14 +36,14 @@ void prepare(row_t row, col_t col);
  * @param byte raw BMP byte recieved via USART
  * @return status current status parsing BMP
  */
-uint8_t stream(uint8_t byte);
+uint8_t streamBMP(uint8_t byte);
 
 /**
  * Reads a BMP image raw from the SD card starting at the given address.
  * 
  * @param address start address
  */
-void readSD(uint32_t address);
+void readBMPFromSD(uint32_t address);
 
 #endif /* BMP_H */
 

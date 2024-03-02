@@ -35,6 +35,9 @@ static uint32_t imageSize = 0;
  * Resets the state.
  */
 static void reset(void) {
+    error = false;
+    row = 0;
+    col = 0;
     offset = 0;
     pixelStart = -1;
     pixelEnd = -1;
@@ -59,21 +62,46 @@ static void push(uint8_t byte) {
     buf[BUF_SIZE - 1] = byte;
 }
 
-void prepare(row_t srow, col_t scol) {
+void prepareBMP(row_t srow, col_t scol) {
+    reset();
     row = srow;
     col = scol;
-    offset = 0;
     setStreamingData(true);
 }
 
-uint8_t stream(uint8_t byte) {
+uint8_t streamBMP(uint8_t byte) {
     if (error) {
-        // TODO recover from error condition
-        // setStreaming(false);
         return BMP_ERROR;
     }
+
     push(byte);
-    
+
+    if (offset == pixelStart) {
+        // do horizontal flip because pixel data in a BMP is bottom to top
+        setArea(row, col, bitmapWidth, bitmapHeight, true, false);
+        writeStart();
+    }
+
+    // TODO calculate number of pad bytes and discard them
+    if (offset < pixelEnd && offset >= pixelStart) {
+        // no expensive division done since modulo is a power of 2
+        if ((offset - pixelStart) % 2) {
+            writeByte(buf[3]);
+            writeByte(buf[2]);
+        }
+
+        offset++;
+
+        if (offset == pixelEnd) {
+            writeEnd();
+            reset();
+            setStreamingData(false);
+            return BMP_READY;
+        }
+
+        return BMP_BUSY;
+    }
+
     if (offset == 0x0 + 1) {
         if (!(buf[2] == 0x42 && buf[3] == 0x4d)) {
             // not a BMP
@@ -142,37 +170,13 @@ uint8_t stream(uint8_t byte) {
         }
     }
     
-    if (offset == pixelStart) {
-        // do horizontal flip because pixel data in a BMP is bottom to top
-        setArea(row, col, bitmapWidth, bitmapHeight, true, false);
-        writeStart();
-    }
-    
-    // TODO calculate number of pad bytes and discard them
-    if (offset < pixelEnd && offset >= pixelStart) {
-        // no expensive division done since modulo is a power of 2
-        if ((offset - pixelStart) % 2) {
-            writeByte(buf[3]);
-            writeByte(buf[2]);
-        }
-    }
-    
     offset++;
-    
-    if (offset == pixelEnd) {
-        writeEnd();
-        reset();
-        setStreamingData(false);
-        // printString("write end\r\n");
-        
-        return BMP_READY;
-    }
     
     return BMP_BUSY;
 }
 
-void readSD(uint32_t address) {
-    prepare(0, 0);
+void readBMPFromSD(uint32_t address) {
+    reset();
     uint8_t block[SD_BLOCK_SIZE];
     uint8_t status;
     do {
@@ -181,7 +185,7 @@ void readSD(uint32_t address) {
         displaySel();
         if (success) {
             for (uint16_t i = 0; i < SD_BLOCK_SIZE && status == BMP_BUSY; i++) {
-                status = stream(block[i]);
+                status = streamBMP(block[i]);
             }
         }
     } while (status == BMP_BUSY);

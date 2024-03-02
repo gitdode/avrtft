@@ -58,7 +58,7 @@ static void bmp(char *data) {
     row_t row = strtol(strtok(NULL, " "), &end, 10);
     col_t col = strtol(strtok(NULL, " "), &end, 10);
     
-    prepare(row, col);
+    prepareBMP(row, col);
 }
 
 static void bmpSD(char *data) {
@@ -67,7 +67,7 @@ static void bmpSD(char *data) {
     uint32_t address = strtol(strtok(NULL, " "), &end, 10);
     
     if (sdcard) {
-        readSD(address);
+        readBMPFromSD(address);
     } else {
         printString("SD card not inserted?\r\n");
     }

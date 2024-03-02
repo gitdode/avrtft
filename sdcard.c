@@ -88,12 +88,11 @@ static void deselect(void) {
 }
 
 /**
- * Runs the power on sequence.
+ * Supplies ramp up time.
  */
 static void powerOn(void) {
     deselect();
 
-    // supply ramp up time
     _delay_ms(1);
 
     // supply at least 74 clocks
