@@ -13,10 +13,23 @@
 #include <string.h>
 #include "types.h"
 #include "sdcard.h"
+#include "display.h"
+#include "tft.h"
+#include "usart.h"
+#include "hack.h"
+#include "touch.h"
 
 #define BMP_READY   0
 #define BMP_BUSY    1
 #define BMP_ERROR   2
+
+/**
+ * Handles the given touch event and point.
+ * 
+ * @param event
+ * @param point
+ */
+void bmpEvent(uint8_t event, Point *point);
 
 /**
  * Prepares to "stream" a BMP image via USART to the display,
