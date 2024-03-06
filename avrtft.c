@@ -136,7 +136,11 @@ int main(void) {
             Point point = {0};
             // memset(&point, 0, sizeof (Point));
             uint8_t event = readTouch(&point);
-            paintEvent(event, &point);
+            if (sdcard) {
+                bmpEvent(event, &point);
+            } else {
+                paintEvent(event, &point);
+            }
         }
 
         if (isStreamingData()) {

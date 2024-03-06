@@ -8,14 +8,12 @@
  */
 
 #include "bmp.h"
-#include "display.h"
-#include "tft.h"
-#include "usart.h"
-#include "hack.h"
 
 #define BUF_SIZE 4
 
 static bool error = false;
+
+static uint32_t sdAddress = 0;
 
 static row_t row = 0;
 static col_t col = 0;
@@ -60,6 +58,19 @@ static void push(uint8_t byte) {
         buf[i] = buf[i + 1];
     }
     buf[BUF_SIZE - 1] = byte;
+}
+
+// assuming for now that all images are (padded to) 301 * 512 bytes
+// TODO consider HFLIP + VFLIP
+void bmpEvent(uint8_t event, Point *point) {
+    if (event == EVENT_PRESS_DOWN) {
+        if (point->x < DISPLAY_WIDTH / 2) {
+            sdAddress -= 301;
+        } else {
+            sdAddress += 301;
+        }
+        readBMPFromSD(sdAddress);
+    }
 }
 
 void prepareBMP(row_t srow, col_t scol) {
@@ -126,10 +137,12 @@ uint8_t streamBMP(uint8_t byte) {
     
     if (offset == 0x12 + 3) {
         memcpy(&bitmapWidth, &buf, sizeof (bitmapWidth));
+        // TODO error if > DISPLAY_WIDTH
     }
     
     if (offset == 0x16 + 3) {
         memcpy(&bitmapHeight, &buf, sizeof (bitmapHeight));
+        // TODO error if > DISPLAY_HEIGHT
     }
     
     if (offset == 0x1c + 1) {

@@ -825,7 +825,7 @@ const __flash Glyph glyphs[] = {
     // smile if emoji is a stranger
     {0x3f, 16, SMILE},
     {'A', 16, CAT_ANGRY},
-    {'B', 16, BEERS},
+    // {'B', 16, BEERS},
     {'C', 16, CAR},
     {'D', 16, THUMB_DOWN},
     {'F', 16, FLOWER},
