@@ -80,18 +80,16 @@ uint8_t streamBMP(uint8_t byte) {
         // do horizontal flip because pixel data in a BMP is bottom to top
         setArea(row, col, bitmapWidth, bitmapHeight, true, false);
         writeStart();
-    }
-
-    // TODO calculate number of pad bytes and discard them
-    if (offset < pixelEnd && offset >= pixelStart) {
+    } else if (offset > pixelStart) {
+        // TODO calculate number of pad bytes and discard them
         // no expensive division done since modulo is a power of 2
-        if ((offset - pixelStart) % 2) {
+        if (offset % 2) {
             writeByte(buf[3]);
             writeByte(buf[2]);
         }
 
         offset++;
-
+        
         if (offset == pixelEnd) {
             writeEnd();
             reset();
