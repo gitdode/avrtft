@@ -185,6 +185,8 @@ void readBMPFromSD(uint32_t address) {
             for (uint16_t i = 0; i < SD_BLOCK_SIZE && status == BMP_BUSY; i++) {
                 status = streamBMP(block[i]);
             }
+        } else {
+            break;
         }
     } while (status == BMP_BUSY);
 }
