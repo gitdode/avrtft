@@ -66,7 +66,7 @@ static void initPins(void) {
     DDR_DISP |= (1 << PIN_RST);
 
     // drive SPI and display output pins high
-    PORT_DSPI |= (1 << PIN_SDCS);
+    PORT_SDC |= (1 << PIN_SDCS);
     PORT_DSPI |= (1 << PIN_DCS);
     PORT_DSPI |= (1 << PIN_DC);
     PORT_DISP |= (1 << PIN_RST);
