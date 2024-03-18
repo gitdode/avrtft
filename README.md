@@ -49,6 +49,26 @@ Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s` fo
 
 ![IMG_20231129_004922](https://github.com/gitdode/avrtft/assets/11530253/3a6cbcdd-d004-48d9-a227-ba21f91dac0b)
 
+## Convert and write images to SD card
+
+Without any file system, to write any number of pictures with a specific 
+resolution as 16-Bit (5/6/5) RGB BMP image files:
+
+1. Convert pictures with ImageMagick 'convert' and pad them to a multiple of 
+512 bytes
+
+        for i in *.jpg; do convert $i -scale 320x240 -define bmp:subtype=RGB565 $i.bmp; truncate -s 154112 $i.bmp; echo $i; done
+
+2. Concatenate the images to a single file
+
+        for i in *.bmp; do cat $i >> sdcard.img; echo $i; done
+
+3. Write the images raw to SD card (danger zone!)
+
+        sudo dd if=sdcard.img of=/dev/mmcblk0 bs=512
+
+Now the images can be read one by one from SD card with an address offset of `301`.
+
 ## Paint application
 
 A super basic paint application created to learn about processing touch events 
