@@ -214,6 +214,51 @@ bool readSingleBlock(uint32_t address, uint8_t *block) {
     return success;
 }
 
+void readMultiBlock(uint32_t address, consumer consume) {
+    select();
+    
+    command(CMD18, address, CMD18_CRC);
+    uint8_t response = readR1();
+    bool cont = false;
+    uint8_t block[SD_BLOCK_SIZE];
+    
+    if (response == SD_SUCCESS) {
+        // read command was successful
+        do {
+            // wait for start block token
+            uint8_t token = 0xff;
+            for (uint16_t attempt = 0; attempt < SD_MAX_READ && token == 0xff; attempt++) {
+                token = transmit(0xff);
+            }
+
+            if (token == SD_START_BLOCK) {
+                // start block token received, 512 data bytes follow
+                for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
+                    block[i] = transmit(0xff);
+                }
+
+                // 16-bit CRC (ignore for now)
+                transmit(0xff);
+                transmit(0xff);
+                
+                cont = consume(block);
+            } else {
+                break;
+            }
+        } while (cont);
+        
+        command(CMD12, CMD12_ARG, CMD12_CRC);
+        response = readR1();
+        
+        if (response == SD_SUCCESS) {
+            // TODO poll for not busy
+            _delay_ms(10);
+        }
+    }
+    
+    deselect();
+}
+
 bool writeSingleBlock(uint32_t address, uint8_t *block) {
     select();
     

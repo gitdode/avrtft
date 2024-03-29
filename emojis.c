@@ -823,31 +823,31 @@ const __flash uint8_t SNOWMAN[] = {
 
 const __flash Glyph glyphs[] = {
     // smile if emoji is a stranger
-    {0x3f, 16, SMILE},
-    {'A', 16, CAT_ANGRY},
-    {'B', 16, BEERS},
-    {'C', 16, CAR},
-    {'D', 16, THUMB_DOWN},
-    {'F', 16, FLOWER},
-    {'H', 16, HEART},
-    {'O', 16, SNOWMAN},
-    {'P', 16, PIZZA},
-    {'R', 16, HERBS},
-    {'S', 16, CAT_SMILE},
-    {'T', 16, TREE},
-    {'U', 16, THUMB_UP},
-    {'a', 16, SAD},
-    {'b', 16, BLUSH},
-    // {'e', 16, SMILE_TEAR}, sacrificed for flash memory
-    {'g', 16, GRIN},
-    {'h', 16, HUG},
-    {'m', 16, MELT},
-    // {'n', 16, GRIN_TEAR}, sacrificed for flash memory
-    {'o', 16, MOON},
-    {'r', 16, HERBS},
-    {'s', 16, SMILE},
-    {'t', 16, TONGUE},
-    {'u', 16, SUN}
+    {0x3f, 16, SMILE}
+//    {'A', 16, CAT_ANGRY},
+//    {'B', 16, BEERS},
+//    {'C', 16, CAR},
+//    {'D', 16, THUMB_DOWN},
+//    {'F', 16, FLOWER},
+//    {'H', 16, HEART},
+//    {'O', 16, SNOWMAN},
+//    {'P', 16, PIZZA},
+//    {'R', 16, HERBS},
+//    {'S', 16, CAT_SMILE},
+//    {'T', 16, TREE},
+//    {'U', 16, THUMB_UP},
+//    {'a', 16, SAD},
+//    {'b', 16, BLUSH},
+//    // {'e', 16, SMILE_TEAR}, sacrificed for flash memory
+//    {'g', 16, GRIN},
+//    {'h', 16, HUG},
+//    {'m', 16, MELT},
+//    // {'n', 16, GRIN_TEAR}, sacrificed for flash memory
+//    {'o', 16, MOON},
+//    {'r', 16, HERBS},
+//    {'s', 16, SMILE},
+//    {'t', 16, TONGUE},
+//    {'u', 16, SUN}
 };
 
 const __flash Font emojiFont = {glyphs, ARRAY_LENGTH(glyphs), HEIGHT, SPACE_RGB16};

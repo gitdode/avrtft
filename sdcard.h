@@ -22,8 +22,15 @@
 #define CMD8_ARG    0x0000001aa
 #define CMD8_CRC    0x86
 
+#define CMD12       12
+#define CMD12_ARG   0x00000000
+#define CMD12_CRC   0x00
+
 #define CMD17       17
 #define CMD17_CRC   0x00
+
+#define CMD18       18
+#define CMD18_CRC   0x00
 
 #define CMD24       24
 #define CMD24_CRC   0x00
@@ -49,6 +56,8 @@
 #define SD_SUCCESS      0x00
 #define SD_START_BLOCK  0xfe
 
+typedef bool (*consumer)(uint8_t*);
+
 /**
  * Initializes the SD Card and returns true on success, false otherwise.
  * 
@@ -65,6 +74,8 @@ bool initSDCard(void);
  * @return success
  */
 bool readSingleBlock(uint32_t address, uint8_t *block);
+
+void readMultiBlock(uint32_t address, consumer consume);
 
 /**
  * Writes a single block of 512 bytes starting at the given address 
