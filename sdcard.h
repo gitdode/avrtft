@@ -13,6 +13,7 @@
 #include "pins.h"
 #include "spi.h"
 #include "usart.h"
+#include "types.h"
 
 #define CMD0        0
 #define CMD0_ARG    0x00000000
@@ -22,8 +23,15 @@
 #define CMD8_ARG    0x0000001aa
 #define CMD8_CRC    0x86
 
+#define CMD12       12
+#define CMD12_ARG   0x00000000
+#define CMD12_CRC   0x00
+
 #define CMD17       17
 #define CMD17_CRC   0x00
+
+#define CMD18       18
+#define CMD18_CRC   0x00
 
 #define CMD24       24
 #define CMD24_CRC   0x00
@@ -57,14 +65,25 @@
 bool initSDCard(void);
 
 /**
- * Reads a single block of 512 bytes starting at the given address 
- * into the given buffer and returns true on success, false otherwise.
+ * Reads a single block of 512 bytes at the given address into 
+ * the given buffer and returns true on success, false otherwise.
  * 
  * @param address address in 512 byte units
  * @param block 512 byte buffer
  * @return success
  */
 bool readSingleBlock(uint32_t address, uint8_t *block);
+
+/**
+ * Reads multiple blocks of 512 bytes starting at the given address
+ * and, for each block, passes the buffer to the given function.
+ * By returning false, the function can request to stop reading blocks.
+ * 
+ * @param address
+ * @param consume
+ * @return success
+ */
+bool readMultiBlock(uint32_t address, consumer consume);
 
 /**
  * Writes a single block of 512 bytes starting at the given address 
