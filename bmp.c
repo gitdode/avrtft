@@ -173,40 +173,23 @@ uint8_t streamBMP(uint8_t byte) {
     return BMP_BUSY;
 }
 
-//void readBMPFromSD(uint32_t address) {
-//    reset();
-//    uint8_t block[SD_BLOCK_SIZE];
-//    uint8_t status;
-//    do {
-//        displayDes();
-//        bool success = readSingleBlock(address++, block);
-//        displaySel();
-//        if (success) {
-//            for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
-//                status = streamBMP(block[i]);
-//                if (status != BMP_BUSY) {
-//                    break;
-//                }
-//            }
-//        } else {
-//            break;
-//        }
-//    } while (status == BMP_BUSY);
-//}
-
-uint16_t blocks = 0;
-
-static bool consume(uint8_t *block) { 
-    for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
-        loop_until_bit_is_set(UCSR0A, UDRE0);
-        UDR0 = block[i];
-    }
-    
-    return ++blocks < 301;
-}
-
 void readBMPFromSD(uint32_t address) {
     reset();
-    blocks = 0;
-    readMultiBlock(address, &consume);
+    uint8_t block[SD_BLOCK_SIZE];
+    uint8_t status;
+    do {
+        displayDes();
+        bool success = readSingleBlock(address++, block);
+        displaySel();
+        if (success) {
+            for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
+                status = streamBMP(block[i]);
+                if (status != BMP_BUSY) {
+                    break;
+                }
+            }
+        } else {
+            break;
+        }
+    } while (status == BMP_BUSY);
 }

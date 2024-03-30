@@ -113,6 +113,7 @@ int main(void) {
 
     _delay_ms(1000);
 
+    // may need to decrease SPI bus clock frequency for initialization
     sdcard = initSDCard();
     initDisplay();
     initTouchInt();
