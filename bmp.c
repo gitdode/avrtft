@@ -13,8 +13,6 @@
 
 static bool error = false;
 
-static uint32_t sdAddress = 0;
-
 static row_t row = 0;
 static col_t col = 0;
 
@@ -28,6 +26,9 @@ static uint32_t bitmapHeight = 0;
 static uint16_t bitsPerPixel = 0;
 static uint32_t imageSize = 0;
 // static uint16_t rowSize = 0;
+
+static uint32_t address = 0;
+static uint16_t blocks = 0;
 
 /**
  * Resets the state.
@@ -60,16 +61,16 @@ static void push(uint8_t byte) {
     buf[BUF_SIZE - 1] = byte;
 }
 
-// assuming for now that all images are (padded to) 301 * 512 bytes
 // TODO consider HFLIP + VFLIP
 void bmpEvent(uint8_t event, Point *point) {
     if (event == EVENT_PRESS_DOWN) {
         if (point->x < DISPLAY_WIDTH / 2) {
-            sdAddress -= 301;
+            // if (sdAddress < sdBlocks) return;
+            // sdAddress -= sdBlocks;
         } else {
-            sdAddress += 301;
+            address += blocks;
         }
-        readBMPFromSD(sdAddress);
+        blocks = readBMPFromSD(address);
     }
 }
 
@@ -186,10 +187,11 @@ uint8_t streamBMP(uint8_t byte) {
     return BMP_BUSY;
 }
 
-void readBMPFromSD(uint32_t address) {
+uint16_t readBMPFromSD(uint32_t address) {
     reset();
     uint8_t block[SD_BLOCK_SIZE];
     uint8_t status;
+    uint32_t start = address;
     do {
         displayDes();
         bool success = readSingleBlock(address++, block);
@@ -205,4 +207,6 @@ void readBMPFromSD(uint32_t address) {
             break;
         }
     } while (status == BMP_BUSY);
+    
+    return address - start;
 }

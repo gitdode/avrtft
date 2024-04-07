@@ -844,7 +844,6 @@ const __flash Glyph glyphs[] = {
     {'m', 16, MELT},
     // {'n', 16, GRIN_TEAR}, sacrificed for flash memory
     {'o', 16, MOON},
-    {'r', 16, HERBS},
     {'s', 16, SMILE},
     {'t', 16, TONGUE},
     {'u', 16, SUN}

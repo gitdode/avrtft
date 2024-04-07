@@ -124,7 +124,10 @@ int main(void) {
 
     // do something at the start
     if (sdcard) {
-        readBMPFromSD(0);
+        // readBMPFromSD(0);
+        // fake a touch event for now
+        Point point = {DISPLAY_WIDTH, 0};
+        bmpEvent(EVENT_PRESS_DOWN, &point);
     } else {
         initPaint();
     }

@@ -55,8 +55,9 @@ uint8_t streamBMP(uint8_t byte);
  * Reads a BMP image raw from the SD card starting at the given address.
  * 
  * @param address start address
+ * @return length of image in blocks
  */
-void readBMPFromSD(uint32_t address);
+uint16_t readBMPFromSD(uint32_t address);
 
 #endif /* BMP_H */
 
