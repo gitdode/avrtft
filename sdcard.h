@@ -83,7 +83,7 @@ bool readSingleBlock(uint32_t address, uint8_t *block);
  * @param consume
  * @return success
  */
-bool readMultiBlock(uint32_t address, consumer consume);
+bool readMultiBlock(uint32_t address, Consumer consume);
 
 /**
  * Writes a single block of 512 bytes starting at the given address 

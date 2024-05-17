@@ -64,12 +64,11 @@ static void push(uint8_t byte) {
 // TODO consider HFLIP + VFLIP
 void bmpEvent(uint8_t event, Point *point) {
     if (event == EVENT_PRESS_DOWN) {
-        if (point->x < DISPLAY_WIDTH / 2) {
-            // if (sdAddress < sdBlocks) return;
-            // sdAddress -= sdBlocks;
-        } else {
+        // if (point->x < DISPLAY_WIDTH / 2) {
+            // go to previous image
+        // } else {
             address += blocks;
-        }
+        // }
         blocks = readBMPFromSD(address);
     }
 }

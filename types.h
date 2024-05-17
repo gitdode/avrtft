@@ -40,7 +40,7 @@ typedef struct {
  * Pointer to a function that takes an array of bytes
  * and returns a boolean.
  */
-typedef bool (*consumer)(uint8_t*);
+typedef bool (*Consumer)(uint8_t*);
 
 #endif /* TYPES_H */
 

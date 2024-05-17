@@ -214,7 +214,7 @@ bool readSingleBlock(uint32_t address, uint8_t *block) {
     return success;
 }
 
-bool readMultiBlock(uint32_t address, consumer consume) {
+bool readMultiBlock(uint32_t address, Consumer consume) {
     select();
 
     command(CMD18, address, CMD18_CRC);
