@@ -9,6 +9,7 @@
 #define TYPES_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 /* Width, height and color space of bitmaps and glyphs */
 typedef uint16_t    width_t;

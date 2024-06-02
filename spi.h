@@ -9,6 +9,16 @@
 #define SPI_H
 
 /**
+ * Sets slow SPI speed.
+ */
+void spiSlow(void);
+
+/**
+ * Sets fast SPI speed.
+ */
+void spiFast(void);
+
+/**
  * Selects the SD card to talk to via SPI.
  */
 void sdCardSel(void);

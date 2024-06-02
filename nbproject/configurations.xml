@@ -2,20 +2,18 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="/home/dode/dev/avrtft" name="0">
-      <df name="emojis">
-        <in>emojis.sh.bash</in>
-      </df>
       <in>avrtft.c</in>
       <in>bmp.c</in>
       <in>bmp.h</in>
       <in>display.c</in>
-      <in>emojis.c</in>
       <in>font.c</in>
       <in>hack.c</in>
       <in>i2c.c</in>
       <in>i2c.h</in>
       <in>paint.c</in>
       <in>paint.h</in>
+      <in>ra8875.c</in>
+      <in>ra8875.h</in>
       <in>sdcard.c</in>
       <in>sdcard.h</in>
       <in>spi.c</in>
@@ -64,13 +62,6 @@
       </item>
       <item path="/home/dode/dev/avrtft/display.c" ex="false" tool="0" flavor2="3">
       </item>
-      <item path="/home/dode/dev/avrtft/emojis.c" ex="false" tool="0" flavor2="3">
-      </item>
-      <item path="/home/dode/dev/avrtft/emojis/emojis.sh.bash"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="/home/dode/dev/avrtft/font.c" ex="false" tool="0" flavor2="3">
       </item>
       <item path="/home/dode/dev/avrtft/hack.c" ex="false" tool="0" flavor2="3">
@@ -94,6 +85,10 @@
       <item path="/home/dode/dev/avrtft/touch.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="/home/dode/dev/avrtft/touch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ra8875.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ra8875.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

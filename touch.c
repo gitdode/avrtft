@@ -8,7 +8,8 @@
 #include <avr/interrupt.h>
 #include "touch.h"
 #include "i2c.h"
-#include "tft.h"
+// #include "tft.h"
+#include "ra8875.h"
 #include "usart.h"
 
 uint8_t readTouch(Point *point) {

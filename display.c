@@ -13,9 +13,9 @@
 #include "display.h"
 #include "hack.h"
 #include "bitmaps.h"
-#include "emojis.h"
 #include "spi.h"
-#include "tft.h"
+// #include "tft.h"
+#include "ra8875.h"
 #include "usart.h"
 #include "utils.h"
 
@@ -52,22 +52,13 @@ width_t writeGlyph(row_t row, col_t col, const __flash Font *font, code_t code) 
 
 void writeString(row_t row, col_t col, const __flash Font *font, const char *string) {
     uint8_t offset = 0;
-    bool emoji = false;
-    const __flash Font *emojis = &emojiFont;
     for (; *string != '\0'; string++) {
         uint8_t c = (uint8_t) *string;
-        if (c == 9) {
-            // TAB, emoji coming up!
-            emoji = true;
-        } else if (c == 194) {
+        if (c == 194) {
             // multibyte
         } else if (c == 195) {
             // multibyte, add 64 to get code point
             offset = 64;
-        } else if (emoji) {
-            code_t code = c;
-            col += writeGlyph(row, col, emojis, code);
-            emoji = false;
         } else {
             code_t code = c + offset;
             col += writeGlyph(row, col, font, code);

@@ -39,6 +39,8 @@
 /* Display other */
 #define DDR_DISP  DDRD
 #define PORT_DISP PORTD
+#define PINP_DISP PIND
+#define PIN_BUSY  PD5 // display wait
 #define PIN_RST   PD7 // display reset
 
 #endif /* PINS_H */

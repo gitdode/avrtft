@@ -7,7 +7,8 @@
 
 #include <stdio.h>
 #include "bitmaps.h"
-#include "tft.h"
+// #include "tft.h"
+#include "ra8875.h"
 #include "utils.h"
 
 const __flash uint8_t FREE_DATA[] = {

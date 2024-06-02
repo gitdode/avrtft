@@ -15,8 +15,8 @@ PROGRAMMER_ARGS =
 # - ILI9341
 
 # Display dimensions
-DISPLAY_WIDTH = 320
-DISPLAY_HEIGHT = 240
+DISPLAY_WIDTH = 800
+DISPLAY_HEIGHT = 480
 # 1 = BGR, 0 = RGB
 BGR = 1
 # Invert color
@@ -26,8 +26,8 @@ HFLIP = 1
 VFLIP = 1
 
 MAIN = avrtft.c
-SRC = bitmaps.c bmp.c cmd.c display.c emojis.c i2c.c paint.c tft.c touch.c \
-      font.c spi.c hack.c usart.c sdcard.c
+SRC = bitmaps.c bmp.c cmd.c display.c i2c.c paint.c touch.c \
+      font.c spi.c hack.c usart.c ra8875.c sdcard.c
 
 CC = avr-gcc
 OBJCOPY = avr-objcopy
@@ -45,7 +45,7 @@ CFLAGS += -g -ggdb
 CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections -mrelax
 CFLAGS += -std=gnu99
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105523
-CFLAGS += --param=min-pagesize=0
+# CFLAGS += --param=min-pagesize=0
 
 TARGET = $(strip $(basename $(MAIN)))
 SRC += $(TARGET).c
@@ -53,9 +53,9 @@ SRC += $(TARGET).c
 OBJ = $(SRC:.c=.o) 
 OBJ = $(SRC:.S=.o)
 	
-$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h emojis.h i2c.h paint.h tft.h \
+$(TARGET).elf: bitmaps.h bmp.h cmd.h display.h i2c.h paint.h \
 	       touch.h font.h pins.h spi.h types.h hack.h usart.h utils.h \
-	       sdcard.h Makefile
+	       ra8875.h sdcard.h Makefile
 
 all: $(TARGET).hex
 
@@ -73,7 +73,7 @@ eeprom: $(TARGET).eeprom
 	$(OBJDUMP) -S $< > $@
  
 size:  $(TARGET).elf
-	$(AVRSIZE) -G $(TARGET).elf
+	$(AVRSIZE) -C --mcu=$(MCU) $(TARGET).elf
 
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \

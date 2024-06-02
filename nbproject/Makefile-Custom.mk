@@ -38,7 +38,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/48b9b4a1/avrtft.o \
 	${OBJECTDIR}/_ext/48b9b4a1/bmp.o \
 	${OBJECTDIR}/_ext/48b9b4a1/display.o \
-	${OBJECTDIR}/_ext/48b9b4a1/emojis.o \
 	${OBJECTDIR}/_ext/48b9b4a1/font.o \
 	${OBJECTDIR}/_ext/48b9b4a1/hack.o \
 	${OBJECTDIR}/_ext/48b9b4a1/i2c.o \
@@ -46,7 +45,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/48b9b4a1/sdcard.o \
 	${OBJECTDIR}/_ext/48b9b4a1/spi.o \
 	${OBJECTDIR}/_ext/48b9b4a1/tft.o \
-	${OBJECTDIR}/_ext/48b9b4a1/touch.o
+	${OBJECTDIR}/_ext/48b9b4a1/touch.o \
+	${OBJECTDIR}/ra8875.o
 
 
 # C Compiler Flags
@@ -85,10 +85,6 @@ ${OBJECTDIR}/_ext/48b9b4a1/display.o: /home/dode/dev/avrtft/display.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
 	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/display.o /home/dode/dev/avrtft/display.c
 
-${OBJECTDIR}/_ext/48b9b4a1/emojis.o: /home/dode/dev/avrtft/emojis.c
-	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/emojis.o /home/dode/dev/avrtft/emojis.c
-
 ${OBJECTDIR}/_ext/48b9b4a1/font.o: /home/dode/dev/avrtft/font.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
 	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/font.o /home/dode/dev/avrtft/font.c
@@ -120,6 +116,10 @@ ${OBJECTDIR}/_ext/48b9b4a1/tft.o: /home/dode/dev/avrtft/tft.c
 ${OBJECTDIR}/_ext/48b9b4a1/touch.o: /home/dode/dev/avrtft/touch.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
 	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/touch.o /home/dode/dev/avrtft/touch.c
+
+${OBJECTDIR}/ra8875.o: ra8875.c
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.c) -g -DBAUD=9600 -DF_CPU=8000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/ra8875.o ra8875.c
 
 # Subprojects
 .build-subprojects:

@@ -10,6 +10,14 @@
 #include "pins.h"
 #include "spi.h"
 
+void spiSlow(void) {
+    SPCR |= (1 << SPR1) | (1 << SPR0);
+}
+
+void spiFast(void) {
+    SPCR &= ~(1 << SPR1) & ~(1 << SPR0);
+}
+
 void sdCardSel(void) {
     PORT_SDC &= ~(1 << PIN_SDCS);
 }
