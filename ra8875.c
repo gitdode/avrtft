@@ -3,6 +3,7 @@
  * Author: torsten.roemer@luniks.net
  * 
  * Thanks to https://github.com/adafruit/Adafruit_RA8875
+ * for PLL settings and HSync and VSync timings!
  *
  * Created on 1. Juni 2024, 15:33
  */
@@ -103,6 +104,33 @@ static uint8_t regRead(uint8_t reg) {
 }
 
 /**
+ * Sets the window in that to write text, draw graphics or write to memory.
+ * The cursor must be set to the start coordinates of the window.
+ * 
+ * @param xs X start
+ * @param ys Y start
+ * @param xe X end
+ * @param ye Y end
+ */
+static void setActiveWindow(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye) {
+    // horizontal start point of active window
+    regWrite(HSAW0, xs);
+    regWrite(HSAW1, xs >> 8);
+    
+    // vertical start point of active window
+    regWrite(VSAW0, ys);
+    regWrite(VSAW1, ys >> 8);
+    
+    // horizontal end point of active window
+    regWrite(HEAW0, xe);
+    regWrite(HEAW1, xe >> 8);
+    
+    // vertical end point of active window
+    regWrite(VEAW0, ye);
+    regWrite(VEAW1, ye >> 8);
+}
+
+/**
  * Switches to graphics mode.
  */
 static void graphicsMode(void) {
@@ -163,21 +191,7 @@ void initDisplay(void) {
     regWrite(VSTR1, VSP >> 8);
     regWrite(VPWR, 0x00 + VPW - 1);
     
-    // horizontal start point of active window
-    regWrite(HSAW0, 0);
-    regWrite(HSAW1, 0);
-    
-    // vertical start point of active window
-    regWrite(VSAW0, 0);
-    regWrite(VSAW1, 0);
-    
-    // horizontal end point of active window
-    regWrite(HEAW0, (uint8_t)DISPLAY_WIDTH - 1);
-    regWrite(HEAW1, DISPLAY_WIDTH >> 8);
-    
-    // vertical end point of active window
-    regWrite(VEAW0, (uint8_t)DISPLAY_HEIGHT - 1);
-    regWrite(VEAW1, DISPLAY_HEIGHT >> 8);
+    setActiveWindow(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
     
     // clear full display
     regWrite(MCLR, 0x80 | 0x00);
@@ -217,7 +231,7 @@ void ra8875Test(void) {
     
     textMode();
     
-    writeText(350, 300, 0xf800, 0x0000, "Hello RA8875!");
+    writeText(350, 300, 0x07e0, 0x0000, "Hello RA8875!");
 }
 
 void setBackground(uint16_t color) {
@@ -291,16 +305,19 @@ void writeText(uint16_t x, uint16_t y, uint16_t fg, uint16_t bg, char *string) {
     }
 }
 
-void writeStart(void) {
-    
+void writeStart() {
+    cmdWrite(MRWC);
+    displaySel();
+    transmit(DATA_WRITE);
 }
 
 void writeByte(uint8_t byte) {
-    
+    transmit(byte);
 }
 
 void writeEnd(void) {
-    
+    displayDes();
+    waitBusy();
 }
 
 void fillArea(row_t row, col_t col,
@@ -309,10 +326,19 @@ void fillArea(row_t row, col_t col,
     
 }
 
+// TODO HFlip + VFlip
+// TODO row, col -> x, y
 void setArea(row_t row, col_t col,
              width_t width, height_t height,
              bool hflip, bool vflip) {
+    setActiveWindow(col, row, col + width - 1, row + height - 1);
+    graphicsMode();
     
+    regWrite(CURH0, col);
+    regWrite(CURH1, col >> 8);
+    
+    regWrite(CURV0, row);
+    regWrite(CURV1, row >> 8);
 }
 
 void writeData(const __flash uint8_t *bitmap,
