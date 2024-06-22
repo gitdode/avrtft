@@ -78,9 +78,14 @@
 #define FGCR1   0x64
 #define FGCR2   0x65
 
+/* Touch Panel Control Registers */
 #define TPCR0   0x70
 #define TPCR1   0x71
+#define TPXH    0x72
+#define TPYH    0x73
+#define TPXYL   0x74
 
+/* Interrupt Control Registers */
 #define INTC1   0xf0
 #define INTC2   0xf1
 
@@ -115,6 +120,8 @@
 #define VNDP    32
 #define VSP     23
 #define VPW     2
+
+#define TOUCH_ADC 1024
 
 /**
  * Just a test.

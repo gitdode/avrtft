@@ -216,8 +216,6 @@ void initDisplay(void) {
     regWrite(PWRR, 0x80);
     _delay_ms(20);
     
-    spiFast();
-    
     // TFT LCD backlight on
     // PWM1
     regWrite(P1CR, 0x80);
@@ -226,10 +224,14 @@ void initDisplay(void) {
     // GPIOX write to enable display
     regWrite(GPIOX, 1);
     
-    // enable touch panel
-    regWrite(TPCR0, 0x80);
+    // enable touch panel, wait 4096 clocks, system clock/8
+    regWrite(TPCR0, 0x80 | 0x30 | 0x03);
+    // enable debounce for touch interrupt
+    regWrite(TPCR1, 0x04);
     // enable touch interrupt
     regWrite(INTC1, 0x04);
+    
+    spiFast();
     
     printString("done initializing display\r\n");
 }
@@ -251,6 +253,8 @@ void ra8875Test(void) {
     textMode();
     
     writeText(350, 300, 0x07e0, 0x0000, "Hello RA8875!");
+    
+    graphicsMode();
 }
 
 void setBackground(uint16_t color) {
@@ -351,13 +355,12 @@ void fillArea(x_t x, y_t y,
     
 }
 
+// TODO take HFLIP and VFLIP in account
 void setArea(x_t x, y_t y,
              width_t width, height_t height,
              bool hflip, bool vflip) {
     setActiveWindow(x, y, x + width - 1, y + height - 1);
     graphicsMode();
-    
-    // TODO take HFLIP and VFLIP in account
     
     uint8_t dpcr = regRead(DPCR);
     // hflip in memory not possible? So flip the scan direction as a replacement
@@ -394,9 +397,23 @@ bool isTouch(void) {
     return data & 0x04;
 }
 
+// TODO take HFLIP and VFLIP in account
+// getting touch points in the area (40, 60) and (760, 440) only, why?
 uint8_t readTouch(Point *point) {
-    // TODO implement
-    return 0;
+    uint8_t tpxh = regRead(TPXH);
+    uint8_t tpyh = regRead(TPYH);
+    uint8_t tpxyl = regRead(TPXYL);
+    
+    point->x = (tpxh << 2);
+    point->x |= (tpxyl & 0x03);
+    
+    point->y = (tpyh << 2);
+    point->y |= ((tpxyl & 0x0c) >> 2);
+    
+    point->x = ((uint32_t)point->x * DISPLAY_WIDTH) >> 10;
+    point->y = ((uint32_t)point->y * DISPLAY_HEIGHT) >> 10;
+    
+    return EVENT_PRESS_DOWN;
 }
 
 void clearTouch(void) {

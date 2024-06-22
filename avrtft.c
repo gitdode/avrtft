@@ -140,7 +140,8 @@ int main(void) {
             if (sdcard) {
                 bmpEvent(event, &point);
             } else {
-                paintEvent(event, &point);
+                drawCircle(point.x, point.y, 10, 0x07e0);
+                // paintEvent(event, &point);
             }
             
             clearTouch();

@@ -84,4 +84,4 @@ clean:
 	$(TARGET).eeprom
 
 flash: $(TARGET).hex 
-	$(AVRDUDE) -B 125kHz -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
