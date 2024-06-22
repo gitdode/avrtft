@@ -35,10 +35,10 @@ static void paintTools(void) {
     fillArea(0, DISPLAY_WIDTH - CTRL_WIDTH, 
              CTRL_WIDTH, CTRL_WIDTH * TOOL_COUNT, 0xffff);
     for (uint8_t i = 0; i < TOOL_COUNT; i++) {
-        drawRectangle(CTRL_WIDTH * i, DISPLAY_WIDTH - CTRL_WIDTH, 
+        drawRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * i, 
                       CTRL_WIDTH, CTRL_WIDTH + 1, 1, 0x0);
-        writeBitmap(CTRL_WIDTH * i + BITMAP_PADDING, 
-                    DISPLAY_WIDTH - CTRL_WIDTH + BITMAP_PADDING, i);
+        writeBitmap(DISPLAY_WIDTH - CTRL_WIDTH + BITMAP_PADDING, 
+                    CTRL_WIDTH * i + BITMAP_PADDING, i);
     }
 }
 
@@ -52,7 +52,7 @@ void initPaint() {
     paintTools();
     
     // highlight default tool
-    drawRectangle(CTRL_WIDTH * tool, DISPLAY_WIDTH - CTRL_WIDTH, 
+    drawRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * tool, 
                   CTRL_WIDTH, CTRL_WIDTH + 1, 2, 0x0);
 }
 
@@ -63,7 +63,7 @@ void paintEvent(uint8_t event, Point *point) {
             uint8_t i = point->y / (CTRL_WIDTH + 1);
             // repaint colors, highlight and select color
             paintColors();
-            drawRectangle(CTRL_WIDTH * i, 0, 
+            drawRectangle(0, CTRL_WIDTH * i,  
                           CTRL_WIDTH, CTRL_WIDTH, 2, 0x0);
             color = colors[i];
         }
@@ -73,7 +73,7 @@ void paintEvent(uint8_t event, Point *point) {
             // tool selected
             if (i == TOOL_CLEAR) {
                 // clear canvas
-                fillArea(0, CTRL_WIDTH, DISPLAY_WIDTH - 2 * CTRL_WIDTH + 1, 
+                fillArea(CTRL_WIDTH, DISPLAY_WIDTH - 2 * CTRL_WIDTH + 1, 0, 
                          DISPLAY_HEIGHT, 0xffff);
             } else if (i == TOOL_THICK) {
                 // increment line thickness
@@ -83,7 +83,7 @@ void paintEvent(uint8_t event, Point *point) {
             } else if (i < TOOL_COUNT) {
                 // repaint tools, highlight and select tool
                 paintTools();
-                drawRectangle(CTRL_WIDTH * i, DISPLAY_WIDTH - CTRL_WIDTH, 
+                drawRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * i, 
                               CTRL_WIDTH, CTRL_WIDTH + 1, 2, 0x0);
                 tool = i;
             }
@@ -96,9 +96,9 @@ void paintEvent(uint8_t event, Point *point) {
 
 void paintPoint(uint8_t event, Point *point) {
     if (tool == TOOL_ERASER) {
-        fillArea(point->y - thoff, point->x - thoff, thick, thick, 0xffff);
+        fillArea(point->x - thoff, point->y - thoff, thick, thick, 0xffff);
     } else {
-        fillArea(point->y - thoff, point->x - thoff, thick, thick, color);
+        fillArea(point->x - thoff, point->y - thoff, thick, thick, color);
     }
 
     if (prev.x != -1) {
@@ -111,21 +111,21 @@ void paintPoint(uint8_t event, Point *point) {
                 float yd = (point->y - prev.y) / d;
 
                 for (int i = 1; i < d; i++) {
-                    col_t xi = prev.x + xd * i;
-                    row_t yi = prev.y + yd * i;
-                    fillArea(yi - thoff, xi - thoff, thick, thick, color);
+                    x_t xi = prev.x + xd * i;
+                    y_t yi = prev.y + yd * i;
+                    fillArea(xi - thoff, yi - thoff, thick, thick, color);
                 }
             }
         }
         
         // draw a rectangle spanning the previous and current point
         if (tool == TOOL_RECT && event == EVENT_PRESS_DOWN) {
-            row_t x1 = fmin(prev.x, point->x);
-            row_t y1 = fmin(prev.y, point->y);
-            col_t x2 = fmax(prev.x, point->x);
-            col_t y2 = fmax(prev.y, point->y);
+            y_t x1 = fmin(prev.x, point->x);
+            y_t y1 = fmin(prev.y, point->y);
+            x_t x2 = fmax(prev.x, point->x);
+            x_t y2 = fmax(prev.y, point->y);
             
-            drawRectangle(y1 - thoff, x1 - thoff, 
+            drawRectangle(x1 - thoff, y1 - thoff, 
                           x2 - x1 + thick, y2 - y1 + thick, thick, color);
             // unset previous point and leave (for now)
             prev = (Point){-1};

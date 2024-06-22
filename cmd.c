@@ -24,43 +24,51 @@ static void clear(char *data) {
 }
 
 /**
- * Writes one line of text to the given row and column.
+ * Writes one line of text to the given x and y coordinates.
  * @param data
  */
 static void text(char *data) {
     strtok(data, " ");
     char *end;
-    row_t row = strtol(strtok(NULL, " "), &end, 10);
-    col_t col = strtol(strtok(NULL, " "), &end, 10);
+    x_t x = strtol(strtok(NULL, " "), &end, 10);
+    y_t y = strtol(strtok(NULL, " "), &end, 10);
     char *text = strtok(NULL, "\0");
     
     const __flash Font *hack = &hackFont;
-    writeString(row, col, hack, text);
+    writeString(x, y, hack, text);
 }
 
 /**
- * Writes the bitmap with the given index to the given row and column.
+ * Writes the bitmap with the given index to the given x and y coordinates.
  * @param data
  */
 static void bitmap(char *data) {
     strtok(data, " ");
     char *end;
-    row_t row = strtol(strtok(NULL, " "), &end, 10);
-    col_t col = strtol(strtok(NULL, " "), &end, 10);
+    x_t x = strtol(strtok(NULL, " "), &end, 10);
+    y_t y = strtol(strtok(NULL, " "), &end, 10);
     uint8_t index = strtol(strtok(NULL, " "), &end, 10);
     
-    writeBitmap(row, col, index);
+    writeBitmap(x, y, index);
 }
 
+/**
+ * Prepares for writing a BMP image to the given x and y coordinates.
+ * @param data
+ */
 static void bmp(char *data) {
     strtok(data, " ");
     char *end;
-    row_t row = strtol(strtok(NULL, " "), &end, 10);
-    col_t col = strtol(strtok(NULL, " "), &end, 10);
+    x_t x = strtol(strtok(NULL, " "), &end, 10);
+    y_t y = strtol(strtok(NULL, " "), &end, 10);
     
-    prepareBMP(row, col);
+    prepareBMP(x, y);
 }
 
+/**
+ * Reads a BMP image from SD Card starting at the given address.
+ * @param data
+ */
 static void bmpSD(char *data) {
     strtok(data, " ");
     char *end;

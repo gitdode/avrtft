@@ -8,6 +8,8 @@ BAUD = 38400
 PROGRAMMER_TYPE = avrispmkII
 PROGRAMMER_ARGS = 
 
+DRIVER = RA8875
+
 # These settings should be enough to get all currently supported
 # drivers to work (they are very similar):
 # - ST7735R
@@ -82,4 +84,4 @@ clean:
 	$(TARGET).eeprom
 
 flash: $(TARGET).hex 
-	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+	$(AVRDUDE) -B 125kHz -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<

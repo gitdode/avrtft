@@ -37,10 +37,10 @@
 
 bool sdcard = false;
 
-static volatile bool touch = false;
+static volatile bool int0 = false;
 
 ISR(INT0_vect) {
-    touch = true;
+    int0 = true;
 }
 
 /**
@@ -118,14 +118,13 @@ int main(void) {
 
     _delay_ms(1000);
 
-    // may need to decrease SPI bus clock frequency for initialization
     sdcard = initSDCard();
     initDisplay();
     initTouchInt();
 
     // ignore initial touch interrupt
     _delay_ms(1);
-    touch = false;
+    int0 = false;
 
     // do something at the start
     if (!sdcard) {
@@ -135,8 +134,8 @@ int main(void) {
     }
 
     while (true) {
-        if (touch) {
-            touch = false;
+        if (int0 && isTouch()) {
+            int0 = false;
             Point point = {0};
             // memset(&point, 0, sizeof (Point));
             uint8_t event = readTouch(&point);
@@ -145,6 +144,8 @@ int main(void) {
             } else {
                 paintEvent(event, &point);
             }
+            
+            clearTouch();
         }
 
         if (isStreamingData()) {

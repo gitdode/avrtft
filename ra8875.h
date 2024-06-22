@@ -12,6 +12,8 @@
 #include "pins.h"
 #include "usart.h"
 #include "spi.h"
+#include "tft.h"
+#include "touch.h"
 
 #define CMD_WRITE   0x80
 #define STATUS_READ 0xc0
@@ -76,6 +78,12 @@
 #define FGCR1   0x64
 #define FGCR2   0x65
 
+#define TPCR0   0x70
+#define TPCR1   0x71
+
+#define INTC1   0xf0
+#define INTC2   0xf1
+
 /* PLL Setting Registers */
 #define PLLC1   0x88
 #define PLLC2   0x89
@@ -98,14 +106,6 @@
 /*  Key & IO Control Registers */
 #define GPIOX   0xc7
 
-#ifndef DISPLAY_WIDTH
-    #define DISPLAY_WIDTH   800
-#endif
-
-#ifndef DISPLAY_HEIGHT
-    #define DISPLAY_HEIGHT  480
-#endif
-
 /* HSync + VSync currently only for 800x480 */
 #define HNDFT   0
 #define HNDP    10 
@@ -115,27 +115,6 @@
 #define VNDP    32
 #define VSP     23
 #define VPW     2
-
-#ifndef BGR
-    #define BGR     0
-#endif
-
-#ifndef INVERT
-    #define INVERT  0
-#endif
-
-#ifndef HFLIP
-    #define HFLIP   0
-#endif
-
-#ifndef VFLIP
-    #define VFLIP   0
-#endif
-
-// TODO use enum? typedef?
-#define SPACE_MONO1  1
-#define SPACE_GREY4  4
-#define SPACE_RGB16  16
 
 /**
  * Initializes the display.
@@ -168,7 +147,7 @@ void setForeground(uint16_t color);
  * @param y
  * @param color
  */
-void drawPixel(uint16_t x, uint16_t y, uint16_t color);
+void drawPixel(x_t x, y_t y, uint16_t color);
 
 /**
  * Draws a circle at given center coordinates, radius and color.
@@ -178,7 +157,7 @@ void drawPixel(uint16_t x, uint16_t y, uint16_t color);
  * @param radius
  * @param color
  */
-void drawCircle(uint16_t x, uint16_t y, uint16_t radius, uint16_t color);
+void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color);
 
 /**
  * Writes given text at given coordinates and foreground and background color.
@@ -189,62 +168,6 @@ void drawCircle(uint16_t x, uint16_t y, uint16_t radius, uint16_t color);
  * @param bg
  * @param string
  */
-void writeText(uint16_t x, uint16_t y, uint16_t fg, uint16_t bg, char *string);
-
-/**
- * Sets to write data to display RAM.
- */
-void writeStart(void);
-
-/**
- * Writes the given byte to display RAM.
- * 
- * @param byte
- */
-void writeByte(uint8_t byte);
-
-/**
- * Completes writing data to display RAM.
- */
-void writeEnd(void);
-
-/**
- * Sets the given color in the given area of the display.
- * 
- * @param row row in pixels, origin top left
- * @param col column in pixels, origin top left
- * @param width width in pixels
- * @param height height in pixels
- * @param color 16-Bit (5/6/5) RGB color
- */
-void fillArea(row_t row, col_t col,
-              width_t width, height_t height,
-              uint16_t color);
-
-/**
- * Sets the area to write image data to.
- * 
- * @param row row in pixels, origin top left
- * @param col column in pixels, origin top left
- * @param width width of the bitmap in pixels
- * @param height height of the bitmap in pixels
- * @param hflip if image should be flipped horizontally
- * @param vflip if image should be flipped vertically
- */
-void setArea(row_t row, col_t col,
-             width_t width, height_t height,
-             bool hflip, bool vflip);
-
-/**
- * Writes image data to the previously set area.
- * 
- * @param bitmap pointer to bitmap data in program memory
- * @param width width of the bitmap in pixels
- * @param height height of the bitmap in pixels
- * @param space color space of the bitmap
- */
-void writeData(const __flash uint8_t *bitmap,
-               width_t width, height_t height,
-               space_t space);
+void writeText(x_t x, y_t y, uint16_t fg, uint16_t bg, char *string);
 
 #endif /* RA8875_H */

@@ -23,34 +23,34 @@ void setFrame(uint16_t color) {
     fillArea(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, color);
 }
 
-void drawRectangle(row_t row, col_t col, width_t width, height_t height, 
+void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
                    uint8_t thickness, uint16_t color) {
     width -= thickness;
     height -= thickness;
     
-    fillArea(row, col, width, thickness, color);
-    fillArea(row, col + width, thickness, height, color);
-    fillArea(row + height, col, width + thickness, thickness, color);
-    fillArea(row, col, thickness, height, color);
+    fillArea(x, y, width, thickness, color);
+    fillArea(x, y + width, thickness, height, color);
+    fillArea(x + height, y, width + thickness, thickness, color);
+    fillArea(x, y, thickness, height, color);
 }
 
-width_t writeBitmap(row_t row, col_t col, uint16_t index) {
+width_t writeBitmap(x_t x, y_t y, uint16_t index) {
     const __flash Bitmap *bitmap = &bitmaps[index];
-    setArea(row, col, bitmap->width, bitmap->height, false, false);
+    setArea(x, y, bitmap->width, bitmap->height, false, false);
     writeData(bitmap->bitmap, bitmap->width, bitmap->height, bitmap->space);
     
     return bitmap->width;
 }
 
-width_t writeGlyph(row_t row, col_t col, const __flash Font *font, code_t code) {
+width_t writeGlyph(x_t x, y_t y, const __flash Font *font, code_t code) {
     const __flash Glyph *glyph = getGlyphAddress(font, code);
-    setArea(row, col, glyph->width, font->height, false, false);
+    setArea(x, y, glyph->width, font->height, false, false);
     writeData(glyph->bitmap, glyph->width, font->height, font->space);
     
     return glyph->width;
 }
 
-void writeString(row_t row, col_t col, const __flash Font *font, const char *string) {
+void writeString(x_t x, y_t y, const __flash Font *font, const char *string) {
     uint8_t offset = 0;
     for (; *string != '\0'; string++) {
         uint8_t c = (uint8_t) *string;
@@ -61,7 +61,7 @@ void writeString(row_t row, col_t col, const __flash Font *font, const char *str
             offset = 64;
         } else {
             code_t code = c + offset;
-            col += writeGlyph(row, col, font, code);
+            y += writeGlyph(x, y, font, code);
             offset = 0;            
         }
     }

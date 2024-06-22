@@ -8,9 +8,15 @@
 #include <avr/interrupt.h>
 #include "touch.h"
 #include "i2c.h"
-// #include "tft.h"
+#include "tft.h"
 #include "ra8875.h"
 #include "usart.h"
+
+#if DRIVER != RA8875
+
+bool isTouch(void) {
+    return true;
+}
 
 uint8_t readTouch(Point *point) {
     i2cStart();
@@ -51,3 +57,9 @@ uint8_t readTouch(Point *point) {
 
     return eventFlag;
 }
+
+void clearTouch(void) {
+    // no-op
+}
+
+#endif /* DRIVER */

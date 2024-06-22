@@ -19,9 +19,9 @@ typedef uint8_t     space_t;
 /* Width * height * bytes per pixel */
 typedef uint32_t    bytes_t;
 
-/* Number of rows and columns of the display */
-typedef uint16_t    row_t;
-typedef uint16_t    col_t;
+/* X and Y coordinates of the display */
+typedef uint16_t    x_t;
+typedef uint16_t    y_t;
 
 /* Char code (like UTF-8 code point) */
 typedef uint8_t     code_t;

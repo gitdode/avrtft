@@ -112,7 +112,7 @@ static uint8_t regRead(uint8_t reg) {
  * @param xe X end
  * @param ye Y end
  */
-static void setActiveWindow(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye) {
+static void setActiveWindow(x_t xs, y_t ys, x_t xe, y_t ye) {
     // horizontal start point of active window
     regWrite(HSAW0, xs);
     regWrite(HSAW1, xs >> 8);
@@ -128,6 +128,14 @@ static void setActiveWindow(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye) 
     // vertical end point of active window
     regWrite(VEAW0, ye);
     regWrite(VEAW1, ye >> 8);
+}
+
+static void setCursor(x_t x, y_t y) {
+    regWrite(CURH0, x);
+    regWrite(CURH1, x >> 8);
+    
+    regWrite(CURV0, y);
+    regWrite(CURV1, y >> 8);
 }
 
 /**
@@ -212,6 +220,11 @@ void initDisplay(void) {
     // GPIOX write to enable display
     regWrite(GPIOX, 1);
     
+    // enable touch panel
+    regWrite(TPCR0, 0x80);
+    // enable touch interrupt
+    regWrite(INTC1, 0x04);
+    
     printString("done initializing display\r\n");
 }
 
@@ -252,7 +265,7 @@ void setForeground(uint16_t color) {
     regWrite(FGCR2, (color & 0x001f) >> 0);
 }
 
-void drawPixel(uint16_t x, uint16_t y, uint16_t color) {
+void drawPixel(x_t x, y_t y, uint16_t color) {
     regWrite(CURH0, x);
     regWrite(CURH1, x >> 8);
     
@@ -269,7 +282,7 @@ void drawPixel(uint16_t x, uint16_t y, uint16_t color) {
     waitBusy();
 }
 
-void drawCircle(uint16_t x, uint16_t y, uint16_t radius, uint16_t color) {
+void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color) {
     // set the center of the circle
     regWrite(DCHR0, x);
     regWrite(DCHR1, x >> 8);
@@ -289,7 +302,7 @@ void drawCircle(uint16_t x, uint16_t y, uint16_t radius, uint16_t color) {
     waitBusy();
 }
 
-void writeText(uint16_t x, uint16_t y, uint16_t fg, uint16_t bg, char *string) {
+void writeText(x_t x, y_t y, uint16_t fg, uint16_t bg, char *string) {
     regWrite(F_CURXL, x);
     regWrite(F_CURXH, x >> 8);
     
@@ -305,7 +318,13 @@ void writeText(uint16_t x, uint16_t y, uint16_t fg, uint16_t bg, char *string) {
     }
 }
 
-void writeStart() {
+void writeStart(void) {
+    cmdWrite(MRWC);
+    displaySel();
+    transmit(DATA_WRITE);
+}
+
+void writeRestart(void) {
     cmdWrite(MRWC);
     displaySel();
     transmit(DATA_WRITE);
@@ -320,25 +339,36 @@ void writeEnd(void) {
     waitBusy();
 }
 
-void fillArea(row_t row, col_t col,
+void fillArea(x_t x, y_t y,
               width_t width, height_t height,
               uint16_t color) {
     
 }
 
-// TODO HFlip + VFlip
-// TODO row, col -> x, y
-void setArea(row_t row, col_t col,
+void setArea(x_t x, y_t y,
              width_t width, height_t height,
              bool hflip, bool vflip) {
-    setActiveWindow(col, row, col + width - 1, row + height - 1);
+    setActiveWindow(x, y, x + width - 1, y + height - 1);
     graphicsMode();
     
-    regWrite(CURH0, col);
-    regWrite(CURH1, col >> 8);
+    uint8_t dpcr = regRead(DPCR);
+    // hflip not possible?
+    if (hflip) {
+        dpcr |= (1 << 2);
+    } else {
+        dpcr &= ~(1 << 2);
+    }
+    regWrite(DPCR, dpcr);
     
-    regWrite(CURV0, row);
-    regWrite(CURV1, row >> 8);
+    uint8_t mwcr2 = regRead(MWCR0);
+    if (vflip) {
+        mwcr2 |= (1 << 2);
+    } else {
+        mwcr2 &= ~(1 << 2);
+    }
+    regWrite(MWCR0, mwcr2);
+    
+    setCursor(x, y);
 }
 
 void writeData(const __flash uint8_t *bitmap,
@@ -346,3 +376,22 @@ void writeData(const __flash uint8_t *bitmap,
                space_t space) {
     
 }
+
+#if DRIVER == RA8875
+
+bool isTouch(void) {
+    uint8_t data = regRead(INTC2);
+
+    return data & 0x04;
+}
+
+uint8_t readTouch(Point *point) {
+    // TODO implement
+    return 0;
+}
+
+void clearTouch(void) {
+    regWrite(INTC2, 0x04);
+}
+
+#endif /* DRIVER */

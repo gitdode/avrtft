@@ -19,6 +19,13 @@
 #define EVENT_NO_EVENT      3
 
 /**
+ * Returns true if there was a touch event, false otherwise.
+ * 
+ * @return true if touch event
+ */
+bool isTouch(void);
+
+/**
  * Reads the current touch position into the given point and returns 
  * the touch event.
  * 
@@ -29,5 +36,10 @@
  * @return touch event
  */
 uint8_t readTouch(Point *point);
+
+/**
+ * Clears the touch event.
+ */
+void clearTouch(void);
 
 #endif /* TOUCH_H */

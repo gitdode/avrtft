@@ -64,6 +64,11 @@ void initDisplay(void);
 void writeStart(void);
 
 /**
+ * Restart writing to display after SPI deselecting it.
+ */
+void writeRestart(void);
+
+/**
  * Writes the given byte to display RAM.
  * 
  * @param byte
@@ -78,27 +83,27 @@ void writeEnd(void);
 /**
  * Sets the given color in the given area of the display.
  * 
- * @param row row in pixels, origin top left
- * @param col column in pixels, origin top left
+ * @param x in pixels, origin top left
+ * @param y in pixels, origin top left
  * @param width width in pixels
  * @param height height in pixels
  * @param color 16-Bit (5/6/5) RGB color
  */
-void fillArea(row_t row, col_t col,
+void fillArea(x_t x, y_t y,
               width_t width, height_t height,
               uint16_t color);
 
 /**
  * Sets the area to write image data to.
  * 
- * @param row row in pixels, origin top left
- * @param col column in pixels, origin top left
+ * @param x in pixels, origin top left
+ * @param y in pixels, origin top left
  * @param width width of the bitmap in pixels
  * @param height height of the bitmap in pixels
  * @param hflip if image should be flipped horizontally
  * @param vflip if image should be flipped vertically
  */
-void setArea(row_t row, col_t col,
+void setArea(x_t x, y_t y,
              width_t width, height_t height,
              bool hflip, bool vflip);
 

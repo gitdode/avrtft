@@ -135,7 +135,7 @@ static void madctl(bool hflip, bool vflip) {
  * @param xs start address
  * @param xe end address
  */
-static void caset(uint16_t xs, uint16_t xe) {
+static void caset(x_t xs, x_t xe) {
     displaySel();
     displayCmd(CASET);
     displayData(xs >> 8);
@@ -151,7 +151,7 @@ static void caset(uint16_t xs, uint16_t xe) {
  * @param ys start address
  * @param ye end address
  */
-static void raset(uint16_t ys, uint16_t ye) {
+static void raset(y_t ys, y_t ye) {
     displaySel();
     displayCmd(RASET);
     displayData(ys >> 8);
@@ -217,6 +217,10 @@ void writeStart(void) {
     displaySetData();
 }
 
+void writeRestart(void) {
+    displaySel();
+}
+
 void writeByte(uint8_t byte) {
     // Memory write
     transmit(byte);
@@ -227,20 +231,20 @@ void writeEnd(void) {
     displayDes();
 }
 
-void fillArea(row_t row, col_t col,
+void fillArea(x_t x, x_t y,
               width_t width, height_t height,
               uint16_t color) {
 
     madctl(false, false);
 
     // X address start/end
-    uint16_t xs = col;
-    uint16_t xe = col + width - 1;
+    uint16_t xs = y;
+    uint16_t xe = y + width - 1;
     caset(xs, xe);
 
     // Y address start/end
-    uint16_t ys = row;
-    uint16_t ye = row + height - 1;
+    uint16_t ys = x;
+    uint16_t ye = x + height - 1;
     raset(ys, ye);
 
     writeStart();
@@ -254,27 +258,27 @@ void fillArea(row_t row, col_t col,
     writeEnd();
 }
 
-void setArea(row_t row, col_t col, 
+void setArea(x_t x, y_t y, 
              width_t width, height_t height, 
              bool hflip, bool vflip) {
 
     madctl(hflip, vflip);
 
     // X address start/end
-    uint16_t xs = col;
-    uint16_t xe = col + width - 1;
+    uint16_t xs = y;
+    uint16_t xe = y + width - 1;
     if (vflip) {
-        xs = DISPLAY_WIDTH - col - width;
-        xe = DISPLAY_WIDTH - col - 1;
+        xs = DISPLAY_WIDTH - y - width;
+        xe = DISPLAY_WIDTH - y - 1;
     }
     caset(xs, xe);
 
     // Y address start/end
-    uint16_t ys = row;
-    uint16_t ye = row + height - 1;
+    uint16_t ys = x;
+    uint16_t ye = x + height - 1;
     if (hflip) {
-        ys = DISPLAY_HEIGHT - row - height;
-        ye = DISPLAY_HEIGHT - row - 1;
+        ys = DISPLAY_HEIGHT - x - height;
+        ye = DISPLAY_HEIGHT - x - 1;
     }
     raset(ys, ye);
 }

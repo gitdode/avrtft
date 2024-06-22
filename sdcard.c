@@ -311,6 +311,8 @@ bool writeSingleBlock(uint32_t address, uint8_t *block) {
 bool initSDCard(void) {
     uint8_t response[5];
     
+    spiSlow();
+    
     // power on
     powerOn();
 
@@ -362,6 +364,8 @@ bool initSDCard(void) {
         printString("sd card not ready\r\n");
         return false;
     }
+    
+    spiFast();
 
     printString("sd card ready\r\n");
     

@@ -74,6 +74,10 @@
       </item>
       <item path="/home/dode/dev/avrtft/paint.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="/home/dode/dev/avrtft/ra8875.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="/home/dode/dev/avrtft/ra8875.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="/home/dode/dev/avrtft/sdcard.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="/home/dode/dev/avrtft/sdcard.h" ex="false" tool="3" flavor2="0">
@@ -85,10 +89,6 @@
       <item path="/home/dode/dev/avrtft/touch.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="/home/dode/dev/avrtft/touch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="ra8875.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="ra8875.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
