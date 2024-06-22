@@ -117,11 +117,6 @@
 #define VPW     2
 
 /**
- * Initializes the display.
- */
-void initDisplay(void);
-
-/**
  * Just a test.
  */
 void ra8875Test(void);

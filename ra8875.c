@@ -130,6 +130,12 @@ static void setActiveWindow(x_t xs, y_t ys, x_t xe, y_t ye) {
     regWrite(VEAW1, ye >> 8);
 }
 
+/**
+ * Sets the cursor to given X and Y coordinates.
+ * 
+ * @param x
+ * @param y
+ */
 static void setCursor(x_t x, y_t y) {
     regWrite(CURH0, x);
     regWrite(CURH1, x >> 8);
@@ -351,8 +357,11 @@ void setArea(x_t x, y_t y,
     setActiveWindow(x, y, x + width - 1, y + height - 1);
     graphicsMode();
     
+    // TODO take HFLIP and VFLIP in account
+    
     uint8_t dpcr = regRead(DPCR);
-    // hflip not possible?
+    // hflip in memory not possible? So flip the scan direction as a replacement
+    // which is rather poor, since it flips the whole display, not just the area
     if (hflip) {
         dpcr |= (1 << 2);
     } else {

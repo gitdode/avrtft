@@ -116,8 +116,6 @@ int main(void) {
     // enable global interrupts
     sei();
 
-    _delay_ms(1000);
-
     sdcard = initSDCard();
     initDisplay();
     initTouchInt();
