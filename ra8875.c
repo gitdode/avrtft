@@ -179,7 +179,7 @@ void initDisplay(void) {
     _delay_ms(1);
     
     // set pixel clock
-    regWrite(PCSR, 0x80 | 0x01); // 800x480: falling edge, 2 times system clock
+    regWrite(PCSR, 0x80 | 0x01); // 800x480: falling edge, system clock div by 2
     _delay_ms(20);
     
     // set 16-bit color depth, 8-bit MCU
@@ -204,6 +204,15 @@ void initDisplay(void) {
     regWrite(VSTR0, VSP - 1);
     regWrite(VSTR1, VSP >> 8);
     regWrite(VPWR, 0x00 + VPW - 1);
+    
+    uint8_t dpcr = regRead(DPCR);
+    if (HFLIP) {
+        dpcr |= (1 << 2);
+    }
+    if (VFLIP) {
+        dpcr |= (1 << 3);
+    }
+    regWrite(DPCR, dpcr);
     
     setActiveWindow(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
     
@@ -276,11 +285,7 @@ void setForeground(uint16_t color) {
 }
 
 void drawPixel(x_t x, y_t y, uint16_t color) {
-    regWrite(CURH0, x);
-    regWrite(CURH1, x >> 8);
-    
-    regWrite(CURV0, y);
-    regWrite(CURV1, y >> 8);
+    setCursor(x, y);
     
     cmdWrite(MRWC);
     displaySel();
@@ -355,24 +360,14 @@ void fillArea(x_t x, y_t y,
     
 }
 
-// TODO take HFLIP and VFLIP in account
 void setArea(x_t x, y_t y,
              width_t width, height_t height,
              bool hflip, bool vflip) {
     setActiveWindow(x, y, x + width - 1, y + height - 1);
     graphicsMode();
     
-    uint8_t dpcr = regRead(DPCR);
-    // hflip in memory not possible? So flip the scan direction as a replacement
-    // which is rather poor, since it flips the whole display, not just the area
-    if (hflip) {
-        dpcr |= (1 << 2);
-    } else {
-        dpcr &= ~(1 << 2);
-    }
-    regWrite(DPCR, dpcr);
-    
     uint8_t mwcr2 = regRead(MWCR0);
+    // horizontal flip in memory not possible?
     if (vflip) {
         mwcr2 |= (1 << 2);
     } else {
@@ -397,7 +392,6 @@ bool isTouch(void) {
     return data & 0x04;
 }
 
-// TODO take HFLIP and VFLIP in account
 // getting touch points in the area (40, 60) and (760, 440) only, why?
 uint8_t readTouch(Point *point) {
     uint8_t tpxh = regRead(TPXH);
@@ -412,6 +406,13 @@ uint8_t readTouch(Point *point) {
     
     point->x = ((uint32_t)point->x * DISPLAY_WIDTH) >> 10;
     point->y = ((uint32_t)point->y * DISPLAY_HEIGHT) >> 10;
+    
+    if (VFLIP) {
+        point->x = DISPLAY_WIDTH - point->x;
+    }
+    if (HFLIP) {
+        point->y = DISPLAY_HEIGHT - point->y;
+    }
     
     return EVENT_PRESS_DOWN;
 }

@@ -24,8 +24,8 @@ BGR = 1
 # Invert color
 INVERT = 0
 # Flip image
-HFLIP = 1
-VFLIP = 1
+HFLIP = 0
+VFLIP = 0
 
 MAIN = avrtft.c
 SRC = bitmaps.c bmp.c cmd.c display.c i2c.c paint.c touch.c \
