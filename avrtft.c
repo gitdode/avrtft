@@ -107,22 +107,16 @@ static void initTouchInt(void) {
 }
 
 int main(void) {
-
     initUSART();
     initPins();
     initSPI();
     initI2C();
-
-    // enable global interrupts
-    sei();
-
     sdcard = initSDCard();
     initDisplay();
     initTouchInt();
 
-    // ignore initial touch interrupt
-    _delay_ms(1);
-    int0 = false;
+    // enable global interrupts
+    sei();
 
     // do something at the start
     if (!sdcard) {

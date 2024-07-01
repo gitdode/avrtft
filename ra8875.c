@@ -404,6 +404,7 @@ uint8_t readTouch(Point *point) {
     point->y = (tpyh << 2);
     point->y |= ((tpxyl & 0x0c) >> 2);
     
+    // 10-bit ADC
     point->x = ((uint32_t)point->x * DISPLAY_WIDTH) >> 10;
     point->y = ((uint32_t)point->y * DISPLAY_HEIGHT) >> 10;
     
