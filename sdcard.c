@@ -91,6 +91,8 @@ static void deselect(void) {
  * Supplies ramp up time.
  */
 static void powerOn(void) {
+    _delay_ms(100);
+    
     deselect();
 
     _delay_ms(1);
@@ -311,11 +313,9 @@ bool writeSingleBlock(uint32_t address, uint8_t *block) {
 bool initSDCard(void) {
     uint8_t response[5];
     
-    spiSlow();
-    
     // power on
     powerOn();
-
+    
     // go to idle state
     response[0] = sendIdle();
     if (response[0] > 0x01) {
@@ -365,8 +365,6 @@ bool initSDCard(void) {
         return false;
     }
     
-    spiFast();
-
     printString("sd card ready\r\n");
     
     return true;

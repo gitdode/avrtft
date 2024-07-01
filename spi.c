@@ -11,11 +11,14 @@
 #include "spi.h"
 
 void spiSlow(void) {
-    SPCR |= (1 << SPR1) | (1 << SPR0);
+    SPCR &= ~(1 << SPR0);
+    SPCR |= (1 << SPR1);
+    SPSR &= ~(1 << SPI2X);
 }
 
 void spiFast(void) {
     SPCR &= ~(1 << SPR1) & ~(1 << SPR0);
+    SPSR &= ~(1 << SPI2X);
 }
 
 void sdCardSel(void) {
