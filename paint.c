@@ -6,7 +6,6 @@
  */
 
 #include "paint.h"
-#include "usart.h"
 
 static uint16_t colors[] = {
     0xf800, 0x07e0, 0x001f, 

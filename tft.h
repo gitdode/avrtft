@@ -8,8 +8,16 @@
 #ifndef TFT_H
 #define TFT_H
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <util/delay.h>
 #include "types.h"
+#include "pins.h"
+#include "usart.h"
+#include "spi.h"
+#include "colorspace.h"
 
 #define SWRESET 0x01
 #define SLPIN   0x10
@@ -48,15 +56,15 @@
     #define VFLIP   0
 #endif
 
-// TODO use enum? typedef?
-#define SPACE_MONO1  1
-#define SPACE_GREY4  4
-#define SPACE_RGB16  16
-
 /**
  * Initializes the display.
  */
 void initDisplay(void);
+
+/**
+ * Displays a demo.
+ */
+void demoDisplay(void);
 
 /**
  * Sets to write data to display RAM.

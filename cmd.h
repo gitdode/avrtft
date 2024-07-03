@@ -8,6 +8,8 @@
 #ifndef CMD_H
 #define CMD_H
 
+#include <string.h>
+#include <stdlib.h>
 #include "usart.h"
 #include "tft.h"
 #include "display.h"

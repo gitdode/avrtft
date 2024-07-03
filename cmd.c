@@ -5,8 +5,6 @@
  * Created on 18. April 2023, 21:18
  */
 
-#include <string.h>
-#include <stdlib.h>
 #include "cmd.h"
 
 extern bool sdcard;

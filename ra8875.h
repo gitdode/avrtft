@@ -8,12 +8,13 @@
 #ifndef RA8875_H
 #define RA8875_H
 
+#include <util/delay.h>
+#include "tft.h"
+#include "touch.h"
 #include "types.h"
 #include "pins.h"
 #include "usart.h"
 #include "spi.h"
-#include "tft.h"
-#include "touch.h"
 
 #define CMD_WRITE   0x80
 #define STATUS_READ 0xc0
@@ -120,13 +121,6 @@
 #define VNDP    32
 #define VSP     23
 #define VPW     2
-
-#define TOUCH_ADC 1024
-
-/**
- * Just a test.
- */
-void ra8875Test(void);
 
 /**
  * Sets given background color.

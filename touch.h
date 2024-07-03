@@ -5,7 +5,11 @@
  * Created on 12. Dezember 2023, 23:44
  */
 
+#include <avr/interrupt.h>
 #include "types.h"
+#include "i2c.h"
+#include "tft.h"
+#include "usart.h"
 
 #ifndef TOUCH_H
 #define TOUCH_H

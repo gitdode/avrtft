@@ -8,9 +8,20 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <avr/pgmspace.h>
 #include "types.h"
 #include "bitmaps.h"
 #include "font.h"
+#include "hack.h"
+#include "bitmaps.h"
+#include "spi.h"
+#include "tft.h"
+#include "usart.h"
+#include "utils.h"
 
 /**
  * Sets the whole display to the given 16-Bit (5/6/5) RGB color.

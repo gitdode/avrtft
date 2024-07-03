@@ -5,19 +5,7 @@
  * Created on 18. April 2023, 21:56
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <avr/pgmspace.h>
 #include "display.h"
-#include "hack.h"
-#include "bitmaps.h"
-#include "spi.h"
-// #include "tft.h"
-#include "ra8875.h"
-#include "usart.h"
-#include "utils.h"
 
 void setFrame(uint16_t color) {
     fillArea(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, color);

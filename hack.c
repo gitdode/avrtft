@@ -15,10 +15,7 @@
  */
 
 #include <stdio.h>
-#include "font.h"
 #include "hack.h"
-#include "tft.h"
-#include "utils.h"
 
 #define WIDTH 8
 #define HEIGHT 16

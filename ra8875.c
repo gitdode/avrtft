@@ -8,9 +8,9 @@
  * Created on 1. Juni 2024, 15:33
  */
 
-#include <util/delay.h>
-
 #include "ra8875.h"
+
+#if DRIVER == 1
 
 /**
  * Does a hardware reset.
@@ -245,7 +245,7 @@ void initDisplay(void) {
     printString("done initializing display\r\n");
 }
 
-void ra8875Test(void) {
+void demoDisplay(void) {
     graphicsMode();
     
     drawPixel(30, 30, 0xffff);
@@ -357,7 +357,8 @@ void writeEnd(void) {
 void fillArea(x_t x, y_t y,
               width_t width, height_t height,
               uint16_t color) {
-    
+    // FIXME
+    drawCircle(x, y, 10, 0x07e0);
 }
 
 void setArea(x_t x, y_t y,
@@ -383,8 +384,6 @@ void writeData(const __flash uint8_t *bitmap,
                space_t space) {
     
 }
-
-#if DRIVER == RA8875
 
 bool isTouch(void) {
     uint8_t data = regRead(INTC2);

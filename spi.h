@@ -8,6 +8,10 @@
 #ifndef SPI_H
 #define SPI_H
 
+#include <stdio.h>
+#include <avr/io.h>
+#include "pins.h"
+
 /**
  * Sets slow SPI speed.
  */

@@ -5,9 +5,6 @@
  * Created on 1. April 2023, 18:59
  */
 
-#include <stdio.h>
-#include <avr/io.h>
-#include "pins.h"
 #include "spi.h"
 
 void spiSlow(void) {

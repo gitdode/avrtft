@@ -5,14 +5,7 @@
  *      Author: dode@luniks.net
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/setbaud.h>
 #include "usart.h"
-#include "utils.h"
-#include "bmp.h"
 
 static volatile bool usartReceived = false;
 static volatile bool streaming = false;

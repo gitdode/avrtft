@@ -24,7 +24,7 @@
 #include "pins.h"
 #include "usart.h"
 #include "spi.h"
-// #include "tft.h"
+#include "tft.h"
 #include "ra8875.h"
 #include "cmd.h"
 #include "bitmaps.h"
@@ -122,7 +122,7 @@ int main(void) {
     if (!sdcard) {
         // initPaint();
         // hackDemo();
-        ra8875Test();
+        demoDisplay();
     }
 
     while (true) {
@@ -134,8 +134,7 @@ int main(void) {
             if (sdcard) {
                 bmpEvent(event, &point);
             } else {
-                drawCircle(point.x, point.y, 10, 0x07e0);
-                // paintEvent(event, &point);
+                paintEvent(event, &point);
             }
             
             clearTouch();
