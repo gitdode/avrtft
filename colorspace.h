@@ -14,24 +14,21 @@
 #define SPACE_RGB16  16
 
 #include <stdint.h>
+#include "types.h"
+#include "spi.h"
 
 /**
- * Converts the given 8 pixel in 1-Bit monochrome to 16-Bit RGB (5/6/5) color
- * stored in the given array of 16 bytes.
+ * Helper to write image data to the display, converting from the given 
+ * color space to that of the display.
  * 
- * @param grey 8 pixel in 1-Bit monochrome
- * @param rgb 8 pixel in 16-Bit RGB (5/6/5) color
+ * @param bitmap pointer to bitmap data in program memory
+ * @param width width of the bitmap in pixels
+ * @param height height of the bitmap in pixels
+ * @param space color space of the bitmap
  */
-void mono1ToRGB16(uint8_t mono, uint8_t *rgb);
-
-/*
- * Converts the given two pixel in 4-Bit greyscale to 16-Bit RGB (5/6/5) color
- * stored in the given array of four bytes.
- * 
- * @param grey two pixel in 4-Bit greyscale
- * @param rgb two pixel in 16-Bit RGB (5/6/5) color
- */
-void grey4ToRGB16(uint8_t grey, uint8_t *rgb);
+void writeSpace(const __flash uint8_t *bitmap,
+                width_t width, height_t height,
+                space_t space);
 
 #endif /* COLORSPACE_H */
 

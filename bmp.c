@@ -194,6 +194,7 @@ uint16_t readBMPFromSD(uint32_t address) {
     do {
         displayDes();
         bool success = readSingleBlock(address++, block);
+        // FIXME seems to break active window/cursor
         writeRestart();
         if (success) {
             for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {

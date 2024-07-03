@@ -5,9 +5,9 @@
  * Created on 12. Dezember 2023, 23:44
  */
 
-#include "touch.h"
-
 #if DRIVER == 0
+
+#include "touch.h"
 
 bool isTouch(void) {
     return true;

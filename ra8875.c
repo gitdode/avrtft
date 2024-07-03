@@ -8,9 +8,9 @@
  * Created on 1. Juni 2024, 15:33
  */
 
-#include "ra8875.h"
-
 #if DRIVER == 1
+
+#include "ra8875.h"
 
 /**
  * Does a hardware reset.
@@ -365,7 +365,7 @@ void setArea(x_t x, y_t y,
              width_t width, height_t height,
              bool hflip, bool vflip) {
     setActiveWindow(x, y, x + width - 1, y + height - 1);
-    graphicsMode();
+    setCursor(x, y);
     
     uint8_t mwcr2 = regRead(MWCR0);
     // horizontal flip in memory not possible?
@@ -375,14 +375,14 @@ void setArea(x_t x, y_t y,
         mwcr2 &= ~(1 << 2);
     }
     regWrite(MWCR0, mwcr2);
-    
-    setCursor(x, y);
 }
 
 void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
                space_t space) {
-    
+    writeStart();    
+    writeSpace(bitmap, width, height, space);
+    writeEnd();  
 }
 
 bool isTouch(void) {
@@ -391,7 +391,7 @@ bool isTouch(void) {
     return data & 0x04;
 }
 
-// getting touch points in the area (40, 60) and (760, 440) only, why?
+// TODO calibration
 uint8_t readTouch(Point *point) {
     uint8_t tpxh = regRead(TPXH);
     uint8_t tpyh = regRead(TPYH);

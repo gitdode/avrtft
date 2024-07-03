@@ -5,9 +5,9 @@
  * Created on 6. November 2023, 18:45
  */
 
-#include "tft.h"
-
 #if DRIVER == 0
+
+#include "tft.h"
 
 /**
  * Does a hardware reset.
@@ -242,37 +242,7 @@ void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
                space_t space) {
     writeStart();
-    
-    switch (space) {
-        case SPACE_MONO1: {
-            bytes_t bytes = width * height / 8;
-            for (uint16_t i = 0; i < bytes; i++) {
-                uint8_t rgb[16];
-                mono1ToRGB16(bitmap[i], rgb);
-                for (uint8_t j = 0; j < 16; j++) {
-                    transmit(rgb[j]);
-                }
-            }            
-        }; break;
-        case SPACE_GREY4: {
-            bytes_t bytes = width * height / 2;
-            for (uint16_t i = 0; i < bytes; i++) {
-                uint8_t rgb[4];
-                grey4ToRGB16(bitmap[i], rgb);
-                for (uint8_t j = 0; j < 4; j++) {
-                    transmit(rgb[j]);
-                }
-            }
-        }; break;
-        default: {
-            // SPACE_RGB16
-            bytes_t bytes = width * height * 2;
-            for (uint16_t i = 0; i < bytes; i++) {
-                transmit(bitmap[i]);
-            }
-        }
-    }
-
+    writeSpace(bitmap, width, height, space);
     writeEnd();
 }
 

@@ -23,13 +23,13 @@
 /** Clear frame buffer: 'c <0x0000 - 0xffff>'. */
 #define CMD_CLEAR       'c'
 
-/** Display one line of text: 't <row> <col> <font> <text>'. */
+/** Display one line of text: 't <X> <Y> <font> <text>'. */
 #define CMD_TEXT        't'
 
-/** Display a bitmap: 'b <row> <col> <index>'. */
+/** Display a bitmap: 'b <X> <Y> <index>'. */
 #define CMD_BITMAP      'b'
 
-/** Prepare "streaming" a .bmp: 'p <row> <col>'. */
+/** Prepare "streaming" a .bmp: 'p <X> <Y>'. */
 #define CMD_BMP         'p'
 
 /** Read a .bmp: from SD card: 's <address>'. */

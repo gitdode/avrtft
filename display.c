@@ -40,16 +40,25 @@ width_t writeGlyph(x_t x, y_t y, const __flash Font *font, code_t code) {
 
 void writeString(x_t x, y_t y, const __flash Font *font, const char *string) {
     uint8_t offset = 0;
+    bool emoji = false;
+    const __flash Font *emojis = &emojiFont;
     for (; *string != '\0'; string++) {
         uint8_t c = (uint8_t) *string;
-        if (c == 194) {
+        if (c == 9) {
+            // TAB, emoji coming up!
+            emoji = true;
+        } else if (c == 194) {
             // multibyte
         } else if (c == 195) {
             // multibyte, add 64 to get code point
             offset = 64;
+        } else if (emoji) {
+            code_t code = c;
+            x += writeGlyph(x, y, emojis, code);
+            emoji = false;
         } else {
             code_t code = c + offset;
-            y += writeGlyph(x, y, font, code);
+            x += writeGlyph(x, y, font, code);
             offset = 0;            
         }
     }

@@ -17,6 +17,7 @@
 #include "bitmaps.h"
 #include "font.h"
 #include "hack.h"
+#include "emojis.h"
 #include "bitmaps.h"
 #include "spi.h"
 #include "tft.h"

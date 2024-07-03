@@ -31,8 +31,8 @@ HFLIP = 0
 VFLIP = 0
 
 MAIN = avrtft.c
-SRC = bitmaps.c bmp.c cmd.c colorspace.c display.c font.c hack.c \
-      i2c.c paint.c ra8875.c sdcard.c spi.c tft.c touch.c usart.c
+SRC = bitmaps.c bmp.c cmd.c colorspace.c display.c emojis.c font.c \
+      hack.c i2c.c paint.c ra8875.c sdcard.c spi.c tft.c touch.c usart.c
 
 CC = avr-gcc
 OBJCOPY = avr-objcopy
@@ -59,9 +59,9 @@ SRC += $(TARGET).c
 OBJ = $(SRC:.c=.o) 
 OBJ = $(SRC:.S=.o)
 	
-$(TARGET).elf: bitmaps.h bmp.h cmd.h colorspace.h display.h font.h hack.h \
-	       i2c.h paint.h ra8875.h sdcard.h spi.h tft.h touch.h pins.h \
-	       types.h usart.h utils.h Makefile
+$(TARGET).elf: bitmaps.h bmp.h cmd.h colorspace.h display.h emojis.h font.h \
+	       hack.h i2c.h paint.h ra8875.h sdcard.h spi.h tft.h touch.h \
+	       pins.h types.h usart.h utils.h Makefile
 
 all: $(TARGET).hex
 

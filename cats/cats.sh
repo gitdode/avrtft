@@ -6,11 +6,11 @@ stty -F /dev/ttyUSB0 speed 38400 cs8 -parenb -cstopb raw
 # clear the display all black and write some text in Hack font, and so on...
 echo "c 0" > /dev/ttyUSB0
 sleep 1
-echo "t 20 12  Katzen... " > /dev/ttyUSB0
+echo "t 12 20  Katzen... " > /dev/ttyUSB0
 sleep 1
-echo "t 56 44  Katzen... " > /dev/ttyUSB0
+echo "t 44 56  Katzen... " > /dev/ttyUSB0
 sleep 1
-echo "t 92 80  Katzen! " > /dev/ttyUSB0
+echo "t 80 92  Katzen! " > /dev/ttyUSB0
 
 sleep 1
 
