@@ -68,7 +68,7 @@ void writeError(char *lines[], uint8_t length) {
     setFrame(0xffff);
     const __flash Font *hack = &hackFont;
     for (uint8_t i = 0; i < length; i++) {
-        writeString(i * hack->height,  0, hack, lines[i]);
+        writeString(0, i * hack->height, hack, lines[i]);
     }    
 }
 
@@ -79,6 +79,6 @@ void hackDemo(void) {
         const __flash char *line = demoTextLines[i];
         char buf[HACK_DEMO_LINE_SIZE];
         strlcpy_P(buf, line, HACK_DEMO_LINE_SIZE - 1);
-        writeString(i * hack->height, 0, hack, buf);
+        writeString(0, i * hack->height, hack, buf);
     }
 }
