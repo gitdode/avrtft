@@ -91,11 +91,11 @@ supporting touch with reliable usability.
 
 ![IMG_20240103_134738](https://github.com/gitdode/avrtft/assets/11530253/5e9947cc-e236-49e7-a06b-1dbfffa304b7)
 
-## Larger (up to 800x480) TTL display
+## Larger (up to 800x480) TTL displays
 
 If at all possible, it probably is quite a challenge to drive such a 40-pin display with a 28-pin 
-MCU like the ATmega238, but it is easy with the RA8875 driver, offering support for a touch screen 
-as well. Here it is combined with the (SparkFun Level Shifting microSD Breakout)[https://www.sparkfun.com/products/13743] 
+MCU like the ATmega238P, but it is easy with the RA8875 driver, offering support for a touch screen 
+as well. Here it is combined with the [SparkFun Level Shifting microSD Breakout](https://www.sparkfun.com/products/13743) 
 to read images from an SD card, advancing to the next image by touching the screen.
 
 ![IMG_20240704_214710](https://github.com/gitdode/avrtft/assets/11530253/a09af16d-0dcf-4c1f-a8d6-0fb965b75fda)
