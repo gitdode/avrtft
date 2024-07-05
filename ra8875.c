@@ -207,10 +207,10 @@ void initDisplay(void) {
     
     uint8_t dpcr = regRead(DPCR);
     if (HFLIP) {
-        dpcr |= (1 << 2);
+        dpcr |= (1 << 3);
     }
     if (VFLIP) {
-        dpcr |= (1 << 3);
+        dpcr |= (1 << 2);
     }
     regWrite(DPCR, dpcr);
     
@@ -368,12 +368,12 @@ void setArea(x_t x, y_t y,
     setCursor(x, y);
     
     uint8_t mwcr2 = regRead(MWCR0);
-    // horizontal flip in memory not possible?
-    if (vflip) {
+    if (hflip) {
         mwcr2 |= (1 << 2);
     } else {
         mwcr2 &= ~(1 << 2);
     }
+    // vertical flip in memory not possible?
     regWrite(MWCR0, mwcr2);
 }
 
@@ -407,10 +407,10 @@ uint8_t readTouch(Point *point) {
     point->x = ((uint32_t)point->x * DISPLAY_WIDTH) >> 10;
     point->y = ((uint32_t)point->y * DISPLAY_HEIGHT) >> 10;
     
-    if (VFLIP) {
+    if (HFLIP) {
         point->x = DISPLAY_WIDTH - point->x;
     }
-    if (HFLIP) {
+    if (VFLIP) {
         point->y = DISPLAY_HEIGHT - point->y;
     }
     

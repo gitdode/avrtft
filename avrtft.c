@@ -117,12 +117,16 @@ int main(void) {
 
     // enable global interrupts
     sei();
+    
+    // ignore initial touch interrupt
+    _delay_ms(1);
+    int0 = false;
 
     // do something at the start
     if (!sdcard) {
-        // initPaint();
+        initPaint();
         // hackDemo();
-        demoDisplay();
+        // demoDisplay();
     }
 
     while (true) {

@@ -23,7 +23,7 @@ static uint8_t thoff = 2; // offset to "center" point relative to thickness
  */
 static void paintColors(void) {
     for (uint8_t i = 0; i < CTRL_COUNT; i++) {
-       fillArea(CTRL_WIDTH * i, 0, CTRL_WIDTH, CTRL_WIDTH, colors[i]);
+       fillArea(0, CTRL_WIDTH * i, CTRL_WIDTH, CTRL_WIDTH, colors[i]);
     }    
 }
 
@@ -31,7 +31,7 @@ static void paintColors(void) {
  * Paints the tool selection.
  */
 static void paintTools(void) {
-    fillArea(0, DISPLAY_WIDTH - CTRL_WIDTH, 
+    fillArea(DISPLAY_WIDTH - CTRL_WIDTH, 0, 
              CTRL_WIDTH, CTRL_WIDTH * TOOL_COUNT, 0xffff);
     for (uint8_t i = 0; i < TOOL_COUNT; i++) {
         drawRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * i, 
@@ -72,7 +72,7 @@ void paintEvent(uint8_t event, Point *point) {
             // tool selected
             if (i == TOOL_CLEAR) {
                 // clear canvas
-                fillArea(CTRL_WIDTH, DISPLAY_WIDTH - 2 * CTRL_WIDTH + 1, 0, 
+                fillArea(CTRL_WIDTH, 0, DISPLAY_WIDTH - 2 * CTRL_WIDTH + 1, 
                          DISPLAY_HEIGHT, 0xffff);
             } else if (i == TOOL_THICK) {
                 // increment line thickness

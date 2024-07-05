@@ -61,15 +61,15 @@ static void displayData(uint8_t data) {
 static void madctl(bool hflip, bool vflip) {
     // Memory data access control
     uint8_t madctl = 0b00110110;
-    madctl |= (VFLIP << 7);
-    madctl |= (HFLIP << 6);
+    madctl |= (HFLIP << 7);
+    madctl |= (VFLIP << 6);
     madctl |= (BGR << 3);
 
-    if (vflip) {
+    if (hflip) {
         // Row Address Order (MY)
         madctl ^= (1 << 7);
     }
-    if (hflip) {
+    if (vflip) {
         // Column Address Order (MX)
         madctl ^= (1 << 6);
     }
@@ -193,13 +193,13 @@ void fillArea(x_t x, x_t y,
     madctl(false, false);
 
     // X address start/end
-    uint16_t xs = y;
-    uint16_t xe = y + width - 1;
+    uint16_t xs = x;
+    uint16_t xe = x + width - 1;
     caset(xs, xe);
 
     // Y address start/end
-    uint16_t ys = x;
-    uint16_t ye = x + height - 1;
+    uint16_t ys = y;
+    uint16_t ye = y + height - 1;
     raset(ys, ye);
 
     writeStart();
@@ -220,20 +220,20 @@ void setArea(x_t x, y_t y,
     madctl(hflip, vflip);
 
     // X address start/end
-    uint16_t xs = y;
-    uint16_t xe = y + width - 1;
-    if (vflip) {
-        xs = DISPLAY_WIDTH - y - width;
-        xe = DISPLAY_WIDTH - y - 1;
+    uint16_t xs = x;
+    uint16_t xe = x + width - 1;
+    if (hflip) {
+        xs = DISPLAY_WIDTH - x - width;
+        xe = DISPLAY_WIDTH - x - 1;
     }
     caset(xs, xe);
 
     // Y address start/end
-    uint16_t ys = x;
-    uint16_t ye = x + height - 1;
-    if (hflip) {
-        ys = DISPLAY_HEIGHT - x - height;
-        ye = DISPLAY_HEIGHT - x - 1;
+    uint16_t ys = y;
+    uint16_t ye = y + height - 1;
+    if (vflip) {
+        ys = DISPLAY_HEIGHT - y - height;
+        ye = DISPLAY_HEIGHT - y - 1;
     }
     raset(ys, ye);
 }

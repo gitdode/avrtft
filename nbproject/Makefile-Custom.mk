@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/48b9b4a1/avrtft.o \
 	${OBJECTDIR}/_ext/48b9b4a1/bmp.o \
+	${OBJECTDIR}/_ext/48b9b4a1/colorspace.o \
 	${OBJECTDIR}/_ext/48b9b4a1/display.o \
 	${OBJECTDIR}/_ext/48b9b4a1/font.o \
 	${OBJECTDIR}/_ext/48b9b4a1/hack.o \
@@ -46,8 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/48b9b4a1/sdcard.o \
 	${OBJECTDIR}/_ext/48b9b4a1/spi.o \
 	${OBJECTDIR}/_ext/48b9b4a1/tft.o \
-	${OBJECTDIR}/_ext/48b9b4a1/touch.o \
-	${OBJECTDIR}/colorspace.o
+	${OBJECTDIR}/_ext/48b9b4a1/touch.o
 
 
 # C Compiler Flags
@@ -76,55 +76,55 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/avrtft: ${OBJECTFILES}
 
 ${OBJECTDIR}/_ext/48b9b4a1/avrtft.o: /home/dode/dev/avrtft/avrtft.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/avrtft.o /home/dode/dev/avrtft/avrtft.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/avrtft.o /home/dode/dev/avrtft/avrtft.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/bmp.o: /home/dode/dev/avrtft/bmp.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -o ${OBJECTDIR}/_ext/48b9b4a1/bmp.o /home/dode/dev/avrtft/bmp.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/bmp.o /home/dode/dev/avrtft/bmp.c
+
+${OBJECTDIR}/_ext/48b9b4a1/colorspace.o: /home/dode/dev/avrtft/colorspace.c
+	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/colorspace.o /home/dode/dev/avrtft/colorspace.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/display.o: /home/dode/dev/avrtft/display.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/display.o /home/dode/dev/avrtft/display.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/display.o /home/dode/dev/avrtft/display.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/font.o: /home/dode/dev/avrtft/font.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/font.o /home/dode/dev/avrtft/font.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/font.o /home/dode/dev/avrtft/font.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/hack.o: /home/dode/dev/avrtft/hack.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/hack.o /home/dode/dev/avrtft/hack.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/hack.o /home/dode/dev/avrtft/hack.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/i2c.o: /home/dode/dev/avrtft/i2c.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -o ${OBJECTDIR}/_ext/48b9b4a1/i2c.o /home/dode/dev/avrtft/i2c.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/i2c.o /home/dode/dev/avrtft/i2c.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/paint.o: /home/dode/dev/avrtft/paint.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -o ${OBJECTDIR}/_ext/48b9b4a1/paint.o /home/dode/dev/avrtft/paint.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/paint.o /home/dode/dev/avrtft/paint.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/ra8875.o: /home/dode/dev/avrtft/ra8875.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -o ${OBJECTDIR}/_ext/48b9b4a1/ra8875.o /home/dode/dev/avrtft/ra8875.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/ra8875.o /home/dode/dev/avrtft/ra8875.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/sdcard.o: /home/dode/dev/avrtft/sdcard.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -o ${OBJECTDIR}/_ext/48b9b4a1/sdcard.o /home/dode/dev/avrtft/sdcard.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/sdcard.o /home/dode/dev/avrtft/sdcard.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/spi.o: /home/dode/dev/avrtft/spi.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/spi.o /home/dode/dev/avrtft/spi.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/spi.o /home/dode/dev/avrtft/spi.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/tft.o: /home/dode/dev/avrtft/tft.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/tft.o /home/dode/dev/avrtft/tft.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -std=c99 -o ${OBJECTDIR}/_ext/48b9b4a1/tft.o /home/dode/dev/avrtft/tft.c
 
 ${OBJECTDIR}/_ext/48b9b4a1/touch.o: /home/dode/dev/avrtft/touch.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/48b9b4a1
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -o ${OBJECTDIR}/_ext/48b9b4a1/touch.o /home/dode/dev/avrtft/touch.c
-
-${OBJECTDIR}/colorspace.o: colorspace.c
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.c) -g -DBAUD=38400 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -DDRIVER=1 -I. -o ${OBJECTDIR}/colorspace.o colorspace.c
+	$(COMPILE.c) -g -DBAUD=38400 -DDRIVER=0 -DF_CPU=16000000UL -D__AVR_ATmega328P__ -D__flash=volatile -I. -o ${OBJECTDIR}/_ext/48b9b4a1/touch.o /home/dode/dev/avrtft/touch.c
 
 # Subprojects
 .build-subprojects:

@@ -43,10 +43,10 @@ uint8_t readTouch(Point *point) {
 
     i2cStop();
 
-    if (!VFLIP) {
+    if (!HFLIP) {
         point->x = DISPLAY_WIDTH - point->x;
     }
-    if (HFLIP) {
+    if (VFLIP) {
         point->y = DISPLAY_HEIGHT - point->y;
     }
 

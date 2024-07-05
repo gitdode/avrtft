@@ -17,8 +17,8 @@ void drawRectangle(x_t x, y_t y, width_t width, height_t height,
     height -= thickness;
     
     fillArea(x, y, width, thickness, color);
-    fillArea(x, y + width, thickness, height, color);
-    fillArea(x + height, y, width + thickness, thickness, color);
+    fillArea(x + width, y, thickness, height, color);
+    fillArea(x, y + height, width + thickness, thickness, color);
     fillArea(x, y, thickness, height, color);
 }
 
