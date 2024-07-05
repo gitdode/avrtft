@@ -8,6 +8,20 @@
 #ifndef SPI_H
 #define SPI_H
 
+#include <stdio.h>
+#include <avr/io.h>
+#include "pins.h"
+
+/**
+ * Sets slow SPI speed.
+ */
+void spiSlow(void);
+
+/**
+ * Sets fast SPI speed.
+ */
+void spiFast(void);
+
 /**
  * Selects the SD card to talk to via SPI.
  */

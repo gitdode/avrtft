@@ -8,8 +8,14 @@
 #ifndef USART_H_
 #define USART_H_
 
-#include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/setbaud.h>
+#include "utils.h"
+#include "bmp.h"
 
 #define USART_LENGTH 128
 

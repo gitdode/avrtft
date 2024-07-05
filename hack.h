@@ -18,6 +18,8 @@
 #define HACK_H
 
 #include "font.h"
+#include "colorspace.h"
+#include "utils.h"
 
 #define HACK_DEMO_SIZE 8
 #define HACK_DEMO_LINE_SIZE 64

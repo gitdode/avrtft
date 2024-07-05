@@ -35,10 +35,10 @@ void bmpEvent(uint8_t event, Point *point);
  * Prepares to "stream" a BMP image via USART to the display,
  * with its upper left corner at the given coordinates.
  * 
- * @param row
- * @param col
+ * @param x
+ * @param y
  */
-void prepareBMP(row_t row, col_t col);
+void prepareBMP(x_t x, y_t y);
 
 /**
  * Does basic parsing of the BMP image (16-Bit 5/6/5 RGB) sent via USART and 

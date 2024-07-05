@@ -91,6 +91,8 @@ static void deselect(void) {
  * Supplies ramp up time.
  */
 static void powerOn(void) {
+    _delay_ms(100);
+    
     deselect();
 
     _delay_ms(1);
@@ -313,7 +315,7 @@ bool initSDCard(void) {
     
     // power on
     powerOn();
-
+    
     // go to idle state
     response[0] = sendIdle();
     if (response[0] > 0x01) {
@@ -362,7 +364,7 @@ bool initSDCard(void) {
         printString("sd card not ready\r\n");
         return false;
     }
-
+    
     printString("sd card ready\r\n");
     
     return true;

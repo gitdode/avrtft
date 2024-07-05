@@ -10,7 +10,10 @@
 #ifndef EMOJIS_H
 #define EMOJIS_H
 
+#include <stdio.h>
 #include "font.h"
+#include "tft.h"
+#include "utils.h"
 
 /**
  * Emoji "font".

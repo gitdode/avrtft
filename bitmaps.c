@@ -5,10 +5,7 @@
  * Created on 6. November 2023, 18:45
  */
 
-#include <stdio.h>
 #include "bitmaps.h"
-#include "tft.h"
-#include "utils.h"
 
 const __flash uint8_t FREE_DATA[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0c, 0x00,

@@ -7,11 +7,7 @@
  * Created on 26. November 2023, 20:29
  */
 
-#include <stdio.h>
-#include "font.h"
 #include "emojis.h"
-#include "tft.h"
-#include "utils.h"
 
 #define WIDTH   16
 #define HEIGHT  16

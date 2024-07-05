@@ -5,58 +5,9 @@
  * Created on 6. November 2023, 18:45
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <util/delay.h>
+#if DRIVER == 0
+
 #include "tft.h"
-#include "pins.h"
-#include "usart.h"
-#include "spi.h"
-
-#include "bitmaps.h"
-
-/**
- * Converts the given 8 pixel in 1-Bit monochrome to 16-Bit RGB (5/6/5) color
- * stored in the given array of 16 bytes.
- * 
- * @param grey 8 pixel in 1-Bit monochrome
- * @param rgb 8 pixel in 16-Bit RGB (5/6/5) color
- */
-static void mono1ToRGB16(uint8_t mono, uint8_t *rgb) {
-    for (uint8_t i = 0; i < 16; i++) {
-        rgb[i] = (mono & (1 << ((15 - i) >> 1))) ? 0x0 : 0xff;
-    }
-}
-
-/*
- * Converts the given two pixel in 4-Bit greyscale to 16-Bit RGB (5/6/5) color
- * stored in the given array of four bytes.
- * 
- * @param grey two pixel in 4-Bit greyscale
- * @param rgb two pixel in 16-Bit RGB (5/6/5) color
- */
-static void grey4ToRGB16(uint8_t grey, uint8_t *rgb) {
-    uint8_t grey4 = ((grey >> 4) & 1);
-    uint8_t grey0 = ((grey >> 0) & 1);
-    
-    rgb[0] = (grey & 0xf0);
-    rgb[0] |= (grey4 << 3);
-    rgb[0] |= (grey >> 5);
-
-    rgb[1] = ((grey & 0xf0) << 3);
-    rgb[1] |= ((grey & 0xf0) >> 3);
-    rgb[1] |= (grey4 << 6) | (grey4 << 5) | (grey4 << 0);
-
-    rgb[2] = (grey << 4);
-    rgb[2] |= (grey0 << 3);
-    rgb[2] |= ((grey & 0x0f) >> 1);
-
-    rgb[3] = (grey << 7);
-    rgb[3] |= ((grey & 0x0f) << 1);
-    rgb[3] |= (grey0 << 6) | (grey0 << 5) | (grey0 << 0);    
-}
 
 /**
  * Does a hardware reset.
@@ -110,15 +61,15 @@ static void displayData(uint8_t data) {
 static void madctl(bool hflip, bool vflip) {
     // Memory data access control
     uint8_t madctl = 0b00110110;
-    madctl |= (VFLIP << 7);
-    madctl |= (HFLIP << 6);
+    madctl |= (HFLIP << 7);
+    madctl |= (VFLIP << 6);
     madctl |= (BGR << 3);
 
-    if (vflip) {
+    if (hflip) {
         // Row Address Order (MY)
         madctl ^= (1 << 7);
     }
-    if (hflip) {
+    if (vflip) {
         // Column Address Order (MX)
         madctl ^= (1 << 6);
     }
@@ -135,7 +86,7 @@ static void madctl(bool hflip, bool vflip) {
  * @param xs start address
  * @param xe end address
  */
-static void caset(uint16_t xs, uint16_t xe) {
+static void caset(x_t xs, x_t xe) {
     displaySel();
     displayCmd(CASET);
     displayData(xs >> 8);
@@ -151,7 +102,7 @@ static void caset(uint16_t xs, uint16_t xe) {
  * @param ys start address
  * @param ye end address
  */
-static void raset(uint16_t ys, uint16_t ye) {
+static void raset(y_t ys, y_t ye) {
     displaySel();
     displayCmd(RASET);
     displayData(ys >> 8);
@@ -210,11 +161,19 @@ void initDisplay(void) {
     printString("done initializing display\r\n");
 }
 
+void demoDisplay(void) {
+    // TODO
+}
+
 void writeStart(void) {
     // Memory write
     displaySel();
     displayCmd(RAMWR);
     displaySetData();
+}
+
+void writeRestart(void) {
+    displaySel();
 }
 
 void writeByte(uint8_t byte) {
@@ -227,20 +186,20 @@ void writeEnd(void) {
     displayDes();
 }
 
-void fillArea(row_t row, col_t col,
+void fillArea(x_t x, x_t y,
               width_t width, height_t height,
               uint16_t color) {
 
     madctl(false, false);
 
     // X address start/end
-    uint16_t xs = col;
-    uint16_t xe = col + width - 1;
+    uint16_t xs = x;
+    uint16_t xe = x + width - 1;
     caset(xs, xe);
 
     // Y address start/end
-    uint16_t ys = row;
-    uint16_t ye = row + height - 1;
+    uint16_t ys = y;
+    uint16_t ye = y + height - 1;
     raset(ys, ye);
 
     writeStart();
@@ -254,27 +213,27 @@ void fillArea(row_t row, col_t col,
     writeEnd();
 }
 
-void setArea(row_t row, col_t col, 
+void setArea(x_t x, y_t y, 
              width_t width, height_t height, 
              bool hflip, bool vflip) {
 
     madctl(hflip, vflip);
 
     // X address start/end
-    uint16_t xs = col;
-    uint16_t xe = col + width - 1;
-    if (vflip) {
-        xs = DISPLAY_WIDTH - col - width;
-        xe = DISPLAY_WIDTH - col - 1;
+    uint16_t xs = x;
+    uint16_t xe = x + width - 1;
+    if (hflip) {
+        xs = DISPLAY_WIDTH - x - width;
+        xe = DISPLAY_WIDTH - x - 1;
     }
     caset(xs, xe);
 
     // Y address start/end
-    uint16_t ys = row;
-    uint16_t ye = row + height - 1;
-    if (hflip) {
-        ys = DISPLAY_HEIGHT - row - height;
-        ye = DISPLAY_HEIGHT - row - 1;
+    uint16_t ys = y;
+    uint16_t ye = y + height - 1;
+    if (vflip) {
+        ys = DISPLAY_HEIGHT - y - height;
+        ye = DISPLAY_HEIGHT - y - 1;
     }
     raset(ys, ye);
 }
@@ -283,36 +242,8 @@ void writeData(const __flash uint8_t *bitmap,
                width_t width, height_t height,
                space_t space) {
     writeStart();
-    
-    switch (space) {
-        case SPACE_MONO1: {
-            bytes_t bytes = width * height / 8;
-            for (uint16_t i = 0; i < bytes; i++) {
-                uint8_t rgb[16];
-                mono1ToRGB16(bitmap[i], rgb);
-                for (uint8_t j = 0; j < 16; j++) {
-                    transmit(rgb[j]);
-                }
-            }            
-        }; break;
-        case SPACE_GREY4: {
-            bytes_t bytes = width * height / 2;
-            for (uint16_t i = 0; i < bytes; i++) {
-                uint8_t rgb[4];
-                grey4ToRGB16(bitmap[i], rgb);
-                for (uint8_t j = 0; j < 4; j++) {
-                    transmit(rgb[j]);
-                }
-            }
-        }; break;
-        default: {
-            // SPACE_RGB16
-            bytes_t bytes = width * height * 2;
-            for (uint16_t i = 0; i < bytes; i++) {
-                transmit(bitmap[i]);
-            }
-        }
-    }
-
+    writeSpace(bitmap, width, height, space);
     writeEnd();
 }
+
+#endif /* DRIVER */

@@ -8,6 +8,12 @@ Currently supported displays/drivers:
 * [Adafruit 2.0" Color IPS TFT 320x240 ST7789](https://www.adafruit.com/product/4311)
 * [Adafruit 2.8" Color TFT LCD with Cap Touch 320x240 ILI9341](https://www.adafruit.com/product/2090)
 
+Additionally, there is some support for larger (up to 800x480) TTL displays, for example the
+[Adadruit 7.0" 40-pin TFT Display - 800x480 with Touchscreen](https://www.adafruit.com/product/2354),
+with the RA8875 controller like the
+[RA8875 Driver Board for 40-pin TFT Touch Displays - 800x480 Max](https://www.adafruit.com/product/1590) 
+including touch support.
+
 Currently implemented features:
 
 * Mostly complete UTF-8 set (code points U+0000 to U+00FF) of Hack font
@@ -19,7 +25,7 @@ Currently implemented features:
 * Upload BMP images via USART (16-Bit 5/6/5 RGB)
 * Basic SD card support: read and write blocks of 512 bytes
 * Read BMP images from SD card (raw)
-* Process touch events (FT6206)
+* Process touch events (FT6206, RA8875)
 * Very basic paint application
 * Logging via USART
 
@@ -84,3 +90,13 @@ But still it is fun and it should be possible to create an application
 supporting touch with reliable usability. 
 
 ![IMG_20240103_134738](https://github.com/gitdode/avrtft/assets/11530253/5e9947cc-e236-49e7-a06b-1dbfffa304b7)
+
+## Larger (up to 800x480) TTL displays
+
+If at all possible, it probably is quite a challenge to drive such a 40-pin display with a 28-pin 
+MCU like the ATmega238P, but it is easy with the RA8875 driver, offering support for a touch screen 
+as well. Here it is combined with the [SparkFun Level Shifting microSD Breakout](https://www.sparkfun.com/products/13743) 
+to read images from an SD card, advancing to the next image by touching the screen.
+
+![IMG_20240704_214710](https://github.com/gitdode/avrtft/assets/11530253/a09af16d-0dcf-4c1f-a8d6-0fb965b75fda)
+

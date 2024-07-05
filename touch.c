@@ -5,11 +5,13 @@
  * Created on 12. Dezember 2023, 23:44
  */
 
-#include <avr/interrupt.h>
+#if DRIVER == 0
+
 #include "touch.h"
-#include "i2c.h"
-#include "tft.h"
-#include "usart.h"
+
+bool isTouch(void) {
+    return true;
+}
 
 uint8_t readTouch(Point *point) {
     i2cStart();
@@ -41,12 +43,18 @@ uint8_t readTouch(Point *point) {
 
     i2cStop();
 
-    if (!VFLIP) {
+    if (!HFLIP) {
         point->x = DISPLAY_WIDTH - point->x;
     }
-    if (HFLIP) {
+    if (VFLIP) {
         point->y = DISPLAY_HEIGHT - point->y;
     }
 
     return eventFlag;
 }
+
+void clearTouch(void) {
+    // no-op
+}
+
+#endif /* DRIVER */

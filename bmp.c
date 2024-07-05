@@ -13,8 +13,8 @@
 
 static bool error = false;
 
-static row_t row = 0;
-static col_t col = 0;
+static x_t x = 0;
+static y_t y = 0;
 
 static uint8_t buf[BUF_SIZE];
 static uint32_t offset = 0;
@@ -35,8 +35,8 @@ static uint16_t blocks = 0;
  */
 static void reset(void) {
     error = false;
-    row = 0;
-    col = 0;
+    y = 0;
+    x = 0;
     offset = 0;
     pixelStart = -1;
     pixelEnd = -1;
@@ -73,10 +73,10 @@ void bmpEvent(uint8_t event, Point *point) {
     }
 }
 
-void prepareBMP(row_t srow, col_t scol) {
+void prepareBMP(x_t sx, y_t sy) {
     reset();
-    row = srow;
-    col = scol;
+    x = sx;
+    y = sy;
     setStreamingData(true);
 }
 
@@ -88,8 +88,8 @@ uint8_t streamBMP(uint8_t byte) {
     push(byte);
 
     if (offset == pixelStart) {
-        // do horizontal flip because pixel data in a BMP is bottom to top
-        setArea(row, col, bitmapWidth, bitmapHeight, true, false);
+        // do vertical flip because pixel data in a BMP is bottom to top
+        setArea(x, y, bitmapWidth, bitmapHeight, false, true);
         writeStart();
     } else if (offset > pixelStart) {
         // TODO calculate number of pad bytes and discard them
@@ -194,7 +194,8 @@ uint16_t readBMPFromSD(uint32_t address) {
     do {
         displayDes();
         bool success = readSingleBlock(address++, block);
-        displaySel();
+        // FIXME seems to break active window/cursor
+        writeRestart();
         if (success) {
             for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
                 status = streamBMP(block[i]);

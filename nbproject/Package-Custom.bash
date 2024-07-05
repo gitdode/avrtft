@@ -6,7 +6,7 @@
 
 # Macros
 TOP=`pwd`
-CND_PLATFORM=AVR2.1-GCC13.2-Linux
+CND_PLATFORM=AVR-Linux
 CND_CONF=Custom
 CND_DISTDIR=dist
 CND_BUILDDIR=build

@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
-
+#include "usart.h"
 #include "tft.h"
 #include "touch.h"
 #include "display.h"

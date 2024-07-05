@@ -7,13 +7,13 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Custom configuration
-CND_PLATFORM_Custom=AVR2.1-GCC13.2-Linux
-CND_ARTIFACT_DIR_Custom=dist/Custom/AVR2.1-GCC13.2-Linux
+CND_PLATFORM_Custom=AVR-Linux
+CND_ARTIFACT_DIR_Custom=dist/Custom/AVR-Linux
 CND_ARTIFACT_NAME_Custom=avrtft
-CND_ARTIFACT_PATH_Custom=dist/Custom/AVR2.1-GCC13.2-Linux/avrtft
-CND_PACKAGE_DIR_Custom=dist/Custom/AVR2.1-GCC13.2-Linux/package
+CND_ARTIFACT_PATH_Custom=dist/Custom/AVR-Linux/avrtft
+CND_PACKAGE_DIR_Custom=dist/Custom/AVR-Linux/package
 CND_PACKAGE_NAME_Custom=avrtft.tar
-CND_PACKAGE_PATH_Custom=dist/Custom/AVR2.1-GCC13.2-Linux/package/avrtft.tar
+CND_PACKAGE_PATH_Custom=dist/Custom/AVR-Linux/package/avrtft.tar
 #
 # include compiler specific variables
 #

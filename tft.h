@@ -8,8 +8,16 @@
 #ifndef TFT_H
 #define TFT_H
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <util/delay.h>
 #include "types.h"
+#include "pins.h"
+#include "usart.h"
+#include "spi.h"
+#include "colorspace.h"
 
 #define SWRESET 0x01
 #define SLPIN   0x10
@@ -48,20 +56,25 @@
     #define VFLIP   0
 #endif
 
-// TODO use enum? typedef?
-#define SPACE_MONO1  1
-#define SPACE_GREY4  4
-#define SPACE_RGB16  16
-
 /**
  * Initializes the display.
  */
 void initDisplay(void);
 
 /**
+ * Displays a demo.
+ */
+void demoDisplay(void);
+
+/**
  * Sets to write data to display RAM.
  */
 void writeStart(void);
+
+/**
+ * Restart writing to display after SPI deselecting it.
+ */
+void writeRestart(void);
 
 /**
  * Writes the given byte to display RAM.
@@ -78,27 +91,27 @@ void writeEnd(void);
 /**
  * Sets the given color in the given area of the display.
  * 
- * @param row row in pixels, origin top left
- * @param col column in pixels, origin top left
+ * @param x in pixels, origin top left
+ * @param y in pixels, origin top left
  * @param width width in pixels
  * @param height height in pixels
  * @param color 16-Bit (5/6/5) RGB color
  */
-void fillArea(row_t row, col_t col,
+void fillArea(x_t x, y_t y,
               width_t width, height_t height,
               uint16_t color);
 
 /**
  * Sets the area to write image data to.
  * 
- * @param row row in pixels, origin top left
- * @param col column in pixels, origin top left
+ * @param x in pixels, origin top left
+ * @param y in pixels, origin top left
  * @param width width of the bitmap in pixels
  * @param height height of the bitmap in pixels
  * @param hflip if image should be flipped horizontally
  * @param vflip if image should be flipped vertically
  */
-void setArea(row_t row, col_t col,
+void setArea(x_t x, y_t y,
              width_t width, height_t height,
              bool hflip, bool vflip);
 

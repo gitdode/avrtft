@@ -5,7 +5,11 @@
  * Created on 12. Dezember 2023, 23:44
  */
 
+#include <avr/interrupt.h>
 #include "types.h"
+#include "i2c.h"
+#include "tft.h"
+#include "usart.h"
 
 #ifndef TOUCH_H
 #define TOUCH_H
@@ -19,6 +23,13 @@
 #define EVENT_NO_EVENT      3
 
 /**
+ * Returns true if there was a touch event, false otherwise.
+ * 
+ * @return true if touch event
+ */
+bool isTouch(void);
+
+/**
  * Reads the current touch position into the given point and returns 
  * the touch event.
  * 
@@ -29,5 +40,10 @@
  * @return touch event
  */
 uint8_t readTouch(Point *point);
+
+/**
+ * Clears the touch event.
+ */
+void clearTouch(void);
 
 #endif /* TOUCH_H */

@@ -25,6 +25,7 @@
 #include "usart.h"
 #include "spi.h"
 #include "tft.h"
+#include "ra8875.h"
 #include "cmd.h"
 #include "bitmaps.h"
 #include "display.h"
@@ -36,10 +37,10 @@
 
 bool sdcard = false;
 
-static volatile bool touch = false;
+static volatile bool int0 = false;
 
 ISR(INT0_vect) {
-    touch = true;
+    int0 = true;
 }
 
 /**
@@ -64,20 +65,24 @@ static void initPins(void) {
     DDR_DSPI |= (1 << PIN_DCS);
     DDR_DSPI |= (1 << PIN_DC);
     DDR_DISP |= (1 << PIN_RST);
+    
+    // set display busy pin as input pin (default)
+    DDR_DISP &= ~(1 << PIN_BUSY);
 
     // drive SPI and display output pins high
     PORT_SDC |= (1 << PIN_SDCS);
     PORT_DSPI |= (1 << PIN_DCS);
     PORT_DSPI |= (1 << PIN_DC);
     PORT_DISP |= (1 << PIN_RST);
+    
+    // pull display busy pin high
+    PORT_DISP |= (1 << PIN_BUSY);
 }
 
 /**
  * Enables SPI master mode.
  */
 static void initSPI(void) {
-    // min speed for a cool visual effect :-)
-    // SPCR |= (1 << SPR1) | (1 << SPR0);
     SPCR |= (1 << MSTR);
     SPCR |= (1 << SPE);
 }
@@ -102,35 +107,31 @@ static void initTouchInt(void) {
 }
 
 int main(void) {
-
     initUSART();
     initPins();
     initSPI();
     initI2C();
-
-    // enable global interrupts
-    sei();
-
-    _delay_ms(1000);
-
-    // may need to decrease SPI bus clock frequency for initialization
     sdcard = initSDCard();
     initDisplay();
     initTouchInt();
 
+    // enable global interrupts
+    sei();
+    
     // ignore initial touch interrupt
     _delay_ms(1);
-    touch = false;
+    int0 = false;
 
     // do something at the start
     if (!sdcard) {
         initPaint();
+        // hackDemo();
+        // demoDisplay();
     }
-    // hackDemo();
 
     while (true) {
-        if (touch) {
-            touch = false;
+        if (int0 && isTouch()) {
+            int0 = false;
             Point point = {0};
             // memset(&point, 0, sizeof (Point));
             uint8_t event = readTouch(&point);
@@ -139,6 +140,8 @@ int main(void) {
             } else {
                 paintEvent(event, &point);
             }
+            
+            clearTouch();
         }
 
         if (isStreamingData()) {
