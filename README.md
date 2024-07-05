@@ -11,7 +11,7 @@ Currently supported displays/drivers:
 Additionally, there is some support for larger (up to 800x480) TTL displays, for example the
 [Adadruit 7.0" 40-pin TFT Display - 800x480 with Touchscreen](https://www.adafruit.com/product/2354),
 with the RA8875 controller like the
-[RA8875 Driver Board for 40-pin TFT Touch Displays - 800x480 Max](https://www.adafruit.com/product/1590) 
+[RA8875 Driver Board for 40-pin TFT Touch Displays](https://www.adafruit.com/product/1590) 
 including touch support.
 
 Currently implemented features:
