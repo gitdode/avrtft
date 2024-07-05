@@ -1,11 +1,11 @@
 /*
- * avrink.c
+ * avrtft.c
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, version 2.
  *
- * Experimental project to drive a TFT display with an ST7735R driver.
+ * Experimental project to drive a TFT display with different drivers.
  *
  * Created on: 06.11.2023
  *     Author: torsten.roemer@luniks.net
@@ -91,7 +91,7 @@ static void initSPI(void) {
  * Enables I2C.
  */
 static void initI2C(void) {
-    // 100 kHz @ 16 Mhz
+    // 100 kHz @ 16 MHz
     TWBR = 72;
     TWCR |= (1 << TWEN);
 }
