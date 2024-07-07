@@ -162,6 +162,34 @@ static void textMode(void) {
     regWrite(MWCR0, data);
 }
 
+/**
+ * Sets given background color.
+ * 
+ * @param color
+ */
+static void setBackground(uint16_t color) {
+    // red
+    regWrite(BGCR0, (color & 0xf800) >> 11);
+    // green
+    regWrite(BGCR1, (color & 0x07e0) >> 5);
+    // blue
+    regWrite(BGCR2, (color & 0x001f) >> 0);
+}
+
+/**
+ * Sets given foreground color.
+ * 
+ * @param color
+ */
+static void setForeground(uint16_t color) {
+    // red
+    regWrite(FGCR0, (color & 0xf800) >> 11);
+    // green
+    regWrite(FGCR1, (color & 0x07e0) >> 5);
+    // blue
+    regWrite(FGCR2, (color & 0x001f) >> 0);
+}
+
 void initDisplay(void) {
     spiSlow();
     
@@ -266,24 +294,6 @@ void demoDisplay(void) {
     graphicsMode();
 }
 
-void setBackground(uint16_t color) {
-    // red
-    regWrite(BGCR0, (color & 0xf800) >> 11);
-    // green
-    regWrite(BGCR1, (color & 0x07e0) >> 5);
-    // blue
-    regWrite(BGCR2, (color & 0x001f) >> 0);
-}
-
-void setForeground(uint16_t color) {
-    // red
-    regWrite(FGCR0, (color & 0xf800) >> 11);
-    // green
-    regWrite(FGCR1, (color & 0x07e0) >> 5);
-    // blue
-    regWrite(FGCR2, (color & 0x001f) >> 0);
-}
-
 void drawPixel(x_t x, y_t y, uint16_t color) {
     setCursor(x, y);
     
@@ -315,6 +325,11 @@ void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color) {
     regWrite(DCR, 0x40 | 0x20);
     
     waitBusy();
+}
+
+void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
+                   uint8_t thickness, uint16_t color) {
+    // TODO
 }
 
 void writeText(x_t x, y_t y, uint16_t fg, uint16_t bg, char *string) {
@@ -357,8 +372,10 @@ void writeEnd(void) {
 void fillArea(x_t x, y_t y,
               width_t width, height_t height,
               uint16_t color) {
-    // FIXME
-    drawCircle(x, y, 10, 0x07e0);
+    setActiveWindow(x, y, x + width - 1, y + height - 1);
+    setCursor(x, y);
+    setForeground(color);
+    // TODO fill
 }
 
 void setArea(x_t x, y_t y,

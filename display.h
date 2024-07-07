@@ -32,20 +32,6 @@
 void setFrame(uint16_t color);
 
 /**
- * Draws a rectangle with the given origin and dimensions, line thickness
- * and color.
- * 
- * @param x
- * @param y
- * @param width
- * @param height
- * @param thickness
- * @param color
- */
-void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
-                   uint8_t thickness, uint16_t color);
-
-/**
  * Writes the bitmap with the given index to the given row and column 
  * and returns the width of the bitmap.
  * 

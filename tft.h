@@ -67,6 +67,39 @@ void initDisplay(void);
 void demoDisplay(void);
 
 /**
+ * Draws a pixel at given coordinates and color.
+ * 
+ * @param x
+ * @param y
+ * @param color
+ */
+void drawPixel(x_t x, y_t y, uint16_t color);
+
+/**
+ * Draws a circle at given center coordinates, with given radius and color.
+ * 
+ * @param x
+ * @param y
+ * @param radius
+ * @param color
+ */
+void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color);
+
+/**
+ * Draws a rectangle with the given origin and dimensions, line thickness
+ * and color.
+ * 
+ * @param x
+ * @param y
+ * @param width
+ * @param height
+ * @param thickness
+ * @param color
+ */
+void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
+                   uint8_t thickness, uint16_t color);
+
+/**
  * Sets to write data to display RAM.
  */
 void writeStart(void);

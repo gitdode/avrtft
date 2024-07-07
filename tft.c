@@ -165,6 +165,25 @@ void demoDisplay(void) {
     // TODO
 }
 
+void drawPixel(x_t x, y_t y, uint16_t color) {
+    // TODO
+}
+
+void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color) {
+    // TODO
+}
+
+void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
+                   uint8_t thickness, uint16_t color) {
+    width -= thickness;
+    height -= thickness;
+    
+    fillArea(x, y, width, thickness, color);
+    fillArea(x + width, y, thickness, height, color);
+    fillArea(x, y + height, width + thickness, thickness, color);
+    fillArea(x, y, thickness, height, color);
+}
+
 void writeStart(void) {
     // Memory write
     displaySel();

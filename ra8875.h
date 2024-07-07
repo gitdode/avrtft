@@ -123,39 +123,6 @@
 #define VPW     2
 
 /**
- * Sets given background color.
- * 
- * @param color
- */
-void setBackground(uint16_t color);
-
-/**
- * Sets given foreground color.
- * 
- * @param color
- */
-void setForeground(uint16_t color);
-
-/**
- * Draws a pixel at given coordinates and color.
- * 
- * @param x
- * @param y
- * @param color
- */
-void drawPixel(x_t x, y_t y, uint16_t color);
-
-/**
- * Draws a circle at given center coordinates, radius and color.
- * 
- * @param x
- * @param y
- * @param radius
- * @param color
- */
-void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color);
-
-/**
  * Writes given text at given coordinates and foreground and background color.
  * 
  * @param x
