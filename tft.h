@@ -86,18 +86,16 @@ void drawPixel(x_t x, y_t y, uint16_t color);
 void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color);
 
 /**
- * Draws a rectangle with the given origin and dimensions, line thickness
- * and color.
+ * Draws a rectangle at given origin, with given width, height and color.
  * 
  * @param x
  * @param y
  * @param width
  * @param height
- * @param thickness
  * @param color
  */
 void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
-                   uint8_t thickness, uint16_t color);
+                   uint16_t color);
 
 /**
  * Sets to write data to display RAM.

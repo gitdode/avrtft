@@ -34,8 +34,8 @@ static void paintTools(void) {
     fillArea(DISPLAY_WIDTH - CTRL_WIDTH, 0, 
              CTRL_WIDTH, CTRL_WIDTH * TOOL_COUNT, 0xffff);
     for (uint8_t i = 0; i < TOOL_COUNT; i++) {
-        drawRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * i, 
-                      CTRL_WIDTH, CTRL_WIDTH + 1, 1, 0x0);
+        paintRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * i, 
+                       CTRL_WIDTH, CTRL_WIDTH + 1, 1, 0x0);
         writeBitmap(DISPLAY_WIDTH - CTRL_WIDTH + BITMAP_PADDING, 
                     CTRL_WIDTH * i + BITMAP_PADDING, i);
     }
@@ -51,8 +51,8 @@ void initPaint() {
     paintTools();
     
     // highlight default tool
-    drawRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * tool, 
-                  CTRL_WIDTH, CTRL_WIDTH + 1, 2, 0x0);
+    paintRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * tool, 
+                   CTRL_WIDTH, CTRL_WIDTH + 1, 2, 0x0);
 }
 
 void paintEvent(uint8_t event, Point *point) {
@@ -62,8 +62,8 @@ void paintEvent(uint8_t event, Point *point) {
             uint8_t i = point->y / (CTRL_WIDTH + 1);
             // repaint colors, highlight and select color
             paintColors();
-            drawRectangle(0, CTRL_WIDTH * i,  
-                          CTRL_WIDTH, CTRL_WIDTH, 2, 0x0);
+            paintRectangle(0, CTRL_WIDTH * i,  
+                           CTRL_WIDTH, CTRL_WIDTH, 2, 0x0);
             color = colors[i];
         }
     } else if (point->x > DISPLAY_WIDTH - CTRL_WIDTH - thoff) {
@@ -72,7 +72,7 @@ void paintEvent(uint8_t event, Point *point) {
             // tool selected
             if (i == TOOL_CLEAR) {
                 // clear canvas
-                fillArea(CTRL_WIDTH, 0, DISPLAY_WIDTH - 2 * CTRL_WIDTH + 1, 
+                fillArea(CTRL_WIDTH, 0, DISPLAY_WIDTH - 2 * CTRL_WIDTH, 
                          DISPLAY_HEIGHT, 0xffff);
             } else if (i == TOOL_THICK) {
                 // increment line thickness
@@ -82,8 +82,8 @@ void paintEvent(uint8_t event, Point *point) {
             } else if (i < TOOL_COUNT) {
                 // repaint tools, highlight and select tool
                 paintTools();
-                drawRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * i, 
-                              CTRL_WIDTH, CTRL_WIDTH + 1, 2, 0x0);
+                paintRectangle(DISPLAY_WIDTH - CTRL_WIDTH, CTRL_WIDTH * i, 
+                               CTRL_WIDTH, CTRL_WIDTH + 1, 2, 0x0);
                 tool = i;
             }
             prev = (Point){-1};
@@ -124,8 +124,8 @@ void paintPoint(uint8_t event, Point *point) {
             x_t x2 = fmax(prev.x, point->x);
             x_t y2 = fmax(prev.y, point->y);
             
-            drawRectangle(x1 - thoff, y1 - thoff, 
-                          x2 - x1 + thick, y2 - y1 + thick, thick, color);
+            paintRectangle(x1 - thoff, y1 - thoff, 
+                           x2 - x1 + thick, y2 - y1 + thick, thick, color);
             // unset previous point and leave (for now)
             prev = (Point){-1};
             return;
@@ -133,4 +133,15 @@ void paintPoint(uint8_t event, Point *point) {
     }
 
     prev = *point;
+}
+
+void paintRectangle(x_t x, y_t y, width_t width, height_t height, 
+                    uint8_t thickness, uint16_t color) {
+    width -= thickness;
+    height -= thickness;
+    
+    fillArea(x, y, width, thickness, color);
+    fillArea(x + width, y, thickness, height, color);
+    fillArea(x, y + height, width + thickness, thickness, color);
+    fillArea(x, y, thickness, height, color);
 }

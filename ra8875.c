@@ -284,7 +284,7 @@ void demoDisplay(void) {
     drawCircle(790, 470,  10, 0xffff);
     
     drawCircle(200, 240, 30, 0b1111100000000000);
-    drawCircle(400, 240, 30, 0b0000011111100000);
+    drawRectangle(370, 210, 60, 60, 0b0000011111100000);
     drawCircle(600, 240, 30, 0b0000000000011111);
     
     textMode();
@@ -308,28 +308,40 @@ void drawPixel(x_t x, y_t y, uint16_t color) {
 }
 
 void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color) {
-    // set the center of the circle
     regWrite(DCHR0, x);
     regWrite(DCHR1, x >> 8);
     
     regWrite(DCVR0, y);
     regWrite(DCVR1, y >> 8);
     
-    // set the radius of the circle
     regWrite(DCRR, radius);
     
-    // set the color of the circle
     setForeground(color);
     
-    // start circle drawing function
     regWrite(DCR, 0x40 | 0x20);
     
     waitBusy();
 }
 
 void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
-                   uint8_t thickness, uint16_t color) {
-    // TODO
+                   uint16_t color) {
+    regWrite(DLHSR0, x);
+    regWrite(DLHSR1, x >> 8);
+    
+    regWrite(DLVSR0, y);
+    regWrite(DLVSR1, y >> 8);
+    
+    regWrite(DLHER0, x + width - 1);
+    regWrite(DLHER1, (x + width - 1) >> 8);
+    
+    regWrite(DLVER0, y + height - 1);
+    regWrite(DLVER1, (y + height - 1) >> 8);
+    
+    setForeground(color);
+    
+    regWrite(DCR, 0x80 | 0x20 | 0x10);
+    
+    waitBusy();
 }
 
 void writeText(x_t x, y_t y, uint16_t fg, uint16_t bg, char *string) {
@@ -372,10 +384,28 @@ void writeEnd(void) {
 void fillArea(x_t x, y_t y,
               width_t width, height_t height,
               uint16_t color) {
-    setActiveWindow(x, y, x + width - 1, y + height - 1);
-    setCursor(x, y);
+    regWrite(HDBE0, x);
+    regWrite(HDBE1, x >> 8);
+    
+    regWrite(VDBE0, y);
+    regWrite(VDBE1, y >> 8); // Bit 7 selects layer
+    
+    regWrite(BEWR0, width);
+    regWrite(BEWR1, width >> 8);
+    
+    regWrite(BEHR0, height);
+    regWrite(BEHR1, height >> 8);
+    
+    // use BTE function "Solid Fill"
+    regWrite(BECR1, 0x0c);
+    
     setForeground(color);
-    // TODO fill
+    
+    regWrite(BECR0, 0x80);
+    
+    waitBusy();
+    
+    setActiveWindow(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 }
 
 void setArea(x_t x, y_t y,

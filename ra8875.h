@@ -69,6 +69,18 @@
 #define CURV0   0x48
 #define CURV1   0x49
 
+/* Block Transfer Engine (BTE) Control Registers */
+#define BECR0   0x50
+#define BECR1   0x51
+#define HDBE0   0x58
+#define HDBE1   0x59
+#define VDBE0   0x5a
+#define VDBE1   0x5b
+#define BEWR0   0x5c
+#define BEWR1   0x5d
+#define BEHR0   0x5e
+#define BEHR1   0x5f
+
 /* Background Color Registers */
 #define BGCR0   0x60
 #define BGCR1   0x61
@@ -103,6 +115,14 @@
 
 /* Drawing Contol Registers */
 #define DCR     0x90
+#define DLHSR0  0x91
+#define DLHSR1  0x92
+#define DLVSR0  0x93
+#define DLVSR1  0x94
+#define DLHER0  0x95
+#define DLHER1  0x96
+#define DLVER0  0x97
+#define DLVER1  0x98
 #define DCHR0   0x99
 #define DCHR1   0x9a
 #define DCVR0   0x9b

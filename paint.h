@@ -50,4 +50,18 @@ void paintEvent(uint8_t event, Point *point);
  */
 void paintPoint(uint8_t event, Point *point);
 
+/**
+ * Paints a rectangle with the given origin and dimensions, line thickness
+ * and color.
+ * 
+ * @param x
+ * @param y
+ * @param width
+ * @param height
+ * @param thickness
+ * @param color
+ */
+void paintRectangle(x_t x, y_t y, width_t width, height_t height, 
+                    uint8_t thickness, uint16_t color);
+
 #endif /* PAINT_H */
