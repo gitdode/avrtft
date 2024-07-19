@@ -162,6 +162,34 @@ static void textMode(void) {
     regWrite(MWCR0, data);
 }
 
+/**
+ * Sets given background color.
+ * 
+ * @param color
+ */
+static void setBackground(uint16_t color) {
+    // red
+    regWrite(BGCR0, (color & 0xf800) >> 11);
+    // green
+    regWrite(BGCR1, (color & 0x07e0) >> 5);
+    // blue
+    regWrite(BGCR2, (color & 0x001f) >> 0);
+}
+
+/**
+ * Sets given foreground color.
+ * 
+ * @param color
+ */
+static void setForeground(uint16_t color) {
+    // red
+    regWrite(FGCR0, (color & 0xf800) >> 11);
+    // green
+    regWrite(FGCR1, (color & 0x07e0) >> 5);
+    // blue
+    regWrite(FGCR2, (color & 0x001f) >> 0);
+}
+
 void initDisplay(void) {
     spiSlow();
     
@@ -179,7 +207,7 @@ void initDisplay(void) {
     _delay_ms(1);
     
     // set pixel clock
-    regWrite(PCSR, 0x80 | 0x01); // 800x480: falling edge, system clock div by 2
+    regWrite(PCSR, 0x80 | 0x01); // 800x480: falling edge, system clock/2
     _delay_ms(20);
     
     // set 16-bit color depth, 8-bit MCU
@@ -233,10 +261,10 @@ void initDisplay(void) {
     // GPIOX write to enable display
     regWrite(GPIOX, 1);
     
-    // enable touch panel, wait 4096 clocks, system clock/8
-    regWrite(TPCR0, 0x80 | 0x30 | 0x03);
-    // enable debounce for touch interrupt
-    regWrite(TPCR1, 0x04);
+    // enable touch panel, wait 16384 clocks, system clock/32
+    regWrite(TPCR0, 0x80 | 0x50 | 0x05);
+    // do not enable debounce for touch interrupt in auto mode
+    regWrite(TPCR1, 0x00);
     // enable touch interrupt
     regWrite(INTC1, 0x04);
     
@@ -256,7 +284,7 @@ void demoDisplay(void) {
     drawCircle(790, 470,  10, 0xffff);
     
     drawCircle(200, 240, 30, 0b1111100000000000);
-    drawCircle(400, 240, 30, 0b0000011111100000);
+    drawRectangle(370, 210, 60, 60, 0b0000011111100000);
     drawCircle(600, 240, 30, 0b0000000000011111);
     
     textMode();
@@ -264,24 +292,6 @@ void demoDisplay(void) {
     writeText(350, 300, 0x07e0, 0x0000, "Hello RA8875!");
     
     graphicsMode();
-}
-
-void setBackground(uint16_t color) {
-    // red
-    regWrite(BGCR0, (color & 0xf800) >> 11);
-    // green
-    regWrite(BGCR1, (color & 0x07e0) >> 5);
-    // blue
-    regWrite(BGCR2, (color & 0x001f) >> 0);
-}
-
-void setForeground(uint16_t color) {
-    // red
-    regWrite(FGCR0, (color & 0xf800) >> 11);
-    // green
-    regWrite(FGCR1, (color & 0x07e0) >> 5);
-    // blue
-    regWrite(FGCR2, (color & 0x001f) >> 0);
 }
 
 void drawPixel(x_t x, y_t y, uint16_t color) {
@@ -298,21 +308,38 @@ void drawPixel(x_t x, y_t y, uint16_t color) {
 }
 
 void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color) {
-    // set the center of the circle
     regWrite(DCHR0, x);
     regWrite(DCHR1, x >> 8);
     
     regWrite(DCVR0, y);
     regWrite(DCVR1, y >> 8);
     
-    // set the radius of the circle
     regWrite(DCRR, radius);
     
-    // set the color of the circle
     setForeground(color);
     
-    // start circle drawing function
     regWrite(DCR, 0x40 | 0x20);
+    
+    waitBusy();
+}
+
+void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
+                   uint16_t color) {
+    regWrite(DLHSR0, x);
+    regWrite(DLHSR1, x >> 8);
+    
+    regWrite(DLVSR0, y);
+    regWrite(DLVSR1, y >> 8);
+    
+    regWrite(DLHER0, x + width - 1);
+    regWrite(DLHER1, (x + width - 1) >> 8);
+    
+    regWrite(DLVER0, y + height - 1);
+    regWrite(DLVER1, (y + height - 1) >> 8);
+    
+    setForeground(color);
+    
+    regWrite(DCR, 0x80 | 0x20 | 0x10);
     
     waitBusy();
 }
@@ -357,8 +384,29 @@ void writeEnd(void) {
 void fillArea(x_t x, y_t y,
               width_t width, height_t height,
               uint16_t color) {
-    // FIXME
-    drawCircle(x, y, 10, 0x07e0);
+    regWrite(HDBE0, x);
+    regWrite(HDBE1, x >> 8);
+    
+    regWrite(VDBE0, y);
+    regWrite(VDBE1, y >> 8); // Bit 7 selects layer
+    
+    regWrite(BEWR0, width);
+    regWrite(BEWR1, width >> 8);
+    
+    regWrite(BEHR0, height);
+    regWrite(BEHR1, height >> 8);
+    
+    // use BTE function "Solid Fill"
+    regWrite(BECR1, 0x0c);
+    
+    setForeground(color);
+    
+    regWrite(BECR0, 0x80);
+    
+    waitBusy();
+    
+    // reset active window to full screen
+    setActiveWindow(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 }
 
 void setArea(x_t x, y_t y,
@@ -391,7 +439,6 @@ bool isTouch(void) {
     return data & 0x04;
 }
 
-// TODO calibration
 uint8_t readTouch(Point *point) {
     uint8_t tpxh = regRead(TPXH);
     uint8_t tpyh = regRead(TPYH);
@@ -414,10 +461,18 @@ uint8_t readTouch(Point *point) {
         point->y = DISPLAY_HEIGHT - point->y;
     }
     
+    // simple calibration
+    point->x = point->x - (DISPLAY_WIDTH / 2 - point->x) / TOUCH_CAL_X;
+    point->y = point->y - (DISPLAY_HEIGHT / 2 - point->y) / TOUCH_CAL_Y;
+    
+    point->x = fmax(0, fmin(DISPLAY_WIDTH - 1, point->x));
+    point->y = fmax(0, fmin(DISPLAY_HEIGHT - 1, point->y));
+    
     return EVENT_PRESS_DOWN;
 }
 
 void clearTouch(void) {
+    _delay_ms(10);
     regWrite(INTC2, 0x04);
 }
 

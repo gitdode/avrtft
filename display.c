@@ -11,17 +11,6 @@ void setFrame(uint16_t color) {
     fillArea(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, color);
 }
 
-void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
-                   uint8_t thickness, uint16_t color) {
-    width -= thickness;
-    height -= thickness;
-    
-    fillArea(x, y, width, thickness, color);
-    fillArea(x + width, y, thickness, height, color);
-    fillArea(x, y + height, width + thickness, thickness, color);
-    fillArea(x, y, thickness, height, color);
-}
-
 width_t writeBitmap(x_t x, y_t y, uint16_t index) {
     const __flash Bitmap *bitmap = &bitmaps[index];
     setArea(x, y, bitmap->width, bitmap->height, false, false);
