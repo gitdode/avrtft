@@ -17,18 +17,18 @@ PROGRAMMER_ARGS =
 # - RA8875
 
 # Set to 1 for RA8875, 0 for other drivers
-DRIVER = 1
+DRIVER = 0
 
 # Display dimensions
-DISPLAY_WIDTH = 800
-DISPLAY_HEIGHT = 480
+DISPLAY_WIDTH = 320
+DISPLAY_HEIGHT = 240
 # 1 = BGR, 0 = RGB
 BGR = 1
 # Invert color
 INVERT = 0
 # Flip image
-HFLIP = 0
-VFLIP = 0
+HFLIP = 1
+VFLIP = 1
 
 MAIN = avrtft.c
 SRC = bitmaps.c bmp.c cmd.c colorspace.c display.c emojis.c font.c \

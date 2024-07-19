@@ -22,6 +22,28 @@ static uint8_t thick = THICKNESS; // line thickness
 static uint8_t thoff = THICK_OFF; // offset to "center" point relative to thickness
 
 /**
+ * Paints a rectangle with the given origin and dimensions, line thickness
+ * and color.
+ * 
+ * @param x
+ * @param y
+ * @param width
+ * @param height
+ * @param thickness
+ * @param color
+ */
+static void paintRectangle(x_t x, y_t y, width_t width, height_t height, 
+                    uint8_t thickness, uint16_t color) {
+    width -= thickness;
+    height -= thickness;
+    
+    fillArea(x, y, width, thickness, color);
+    fillArea(x + width, y, thickness, height, color);
+    fillArea(x, y + height, width + thickness, thickness, color);
+    fillArea(x, y, thickness, height, color);
+}
+
+/**
  * Paints the color selection.
  */
 static void paintColors(void) {
@@ -69,7 +91,7 @@ void paintEvent(uint8_t event, Point *point) {
                            CTRL_WIDTH, CTRL_WIDTH, 2, 0x0);
             color = colors[i];
         }
-    } else if (point->x > DISPLAY_WIDTH - CTRL_WIDTH - thoff) {
+    } else if (point->x > DISPLAY_WIDTH - CTRL_WIDTH - thoff - 1) {
         if (event == EVENT_PRESS_DOWN) {
             uint8_t i = point->y / (CTRL_WIDTH + 1);
             // tool selected
@@ -81,7 +103,7 @@ void paintEvent(uint8_t event, Point *point) {
                 // increment line thickness
                 thick += THICKNESS;
                 if (thick > THICKNESS * 4) thick = THICKNESS;
-                thoff = (THICKNESS + 1) / 2;
+                thoff = (thick + 1) / 2;
             } else if (i < TOOL_COUNT) {
                 // repaint tools, highlight and select tool
                 paintTools();
@@ -136,15 +158,4 @@ void paintPoint(uint8_t event, Point *point) {
     }
 
     prev = *point;
-}
-
-void paintRectangle(x_t x, y_t y, width_t width, height_t height, 
-                    uint8_t thickness, uint16_t color) {
-    width -= thickness;
-    height -= thickness;
-    
-    fillArea(x, y, width, thickness, color);
-    fillArea(x + width, y, thickness, height, color);
-    fillArea(x, y + height, width + thickness, thickness, color);
-    fillArea(x, y, thickness, height, color);
 }
