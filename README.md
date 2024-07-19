@@ -42,11 +42,11 @@ Write some text and a bitmap, and upload a BMP image:
 
 `c 0xffff` // clear display  
 `d` // display the demo  
-`t 0 0 Just some text` // write text in Hack to row 0 column 0  
-`b 0 0 1` // write bitmap with index 1 (tiny Linus cat) to row 0 column 0  
-`p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image to row 0 column 0    
+`t 0 0 Just some text` // write text in Hack to x = 0, y = 0  
+`b 0 0 1` // write bitmap with index 1 (line icon) to x = 0, y = 0  
+`p 0 0` // prepare to "stream" a 16-Bit (5/6/5) RGB BMP image x = 0, y = 0  
 `cat Bali160x128.bmp > /dev/ttyUSB0` // upload a BMP image  
-`s 0` // read BMP image from SD card starting at address 0 (to row 0 column 0)  
+`s 0` // read BMP image from SD card starting at address 0 (x = 0, y = 0)  
 `a` // start paint application
 
 ## Enter emojis
@@ -57,23 +57,8 @@ Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s` fo
 
 ## Convert and write images to SD card
 
-Without any file system, to write any number of pictures with a specific 
-resolution as 16-Bit (5/6/5) RGB BMP image files:
-
-1. Convert pictures with ImageMagick 'convert' and pad them to a multiple of 
-512 bytes
-
-        for i in *.jpg; do convert $i -scale 320x240 -define bmp:subtype=RGB565 $i.bmp; truncate -s 154112 $i.bmp; echo $i; done
-
-2. Concatenate the images to a single file
-
-        for i in *.bmp; do cat $i >> sdcard.img; echo $i; done
-
-3. Write the images raw to SD card (danger zone!)
-
-        sudo dd if=sdcard.img of=/dev/mmcblk0 bs=512
-
-Now the images can be read one by one from SD card with an address offset of `301`.
+With `scripts/bmp.sh`, images can be bulk-converted and written raw to SD card, so they can viewed and advanced
+to the next image with a touch.
 
 ## Paint application
 
