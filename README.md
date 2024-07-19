@@ -57,8 +57,8 @@ Emojis are entered with a tabulation char + their "code", i.e. `Smile!<TAB>s` fo
 
 ## Convert and write images to SD card
 
-With `scripts/bmp.sh`, images can be bulk-converted and written raw to SD card, so they can viewed and advanced
-to the next image with a touch.
+With `scripts/bmp.sh`, images can be bulk-converted and written raw to SD card, so they can be viewed and 
+advanced to the next image with a touch.
 
 ## Paint application
 
