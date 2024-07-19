@@ -207,7 +207,7 @@ void initDisplay(void) {
     _delay_ms(1);
     
     // set pixel clock
-    regWrite(PCSR, 0x80 | 0x01); // 800x480: falling edge, system clock div by 2
+    regWrite(PCSR, 0x80 | 0x01); // 800x480: falling edge, system clock/2
     _delay_ms(20);
     
     // set 16-bit color depth, 8-bit MCU
@@ -261,10 +261,10 @@ void initDisplay(void) {
     // GPIOX write to enable display
     regWrite(GPIOX, 1);
     
-    // enable touch panel, wait 4096 clocks, system clock/8
-    regWrite(TPCR0, 0x80 | 0x30 | 0x03);
-    // enable debounce for touch interrupt
-    regWrite(TPCR1, 0x04);
+    // enable touch panel, wait 16384 clocks, system clock/32
+    regWrite(TPCR0, 0x80 | 0x50 | 0x05);
+    // do not enable debounce for touch interrupt in auto mode
+    regWrite(TPCR1, 0x00);
     // enable touch interrupt
     regWrite(INTC1, 0x04);
     
@@ -405,6 +405,7 @@ void fillArea(x_t x, y_t y,
     
     waitBusy();
     
+    // reset active window to full screen
     setActiveWindow(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
 }
 
@@ -438,7 +439,6 @@ bool isTouch(void) {
     return data & 0x04;
 }
 
-// TODO calibration
 uint8_t readTouch(Point *point) {
     uint8_t tpxh = regRead(TPXH);
     uint8_t tpyh = regRead(TPYH);
@@ -461,10 +461,18 @@ uint8_t readTouch(Point *point) {
         point->y = DISPLAY_HEIGHT - point->y;
     }
     
+    // simple calibration
+    point->x = point->x - (DISPLAY_WIDTH / 2 - point->x) / TOUCH_CAL_X;
+    point->y = point->y - (DISPLAY_HEIGHT / 2 - point->y) / TOUCH_CAL_Y;
+    
+    point->x = fmax(0, fmin(DISPLAY_WIDTH - 1, point->x));
+    point->y = fmax(0, fmin(DISPLAY_HEIGHT - 1, point->y));
+    
     return EVENT_PRESS_DOWN;
 }
 
 void clearTouch(void) {
+    _delay_ms(10);
     regWrite(INTC2, 0x04);
 }
 

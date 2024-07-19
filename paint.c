@@ -7,6 +7,9 @@
 
 #include "paint.h"
 
+#define THICKNESS   2 * fmax(1, DISPLAY_WIDTH / 320.0)
+#define THICK_OFF   (THICKNESS + 1) / 2;
+
 static uint16_t colors[] = {
     0xf800, 0x07e0, 0x001f, 
     0xffe0, 0xf81f, 0x07ff, 
@@ -15,8 +18,8 @@ static uint16_t colors[] = {
 static uint8_t tool = TOOL_FREE;
 static Point prev = {0};
 static uint16_t color = 0x0;
-static uint8_t thick = 3; // line thickness
-static uint8_t thoff = 2; // offset to "center" point relative to thickness
+static uint8_t thick = THICKNESS; // line thickness
+static uint8_t thoff = THICK_OFF; // offset to "center" point relative to thickness
 
 /**
  * Paints the color selection.
@@ -76,9 +79,9 @@ void paintEvent(uint8_t event, Point *point) {
                          DISPLAY_HEIGHT, 0xffff);
             } else if (i == TOOL_THICK) {
                 // increment line thickness
-                thick += 3;
-                if (thick > 12) thick = 3;
-                thoff = (thick + 1) / 2;
+                thick += THICKNESS;
+                if (thick > THICKNESS * 4) thick = THICKNESS;
+                thoff = (THICKNESS + 1) / 2;
             } else if (i < TOOL_COUNT) {
                 // repaint tools, highlight and select tool
                 paintTools();

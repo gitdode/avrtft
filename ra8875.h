@@ -16,6 +16,9 @@
 #include "usart.h"
 #include "spi.h"
 
+#define TOUCH_CAL_X 9
+#define TOUCH_CAL_Y 4
+
 #define CMD_WRITE   0x80
 #define STATUS_READ 0xc0
 #define DATA_WRITE  0x00
