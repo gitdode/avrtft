@@ -113,6 +113,8 @@ static void raset(y_t ys, y_t ye) {
 }
 
 void initDisplay(void) {
+    _delay_ms(10);
+    
     // Hardware reset
     hwReset();
 

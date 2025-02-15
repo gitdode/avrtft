@@ -11,7 +11,7 @@
  * Converts the given 8 pixel in 1-Bit monochrome to 16-Bit RGB (5/6/5) color
  * stored in the given array of 16 bytes.
  * 
- * @param grey 8 pixel in 1-Bit monochrome
+ * @param mono 8 pixel in 1-Bit monochrome
  * @param rgb 8 pixel in 16-Bit RGB (5/6/5) color
  */
 static void mono1ToRGB16(uint8_t mono, uint8_t *rgb) {
