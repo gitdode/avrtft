@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   sdcard.c
  * Author: torsten.roemer@luniks.net
- * 
+ *
  * Thanks to http://rjhcoding.com/avrc-sd-interface-1.php ff.
  *
  * Created on 24. Februar 2024, 00:13
@@ -11,7 +11,7 @@
 
 /**
  * Transmits the given command, argument and CRC value.
- * 
+ *
  * @param command
  * @param argument
  * @param crc
@@ -31,17 +31,17 @@ static void command(uint8_t command, uint32_t argument, uint8_t crc) {
 
 /**
  * Reads an R1 response and returns it.
- * 
+ *
  * @return R1
  */
 static uint8_t readR1(void) {
-    uint8_t i = 0; 
+    uint8_t i = 0;
     uint8_t response;
 
-    // poll up to 8 times for response    
+    // poll up to 8 times for response
     while ((response = transmit(0xff)) == 0xff) {
         i++;
-        if (i > 8) { 
+        if (i > 8) {
             break;
         }
     }
@@ -51,7 +51,7 @@ static uint8_t readR1(void) {
 
 /**
  * Reads an R3/R7 response into the given array of 5 bytes.
- * 
+ *
  * @param R3/R7
  */
 static void readR3_7(uint8_t *response) {
@@ -70,7 +70,7 @@ static void readR3_7(uint8_t *response) {
 }
 
 /**
- * SPI selects the sd card with extra clocks before and after.
+ * SPI selects the SD card with extra clocks before and after.
  */
 static void select(void) {
     transmit(0xff);
@@ -79,7 +79,7 @@ static void select(void) {
 }
 
 /**
- * SPI deselects the sd card with extra clocks before and after.
+ * SPI deselects the SD card with extra clocks before and after.
  */
 static void deselect(void) {
     transmit(0xff);
@@ -92,22 +92,17 @@ static void deselect(void) {
  */
 static void powerOn(void) {
     _delay_ms(100);
-    
     deselect();
-
-    _delay_ms(1);
 
     // supply at least 74 clocks
     for (uint8_t i = 0; i < 10; i++) {
         transmit(0xff);
     }
-
-    deselect();
 }
 
 /**
  * Sends CMD0 to set idle SPI mode and returns the R1 response.
- * 
+ *
  * @return R1
  */
 static uint8_t sendIdle(void) {
@@ -124,7 +119,7 @@ static uint8_t sendIdle(void) {
 /**
  * Sends CMD8 to check version and voltage and reads the R7 response
  * into the given array of 5 bytes.
- * 
+ *
  * @param R7
  */
 static void sendIfCond(uint8_t *response) {
@@ -138,7 +133,7 @@ static void sendIfCond(uint8_t *response) {
 
 /**
  * Sends CMD55 to tell that an app command is next and returns the R1 response.
- * 
+ *
  * @return R1
  */
 static uint8_t sendApp(void) {
@@ -155,7 +150,7 @@ static uint8_t sendApp(void) {
 /**
  * Sends CMD58 to read the OCR register and reads the R3 response
  * into the given array of 5 bytes.
- * 
+ *
  * @param R3
  */
 static void sendOCR(uint8_t *response) {
@@ -169,7 +164,7 @@ static void sendOCR(uint8_t *response) {
 
 /**
  * Sends ACMD41 to start initialization and returns the R1 response.
- * 
+ *
  * @return R1
  */
 static uint8_t sendOpCond(void) {
@@ -183,9 +178,69 @@ static uint8_t sendOpCond(void) {
     return response;
 }
 
+bool initSDCard(void) {
+    uint8_t response[5];
+
+    // power on
+    powerOn();
+
+    // CMD0 - go to idle state
+    response[0] = sendIdle();
+    if (response[0] > 0x01) {
+        printString("SD card error 0\r\n");
+        return false;
+    }
+
+    // CMD8 - send interface condition
+    sendIfCond(response);
+    if (response[0] & (1 << SD_CMD_ILLEGAL)) {
+        printString("SD card is V1.x or not SD card\r\n");
+        return false;
+    } else if (response[0] > 0x01) {
+        printString("SD card error 8\r\n");
+        return false;
+    } else if (response[4] != 0xaa) {
+        printString("SD card echo pattern mismatch\r\n");
+        return false;
+    }
+
+    // initialize to ready state
+    uint8_t attempts = 0;
+    do {
+        if (attempts > 100) {
+            printString("SD card did not become ready\r\n");
+            return false;
+        }
+
+        // CMD55 - send app command
+        response[0] = sendApp();
+        if (response[0] < 0x02) {
+            // ACMD41 - start initialization
+            response[0] = sendOpCond();
+        }
+
+        _delay_ms(10);
+        attempts++;
+    } while (response[0] != SD_SUCCESS);
+
+    // CMD58 - send operation conditions register
+    sendOCR(response);
+    if (response[0] > 0x01) {
+        printString("SD card error 58\r\n");
+        return false;
+    } else if (!(response[1] & 0x80)) {
+        printString("SD card not ready\r\n");
+        return false;
+    }
+
+    printString("SD card ready\r\n");
+
+    return true;
+}
+
 bool readSingleBlock(uint32_t address, uint8_t *block) {
     select();
-    
+
     command(CMD17, address, CMD17_CRC);
     uint8_t response = readR1();
     uint8_t token = 0xff;
@@ -202,17 +257,17 @@ bool readSingleBlock(uint32_t address, uint8_t *block) {
             for (uint16_t i = 0; i < SD_BLOCK_SIZE; i++) {
                 block[i] = transmit(0xff);
             }
-            
+
             // 16-bit CRC (ignore for now)
             transmit(0xff);
             transmit(0xff);
-            
+
             success = true;
         }
     }
-    
+
     deselect();
-    
+
     return success;
 }
 
@@ -294,78 +349,18 @@ bool writeSingleBlock(uint32_t address, uint8_t *block) {
         for (uint16_t attempt = 0; attempt < SD_MAX_WRITE && token == 0xff; attempt++) {
             token = transmit(0xff);
         }
-        
+
         if ((token & 0x0f) == 0x05) {
             // data was accepted, wait while busy programming data
             for (uint16_t attempt = 0; attempt < SD_MAX_WRITE && token == 0x00; attempt++) {
                 token = transmit(0xff);
             }
-            
+
             success = true;
         }
     }
-    
+
     deselect();
-    
+
     return success;
-}
-
-bool initSDCard(void) {
-    uint8_t response[5];
-    
-    // power on
-    powerOn();
-    
-    // go to idle state
-    response[0] = sendIdle();
-    if (response[0] > 0x01) {
-        printString("sd card error 0\r\n");
-        return false;
-    }
-
-    // send interface condition
-    sendIfCond(response);
-    if (response[0] & (1 << SD_CMD_ILLEGAL)) {
-        printString("sd card is V1.x or not sd card\r\n");
-        return false;
-    } else if (response[0] > 0x01) {
-        printString("sd card error 8\r\n");
-        return false;
-    } else if (response[4] != 0xaa) {
-        printString("sd card echo pattern mismatch\r\n");
-        return false;
-    }
-    
-    // initialize to ready state
-    uint8_t attempts = 0;
-    do {
-        if (attempts > 100) {
-            printString("sd card did not become ready\r\n");
-            return false;
-        }
-        
-        // send app command
-        response[0] = sendApp();
-        if (response[0] < 0x02) {
-            // start initialization
-            response[0] = sendOpCond();
-        }
-        
-        _delay_ms(10);
-        attempts++;
-    } while (response[0] != SD_SUCCESS);
-   
-    // send operation conditions register 
-    sendOCR(response);
-    if (response[0] > 0x01) {
-        printString("sd card error 58\r\n");
-        return false;
-    } else if (!(response[1] & 0x80)) {
-        printString("sd card not ready\r\n");
-        return false;
-    }
-    
-    printString("sd card ready\r\n");
-    
-    return true;
 }
