@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   sdcard.h
  * Author: torsten.roemer@luniks.net
  *
@@ -25,7 +25,7 @@
 
 #define CMD12       12
 #define CMD12_ARG   0x00000000
-#define CMD12_CRC   0x00
+#define CMD12_CRC   0x60
 
 #define CMD17       17
 #define CMD17_CRC   0x00
@@ -38,18 +38,20 @@
 
 #define CMD55       55
 #define CMD55_ARG   0x00000000
-#define CMD55_CRC   0x00
+#define CMD55_CRC   0x64
 
 #define CMD58       58
 #define CMD58_ARG   0x00000000
-#define CMD58_CRC   0x00
+#define CMD58_CRC   0xfc
 
 #define ACMD41      41
 #define ACMD41_ARG  0x40000000
-#define ACMD41_CRC  0x00
+#define ACMD41_CRC  0x76
 
+// TODO depends on SPI SCK frequency
 #define SD_MAX_READ     50000 // SPI clock ticks in 100 ms
 #define SD_MAX_WRITE    125000 // SPI clock ticks in 250 ms
+
 #define SD_BLOCK_SIZE   512
 
 #define SD_CMD_ILLEGAL  2
@@ -59,15 +61,15 @@
 
 /**
  * Initializes the SD Card and returns true on success, false otherwise.
- * 
+ *
  * @return true on success, false otherwise
  */
 bool initSDCard(void);
 
 /**
- * Reads a single block of 512 bytes at the given address into 
+ * Reads a single block of 512 bytes at the given address into
  * the given buffer and returns true on success, false otherwise.
- * 
+ *
  * @param address address in 512 byte units
  * @param block 512 byte buffer
  * @return success
@@ -78,7 +80,7 @@ bool readSingleBlock(uint32_t address, uint8_t *block);
  * Reads multiple blocks of 512 bytes starting at the given address
  * and, for each block, passes the buffer to the given function.
  * By returning false, the function can request to stop reading blocks.
- * 
+ *
  * @param address
  * @param consume
  * @return success
@@ -86,9 +88,9 @@ bool readSingleBlock(uint32_t address, uint8_t *block);
 bool readMultiBlock(uint32_t address, Consumer consume);
 
 /**
- * Writes a single block of 512 bytes starting at the given address 
+ * Writes a single block of 512 bytes starting at the given address
  * from the given buffer and returns true on success, false otherwise.
- * 
+ *
  * @param address address in 512 byte units
  * @param block 512 byte buffer
  * @return success
