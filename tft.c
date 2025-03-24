@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   tft.c
  * Author: torsten.roemer@luniks.net
  *
@@ -34,7 +34,7 @@ static void displaySetData(void) {
 
 /**
  * Sends the given command to the display.
- * 
+ *
  * @param cmd
  */
 static void displayCmd(uint8_t cmd) {
@@ -44,7 +44,7 @@ static void displayCmd(uint8_t cmd) {
 
 /**
  * Sends the given data to the display.
- * 
+ *
  * @param data
  */
 static void displayData(uint8_t data) {
@@ -54,7 +54,7 @@ static void displayData(uint8_t data) {
 
 /**
  * Sets horizontal and/or vertical flip.
- * 
+ *
  * @param hflip
  * @param vflip
  */
@@ -82,7 +82,7 @@ static void madctl(bool hflip, bool vflip) {
 
 /**
  * Sets the given column start and end address.
- * 
+ *
  * @param xs start address
  * @param xe end address
  */
@@ -98,7 +98,7 @@ static void caset(x_t xs, x_t xe) {
 
 /**
  * Sets the given row start and end address.
- * 
+ *
  * @param ys start address
  * @param ye end address
  */
@@ -113,8 +113,8 @@ static void raset(y_t ys, y_t ye) {
 }
 
 void initDisplay(void) {
-    _delay_ms(10);
-    
+    _delay_ms(100);
+
     // Hardware reset
     hwReset();
 
@@ -149,17 +149,17 @@ void initDisplay(void) {
     displayCmd(COLMOD);
     displayData(0b00111101);
     displayDes();
-    
+
     // Display on
     displaySel();
     displayCmd(DISPON);
     displayDes();
-    
+
     // Sleep in & booster off
     // displaySel();
     // displayCmd(SLPIN);
     // displayDes();
-    
+
     printString("done initializing display\r\n");
 }
 
@@ -175,7 +175,7 @@ void drawCircle(x_t x, y_t y, uint16_t radius, uint16_t color) {
     // TODO
 }
 
-void drawRectangle(x_t x, y_t y, width_t width, height_t height, 
+void drawRectangle(x_t x, y_t y, width_t width, height_t height,
                    uint16_t color) {
     // TODO
 }
@@ -228,8 +228,8 @@ void fillArea(x_t x, x_t y,
     writeEnd();
 }
 
-void setArea(x_t x, y_t y, 
-             width_t width, height_t height, 
+void setArea(x_t x, y_t y,
+             width_t width, height_t height,
              bool hflip, bool vflip) {
 
     madctl(hflip, vflip);
